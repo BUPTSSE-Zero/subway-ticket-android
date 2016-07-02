@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Subway_ticket_android</string>
+    <string name="app_name">地铁2033</string>
+    <string name="action_settings">设置</string>
+    <string name="action_search">查找</string>
 </resources>
