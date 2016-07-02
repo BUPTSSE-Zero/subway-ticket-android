@@ -1,4 +1,4 @@
-package cn.crepusculo.subway;
+package cn.crepusculo.blank;
 
 import org.junit.Test;
 
