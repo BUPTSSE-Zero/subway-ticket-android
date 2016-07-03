@@ -2,4 +2,6 @@
     <string name="app_name">地铁2033</string>
     <string name="action_settings">设置</string>
     <string name="action_search">查找</string>
+
+    <string name="common_exit">退出</string>
 </resources>
