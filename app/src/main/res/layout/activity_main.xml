@@ -19,7 +19,13 @@
         android:id="@+id/content">
 
     </FrameLayout>
-    
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container">
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/nav_content"
         android:layout_width="match_parent"
@@ -60,21 +66,39 @@
         android:layout_marginEnd="16dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:fab_colorNormal="@color/md_white_1000"
-            app:fab_title="Action A"
-            app:fab_colorPressed="@color/md_amber_400"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_b"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:fab_title="Action A"
+            android:src="@drawable/ic_subway_white_24dp"
             app:fab_colorNormal="@color/md_white_1000"
-            app:fab_title="Action B"
+            app:fab_colorPressed="@color/md_amber_400"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_title="Action A"
+            android:src="@drawable/ic_place_white_24dp"
+            app:fab_colorNormal="@color/md_white_1000"
             app:fab_colorPressed="@color/md_amber_400"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/action_bills"
+        android:layout_above="@id/nav_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        app:fab_addButtonColorNormal="@color/md_white_1000"
+        app:fab_addButtonColorPressed="@color/md_amber_400"
+        app:fab_addButtonPlusIconColor="@color/md_pink_100"
+        app:fab_labelStyle="@style/AppTheme"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

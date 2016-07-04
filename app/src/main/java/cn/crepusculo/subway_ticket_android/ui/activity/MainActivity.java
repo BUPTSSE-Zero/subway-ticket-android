@@ -5,12 +5,14 @@ import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -21,7 +23,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import cn.crepusculo.subway_ticket_android.R;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
-                                implements Drawer.OnDrawerItemClickListener {
+                    implements Drawer.OnDrawerItemClickListener,
+                               com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener{
     private class SideNavBtn {
         public final static int GET_QR = 0;
         public final static int BILLS = 1;
@@ -32,6 +35,11 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private View view;
 
     private Drawer drawer;
+
+    private com.getbase.floatingactionbutton.FloatingActionButton fab_locate;
+    private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
+    private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
+    private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
 
     @Override
     protected int getLayoutResource() {
@@ -53,8 +61,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void initFab(){
+        fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu) findViewById(R.id.multiple_actions);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_a);
+
+        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_b);
+
+        fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_bills);
+
+        fab_bills.setVisibility(View.VISIBLE);
+        fab_locate.setOnClickListener(this);
+
 
     }
 
@@ -143,11 +160,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         long id = drawerItem.getIdentifier();
-        if (id == SideNavBtn.GET_QR) {
 
+        if (id == SideNavBtn.GET_QR) {
+            fab_bills.setVisibility(View.INVISIBLE);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.BILLS) {
-
+            fab_bills.setVisibility(View.VISIBLE);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.PROFILE) {
 
@@ -162,6 +180,30 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         return true;
     }
 
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.action_bills:
+        }
+        if(fab_bills.getVisibility() == View.VISIBLE)
+            fab_bills.setVisibility(View.INVISIBLE);
+        else
+            fab_bills.setVisibility(View.VISIBLE);
+        adjustFabPos();
+    }
+
+    private void adjustFabPos(){
+        if (fab_bills.getVisibility() == View.INVISIBLE) {
+
+        }
+        else {
+            float a = fab_subway.getY();
+            float b = fab_locate.getY();
+            Log.e("w...............",""+a);
+            fab_menu.setTranslationY(b-a);
+        }
+    }
 }
 
 
