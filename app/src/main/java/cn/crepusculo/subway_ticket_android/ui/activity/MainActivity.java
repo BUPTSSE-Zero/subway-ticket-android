@@ -1,5 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -7,6 +9,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -25,6 +29,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         public final static int SETTINGS = 3;
         public final static int EXIT = 9;
     }
+    private View view;
 
     private Drawer drawer;
 
@@ -35,6 +40,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     @Override
     protected void initView() {
+        view = this.findViewById(R.id.main_activity);
+
         initToolbar();
         initFab();
         initDrawer();
@@ -46,14 +53,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void initFab(){
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
     }
 
     private void initDrawer(){

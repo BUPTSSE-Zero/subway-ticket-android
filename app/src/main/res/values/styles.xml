@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- Status Bar -->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -19,6 +20,27 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
 
+    </style>
+
+    <style name="AppTheme.EditField">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+    </style>
+
+    <drawable name="translucent">#7f000000</drawable>
+    <style name="AppTheme.TranslucentBackground" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@drawable/translucent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <drawable name="transparent">#00000000</drawable>
+    <style name="AppTheme.TransparentBackground" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@drawable/transparent</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
 </resources>

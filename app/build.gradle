@@ -29,4 +29,11 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
+
+    /* FAB */
+    compile 'com.getbase:floatingactionbutton:1.10.1'
+
+    /* Edit Text */
+    compile 'com.github.florent37:materialtextfield:1.0.5'
+
 }
