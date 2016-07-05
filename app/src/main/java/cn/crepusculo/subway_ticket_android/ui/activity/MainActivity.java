@@ -36,6 +36,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     private Drawer drawer;
 
+    private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
+
     private com.getbase.floatingactionbutton.FloatingActionButton fab_locate;
     private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
@@ -61,16 +63,25 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void initFab(){
-        fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu) findViewById(R.id.multiple_actions);
+        fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
+                findViewById(R.id.action_settings);
 
-        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_subway);
+        fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu)
+                findViewById(R.id.multiple_actions);
 
-        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_locate);
+        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton)
+                findViewById(R.id.action_subway);
 
-        fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_bills);
+        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton)
+                findViewById(R.id.action_locate);
+
+        fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton)
+                findViewById(R.id.action_bills);
+
         fab_menu.removeButton(fab_bills);
         fab_subway.setOnClickListener(this);
         fab_locate.setOnClickListener(this);
+        fab_settings.setOnClickListener(this);
     }
 
     private void initDrawer(){
@@ -193,11 +204,15 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 },2000);
                 return;
             case R.id.action_subway:
+                fab_menu.collapse();
                 return;
             case R.id.action_locate:
+                fab_menu.collapse();
                 return;
+            case R.id.action_settings:
+                drawer.openDrawer();
         }
-        fab_menu.collapse();
+
     }
 
 }
