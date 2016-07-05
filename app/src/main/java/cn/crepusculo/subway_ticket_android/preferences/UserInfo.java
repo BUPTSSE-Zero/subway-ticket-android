@@ -67,4 +67,13 @@ public class UserInfo {
     }
 
 
+    public boolean isHoldTicket() {
+        return holdTicket;
+    }
+
+    public UserInfo setHoldTicket(boolean holdTicket) {
+        this.holdTicket = holdTicket;
+        SharedPreferencesUtils.putBoolean(preferences, UserInfoKeys.HOLD_TICKET, holdTicket);
+        return this;
+    }
 }

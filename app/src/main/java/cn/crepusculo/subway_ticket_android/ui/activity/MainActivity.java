@@ -28,14 +28,20 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private class SideNavBtn {
         public final static int GET_QR = 0;
         public final static int BILLS = 1;
-        public final static int PROFILE = 2;
-        public final static int SETTINGS = 3;
+        public final static int CITYS = 2;
+        public final static int PROFILE = 3;
+        public final static int SETTINGS = 4;
         public final static int EXIT = 9;
     }
     private View view;
 
+    /* nav */
+    private View nav;
+
+    /* Side Menu */
     private Drawer drawer;
 
+    /* Fabs */
     private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
 
     private com.getbase.floatingactionbutton.FloatingActionButton fab_locate;
@@ -92,6 +98,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 R.drawable.ic_find_in_page_white_24dp,
                 R.drawable.ic_find_in_page_white_24dp,
                 R.drawable.ic_find_in_page_white_24dp,
+                R.drawable.ic_find_in_page_white_24dp,
                 R.drawable.ic_find_in_page_white_24dp
         };
 
@@ -106,6 +113,11 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                         .withName(drawerItemsNames[SideNavBtn.BILLS])
                         .withIcon(drawerItemIcons[SideNavBtn.BILLS])
                         .withIdentifier(SideNavBtn.BILLS),
+
+                new PrimaryDrawerItem()
+                        .withName(drawerItemsNames[SideNavBtn.CITYS])
+                        .withIcon(drawerItemIcons[SideNavBtn.CITYS])
+                        .withIdentifier(SideNavBtn.CITYS),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.PROFILE])
@@ -131,6 +143,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .addDrawerItems(
                         primaryDrawerItems[SideNavBtn.GET_QR],
                         primaryDrawerItems[SideNavBtn.BILLS],
+                        primaryDrawerItems[SideNavBtn.CITYS],
                         new DividerDrawerItem(),
                         primaryDrawerItems[SideNavBtn.PROFILE],
                         primaryDrawerItems[SideNavBtn.SETTINGS]
