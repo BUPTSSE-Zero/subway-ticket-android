@@ -45,4 +45,6 @@ dependencies {
     /* Edit Text */
     compile 'com.github.florent37:materialtextfield:1.0.5'
 
+    /* subsay-ticket-model */
+    //    compile 'com.subwayticket:subway-ticket-models:0.+'/
 }
