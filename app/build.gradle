@@ -17,6 +17,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -29,6 +35,9 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
+
+    /* Gson*/
+    compile 'com.google.code.gson:gson:2.6.2'
 
     /* FAB */
     compile 'com.getbase:floatingactionbutton:1.10.1'
