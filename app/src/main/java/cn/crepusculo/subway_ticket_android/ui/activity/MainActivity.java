@@ -63,16 +63,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private void initFab(){
         fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu) findViewById(R.id.multiple_actions);
 
-        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_a);
+        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_subway);
 
-        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_b);
+        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_locate);
 
         fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.action_bills);
-
-        fab_bills.setVisibility(View.VISIBLE);
+        fab_menu.removeButton(fab_bills);
+        fab_subway.setOnClickListener(this);
         fab_locate.setOnClickListener(this);
-
-
     }
 
     private void initDrawer(){
@@ -182,28 +180,26 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     @Override
     public void onClick(View view) {
+        fab_bills.setVisibility(View.VISIBLE);
         int id = view.getId();
+        Log.e("id",""+id);
         switch (id) {
             case R.id.action_bills:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                },2000);
+                return;
+            case R.id.action_subway:
+                return;
+            case R.id.action_locate:
+                return;
         }
-        if(fab_bills.getVisibility() == View.VISIBLE)
-            fab_bills.setVisibility(View.INVISIBLE);
-        else
-            fab_bills.setVisibility(View.VISIBLE);
-        adjustFabPos();
+        fab_menu.collapse();
     }
 
-    private void adjustFabPos(){
-        if (fab_bills.getVisibility() == View.INVISIBLE) {
-
-        }
-        else {
-            float a = fab_subway.getY();
-            float b = fab_locate.getY();
-            Log.e("w...............",""+a);
-            fab_menu.setTranslationY(b-a);
-        }
-    }
 }
 
 
