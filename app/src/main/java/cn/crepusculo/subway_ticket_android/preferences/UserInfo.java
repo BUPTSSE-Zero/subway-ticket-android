@@ -2,6 +2,8 @@ package cn.crepusculo.subway_ticket_android.preferences;
 
 import android.content.SharedPreferences;
 
+import cn.crepusculo.subway_ticket_android.Utils.SharedPreferencesUtils;
+
 
 /**
  * The UserInfo class
@@ -21,13 +23,13 @@ public class UserInfo {
 
     private boolean isFirstLogin;
 
-    private boolean holdTicket;
+    private int ticketCount;
 
     private UserInfo() {
         phoneNumber = preferences.getString(UserInfoKeys.PHONE, null);
         password = preferences.getString(UserInfoKeys.PASSWORD, null);
         isFirstLogin = preferences.getBoolean(UserInfoKeys.IS_FIRST_LOGIN, true);
-
+        ticketCount = preferences.getInt(UserInfoKeys.TICKET_COUNT, 0);
     }
 
     public static UserInfo getInstance() {
@@ -67,13 +69,13 @@ public class UserInfo {
     }
 
 
-    public boolean isHoldTicket() {
-        return holdTicket;
+    public int isTicketCount() {
+        return ticketCount;
     }
 
-    public UserInfo setHoldTicket(boolean holdTicket) {
-        this.holdTicket = holdTicket;
-        SharedPreferencesUtils.putBoolean(preferences, UserInfoKeys.HOLD_TICKET, holdTicket);
+    public UserInfo setTicketCount(int ticketCount) {
+        this.ticketCount = ticketCount;
+        SharedPreferencesUtils.putInt(preferences, UserInfoKeys.TICKET_COUNT, ticketCount);
         return this;
     }
 }

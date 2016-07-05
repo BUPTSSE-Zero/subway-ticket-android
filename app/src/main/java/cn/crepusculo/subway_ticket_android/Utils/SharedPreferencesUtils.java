@@ -1,4 +1,4 @@
-package cn.crepusculo.subway_ticket_android.preferences;
+package cn.crepusculo.subway_ticket_android.Utils;
 
 
 import android.app.Application;

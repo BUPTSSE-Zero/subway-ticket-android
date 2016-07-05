@@ -2,6 +2,8 @@ package cn.crepusculo.subway_ticket_android.preferences;
 
 import android.content.SharedPreferences;
 
+import cn.crepusculo.subway_ticket_android.Utils.SharedPreferencesUtils;
+
 /**
  * The AppInfo class
  * Please put more info here.

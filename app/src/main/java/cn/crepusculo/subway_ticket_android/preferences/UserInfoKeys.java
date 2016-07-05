@@ -16,7 +16,7 @@ public abstract class UserInfoKeys {
     // Personal Info
     public static final String IS_FIRST_LOGIN = "is_first_login";
 
-    public static final String HOLD_TICKET = "hold_ticket";
+    public static final String TICKET_COUNT = "ticket_count";
 
     private UserInfoKeys() {
         // Required empty
