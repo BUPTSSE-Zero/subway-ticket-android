@@ -1,19 +1,17 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.os.Build;
+import android.content.res.Resources;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.github.jorgecastilloprz.FABProgressCircle;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -21,6 +19,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.application.MyApplication;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
@@ -33,6 +32,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         public final static int PROFILE = 3;
         public final static int SETTINGS = 4;
         public final static int EXIT = 9;
+
     }
     private View view;
 
@@ -46,8 +46,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private Drawer drawer;
 
     /* Fabs */
+    private com.github.jorgecastilloprz.FABProgressCircle fabProgressCircle;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
-
+    private com.getbase.floatingactionbutton.FloatingActionButton fab_unfoucs;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_locate;
     private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
@@ -67,8 +68,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         initDrawer();
     }
 
+
     private void initInfo(){
-        info.
+        info = Info.getInstance();
+        info.initTest();
     }
 
     private void initToolbar(){
@@ -77,6 +80,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void initFab(){
+        fab_unfoucs = (FloatingActionButton)
+                findViewById(R.id.action_unfoucs);
+
+        fabProgressCircle = (FABProgressCircle)
+                findViewById(R.id.fab_progress_circle);
+
         fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_settings);
 
@@ -93,9 +102,15 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 findViewById(R.id.action_bills);
 
         fab_menu.removeButton(fab_bills);
+        showHint(fab_bills, fab_menu);
+
+        /* fab menu listener register */
+        fab_bills.setOnClickListener(this);
         fab_subway.setOnClickListener(this);
         fab_locate.setOnClickListener(this);
+        /* fab listener register */
         fab_settings.setOnClickListener(this);
+
     }
 
     private void initDrawer(){
@@ -217,12 +232,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         Log.e("id",""+id);
         switch (id) {
             case R.id.action_bills:
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                },2000);
+                fab_menu.collapse();
+                info.ticket.setTicketsCode(null);
+                Log.e("At onClick",""+info.ticket.getCount());
+                showHint(fab_bills,fab_menu);
                 return;
             case R.id.action_subway:
                 fab_menu.collapse();
@@ -234,6 +247,24 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 drawer.openDrawer();
         }
 
+    }
+
+    private void showHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
+                          com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu){
+        Log.e("At shouHint",""+info.ticket.getCount());
+        if (info.ticket.getCount() > 0){
+            fab_menu.addButton(fab);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fabProgressCircle.show();
+                }
+            },2000);
+        }
+        else {
+                fabProgressCircle.beginFinalAnimation();
+                fab_menu.removeButton(fab_bills);
+            }
     }
 
 }

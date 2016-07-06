@@ -1,5 +1,7 @@
 package cn.crepusculo.subway_ticket_android.preferences;
 
+import android.util.Log;
+
 import junit.framework.TestCase;
 
 import java.util.Arrays;
@@ -13,28 +15,32 @@ public class Info {
     public App app;
 
     private Info() {
+        user = new User();
+        ticket = new Ticket();
+        app = new App();
         // Required empty
     }
 
     public static Info getInstance(){
         if (mInstance == null) {
             mInstance = new Info();
+            Log.e("Info","-- Bulid new instance --");
         }
 
         return mInstance;
     }
 
     public void initTest(){
-        user.setId("23323323333");
-        user.setPassword("233");
+        mInstance.user.setId("23323323333");
+        mInstance.user.setPassword("233");
         String[] s = {"13131","224242"};
-        ticket.setTicketsCode(s);
-        app.setCity("Beijing");
+        mInstance.ticket.setTicketsCode(s);
+        mInstance.app.setCity("Beijing");
     }
 
-    private class User{
-        private String id;
-        private String password;
+    public class User{
+        private String id = null;
+        private String password = null;
 
         public User() {
             // Required empty
@@ -61,7 +67,9 @@ public class Info {
 
     }
 
-    private class Ticket{
+    public class Ticket{
+        private String[] ticketsCode = null;
+
         public Ticket() {
             // Required empty
         }
@@ -93,17 +101,19 @@ public class Info {
         }
 
         public int getCount(){
-            return ticketsCode.length;
+            if (ticketsCode != null)
+                return ticketsCode.length;
+            return 0;
         }
-        private String[] ticketsCode;
     }
 
-    private class App{
-        public App() {
+    public class App{
+        private String city = null;
+
+        private App() {
             // Required empty
         }
 
-        private String city;
 
         public String getCity() {
             return city;

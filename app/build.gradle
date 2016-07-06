@@ -43,6 +43,7 @@ dependencies {
 
     /* FAB */
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
 
     /* Edit Text */
     compile 'com.github.florent37:materialtextfield:1.0.5'
