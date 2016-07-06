@@ -21,6 +21,7 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.preferences.Info;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
                     implements Drawer.OnDrawerItemClickListener,
@@ -34,6 +35,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         public final static int EXIT = 9;
     }
     private View view;
+
+    /* Info */
+    private Info info;
 
     /* nav */
     private View nav;
@@ -57,10 +61,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     @Override
     protected void initView() {
         view = this.findViewById(R.id.main_activity);
-
+        initInfo();
         initToolbar();
         initFab();
         initDrawer();
+    }
+
+    private void initInfo(){
+        info.
     }
 
     private void initToolbar(){
