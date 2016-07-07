@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -207,10 +208,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         long id = drawerItem.getIdentifier();
 
         if (id == SideNavBtn.GET_QR) {
-            fab_bills.setVisibility(View.INVISIBLE);
+            Bundle bundle = new Bundle();
+            bundle.putInt("TYPE",0);
+            jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.BILLS) {
-            fab_bills.setVisibility(View.VISIBLE);
+            Bundle bundle = new Bundle();
+            bundle.putInt("TYPE",1);
+            jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.PROFILE) {
 
