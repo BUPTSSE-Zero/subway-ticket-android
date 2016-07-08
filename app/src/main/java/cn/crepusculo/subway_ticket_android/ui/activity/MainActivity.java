@@ -171,7 +171,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 )
                 .addStickyDrawerItems(new PrimaryDrawerItem()
                                         .withName(R.string.common_exit)
-                                        .withSelectable(true))
+                                        .withSelectable(true)
+                                        .withIdentifier(SideNavBtn.EXIT))
                 .withOnDrawerItemClickListener(this)
                 .withCloseOnClick(true)
                 .build();
