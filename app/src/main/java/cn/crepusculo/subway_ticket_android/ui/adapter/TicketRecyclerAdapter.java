@@ -5,25 +5,37 @@ import android.content.res.Resources;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
 
 public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAdapter.Holder> {
     private Context context;
-    private ArrayList<String> dataset = new ArrayList<>();
+    private ArrayList<BillsCardViewContent> dataset = new ArrayList<>();
     private Resources res;
+    private OnItemClickListener listener;
 
-    public TicketRecyclerAdapter(Context context, ArrayList<String> dataset) {
+    public interface OnItemClickListener {
+        void onItemClick(BillsCardViewContent item);
+    }
+
+    public TicketRecyclerAdapter(Context context, ArrayList<BillsCardViewContent> dataset
+            , OnItemClickListener listener) {
         this.context = context;
         this.dataset.clear();
         this.dataset.addAll(dataset);
         this.res = context.getResources();
+        this.listener = listener;
     }
 
     /**
@@ -48,17 +60,39 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     public static class Holder extends RecyclerView.ViewHolder {
         public TextView mTextView;
         public CardView mCardView;
+        public ExpandableLinearLayout expandableLinearLayout_raw;
+        public ExpandableLinearLayout expandableLinearLayout_expand;
+
         public Holder(View v) {
             super(v);
             mCardView = (CardView) v.findViewById(R.id.card_view);
-            mTextView = (TextView) v.findViewById(R.id.layout_item_demo_title);
+            expandableLinearLayout_expand = (ExpandableLinearLayout)v.findViewById(R.id.compat_expand);
+            expandableLinearLayout_raw = (ExpandableLinearLayout)v.findViewById(R.id.compat_collapse);
+        }
+
+        public void bind(final BillsCardViewContent item, final OnItemClickListener listener){
+            mCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(item);
+                    Log.e("Adapter/onClick",""+item);
+                    if (expandableLinearLayout_raw.isExpanded()) {
+                        expandableLinearLayout_raw.collapse();
+                        expandableLinearLayout_expand.expand();
+                    }
+                    else {
+                        expandableLinearLayout_raw.expand();
+                        expandableLinearLayout_expand.collapse();
+                    }
+                }
+            });
         }
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         initCardView(holder.mCardView);
-        holder.mTextView.setText(dataset.get(position));
+        holder.bind(dataset.get(position), listener);
     }
 
     @Override
@@ -69,4 +103,5 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     protected void initCardView(CardView cardView){
 
     }
+
 }

@@ -2,11 +2,13 @@ package cn.crepusculo.subway_ticket_android.ui.fragment.settings;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.activity.TicketManagerActivity;
+import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 
@@ -28,12 +30,18 @@ public class TicketHistoryFragment  extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<String> itemsData = new ArrayList<>();
+        ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            itemsData.add("Fragment " + " / Item " + i);
+            itemsData.add(new BillsCardViewContent());
         }
 
-        TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData);
+        TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
+                new TicketRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BillsCardViewContent item) {
+                Log.e("Fragment/onItemClick",""+item);
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 

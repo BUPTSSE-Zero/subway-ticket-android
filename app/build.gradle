@@ -53,4 +53,7 @@ dependencies {
 
     /* subsay-ticket-model */
     //    compile 'com.subwayticket:subway-ticket-models:0.+'/
+
+    /* Expandable view */
+    compile 'com.github.aakira:expandable-layout:1.5.1@aar'
 }

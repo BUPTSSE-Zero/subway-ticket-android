@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
+import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 
@@ -31,12 +32,18 @@ public class TicketPossessFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<String> itemsData = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            itemsData.add("Fragment " + " / Item " + i);
+        ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            itemsData.add(new BillsCardViewContent());
         }
 
-        TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData);
+        TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
+                new TicketRecyclerAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(BillsCardViewContent item) {
+
+                    }
+                });
         recyclerView.setAdapter(adapter);
     }
 
