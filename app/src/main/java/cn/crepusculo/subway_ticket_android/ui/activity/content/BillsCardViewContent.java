@@ -25,4 +25,16 @@ public class BillsCardViewContent {
         status_expand = null;
         date_expand = null;
     }
+
+    public void ForTest(){
+        title_collapse = "从 菊花村 到 太阳监狱";
+        subtitle_collapse ="单程票 6元";
+        status_collapse = "已发车";
+        date_collapse = "12分钟前";
+        title_expand_1 = "从 菊花村";
+        title_expand_2 = "到 太阳监狱";
+        sub_title_expand = "单程票 6元";
+        status_expand = "已发车";
+        date_expand = "12分钟前, 截止午夜有效";
+    }
 }

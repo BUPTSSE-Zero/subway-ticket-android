@@ -32,7 +32,9 @@ public class TicketHistoryFragment  extends BaseFragment {
 
         ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            itemsData.add(new BillsCardViewContent());
+            BillsCardViewContent b= new BillsCardViewContent();
+            b.ForTest();
+            itemsData.add(b);
         }
 
         TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,

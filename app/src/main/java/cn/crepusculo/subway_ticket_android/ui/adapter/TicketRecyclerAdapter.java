@@ -58,22 +58,43 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
         public CardView mCardView;
         public ExpandableLinearLayout expandableLinearLayout_raw;
         public ExpandableLinearLayout expandableLinearLayout_expand;
+        public TextView titleCollapse;
+        public TextView subtitleCollapse;
+        public TextView statusCollapse;
+        public TextView dateCollapse;
+        public TextView titleExpanded1;
+        public TextView titleExpanded2;
+        public TextView subtitleExpanded;
+        public TextView statusExpanded;
+        public TextView dateExpanded;
 
         public Holder(View v) {
             super(v);
             mCardView = (CardView) v.findViewById(R.id.card_view);
+
             expandableLinearLayout_expand = (ExpandableLinearLayout)v.findViewById(R.id.compat_expand);
             expandableLinearLayout_raw = (ExpandableLinearLayout)v.findViewById(R.id.compat_collapse);
+
+            titleCollapse= (TextView) v.findViewById(R.id.title_collapse);
+            subtitleCollapse= (TextView) v.findViewById(R.id.sub_title_collapse);
+            statusCollapse= (TextView) v.findViewById(R.id.status_collapse);
+            dateCollapse= (TextView) v.findViewById(R.id.date_collapse);
+            titleExpanded1= (TextView) v.findViewById(R.id.title_expand_1);
+            titleExpanded2= (TextView) v.findViewById(R.id.title_expand_2);
+            subtitleExpanded= (TextView) v.findViewById(R.id.sub_title_expand);
+            statusExpanded= (TextView) v.findViewById(R.id.status_expand);
+            dateExpanded= (TextView) v.findViewById(R.id.date_expand);
+
         }
 
         public void bind(final BillsCardViewContent item, final OnItemClickListener listener){
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     listener.onItemClick(item);
                     Log.e("Adapter/onClick",""+item);
                     if (expandableLinearLayout_raw.isExpanded()) {
@@ -92,6 +113,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         initCardView(holder.mCardView);
+        updateText(holder,position);
         holder.bind(dataset.get(position), listener);
     }
 
@@ -101,6 +123,20 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     protected void initCardView(CardView cardView){
+
+    }
+
+    protected void updateText(Holder holder,int p){
+        ArrayList<TextView> a = new ArrayList<>();
+        holder.titleCollapse.setText(dataset.get(p).title_collapse);
+        holder.subtitleCollapse.setText(dataset.get(p).subtitle_collapse);
+        holder.statusCollapse.setText(dataset.get(p).status_collapse);
+        holder.dateCollapse.setText(dataset.get(p).date_collapse);
+        holder.titleExpanded1.setText(dataset.get(p).title_expand_1);
+        holder.titleExpanded2.setText(dataset.get(p).title_expand_2);
+        holder.subtitleExpanded.setText(dataset.get(p).sub_title_expand);
+        holder.statusExpanded.setText(dataset.get(p).status_expand);
+        holder.dateExpanded.setText(dataset.get(p).date_expand);
 
     }
 
