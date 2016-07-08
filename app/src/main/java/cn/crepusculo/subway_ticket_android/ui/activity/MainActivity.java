@@ -209,21 +209,27 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         if (id == SideNavBtn.GET_QR) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE",0);
+            bundle.putInt("TYPE", position);
+            Log.e("Bundle in Main",""+position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.BILLS) {
+        }
+        else if (id == SideNavBtn.BILLS) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE",1);
+            bundle.putInt("TYPE",position);
+            Log.e("Bundle in Main",""+position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.PROFILE) {
+        }
+        else if (id == SideNavBtn.PROFILE) {
 
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.SETTINGS) {
+        }
+        else if (id == SideNavBtn.SETTINGS) {
 
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.EXIT) {
+        }
+        else if (id == SideNavBtn.EXIT) {
             drawer.closeDrawer();
             finish();
         }

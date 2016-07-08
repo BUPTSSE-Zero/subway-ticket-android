@@ -1,14 +1,18 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.adapter.PagerAdapter;
+import cn.crepusculo.subway_ticket_android.ui.adapter.PositionTranslationAdapter;
 
 public class TicketManagerActivity extends BaseActivity {
 
@@ -25,6 +29,7 @@ public class TicketManagerActivity extends BaseActivity {
         initToolbar();
         initTabLayout();
         initViewPager();
+        checkPagePosition();
     }
 
     protected void initToolbar() {
@@ -46,7 +51,7 @@ public class TicketManagerActivity extends BaseActivity {
     }
 
     protected void initViewPager() {
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -77,4 +82,18 @@ public class TicketManagerActivity extends BaseActivity {
         }
         return true;
     }
+
+    protected void checkPagePosition(){
+        Intent in = getIntent();
+        Bundle bundle = in.getExtras();
+        int position = bundle.getInt("TYPE",0);
+        /* Correspond id type */
+        position = PositionTranslationAdapter.DrawerIdtoTablayoutId(position);
+        Log.e("Bundle in Ticket",""+position);
+
+        tabLayout.setScrollPosition(position,0f,true);
+        viewPager.setCurrentItem(position);
+    }
+
+
 }
