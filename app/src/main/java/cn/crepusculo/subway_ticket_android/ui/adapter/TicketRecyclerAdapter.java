@@ -118,7 +118,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         holder.titleCollapse.setText(dataset.get(p).title_collapse);
         holder.subtitleCollapse.setText(dataset.get(p).subtitle_collapse);
         holder.statusCollapse.setText(dataset.get(p).status_collapse);
-//        holder.dateCollapse.setText(dataset.get(p).date_collapse);
+        holder.dateCollapse.setText(dataset.get(p).date_collapse);
 
     }
 

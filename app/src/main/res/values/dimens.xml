@@ -8,4 +8,6 @@
 
     <!-- Animator -->
     <dimen name="raise_z">12dp</dimen>
+
+    <dimen name="title_size">24sp</dimen>
 </resources>

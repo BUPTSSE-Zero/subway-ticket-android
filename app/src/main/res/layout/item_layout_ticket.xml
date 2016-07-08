@@ -11,15 +11,23 @@
          android:orientation="vertical"
          android:layout_width="match_parent"
          android:layout_height="wrap_content">
-
-         <com.mikepenz.iconics.view.IconicsImageView
-             android:layout_width="wrap_content"
-             android:src="@drawable/ic_settings_white_24dp"
-             android:layout_height="wrap_content" />
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:id="@+id/title_collapse" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/ic_settings_white_24dp"
+                    app:iiv_size="@dimen/title_size"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_gravity="end"
+                    android:gravity="right|end"
+                    android:textSize="@dimen/title_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/title_collapse" />
+            </LinearLayout>
 
          <TextView
              android:layout_width="match_parent"
