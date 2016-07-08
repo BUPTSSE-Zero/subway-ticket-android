@@ -28,9 +28,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-v4:24.0.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
-
+    compile 'com.android.support:recyclerview-v7:24.0.0'
+    compile 'com.android.support:cardview-v7:24.0.0'
     /* Side menu */
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
@@ -41,10 +43,17 @@ dependencies {
 
     /* FAB */
     compile 'com.getbase:floatingactionbutton:1.10.1'
+    compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
 
     /* Edit Text */
     compile 'com.github.florent37:materialtextfield:1.0.5'
 
+    /* TabLayout */
+    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.2@aar'
+
     /* subsay-ticket-model */
     //    compile 'com.subwayticket:subway-ticket-models:0.+'/
+
+    /* Expandable view */
+    compile 'com.github.aakira:expandable-layout:1.5.1@aar'
 }

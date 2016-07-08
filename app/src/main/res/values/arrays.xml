@@ -2,7 +2,8 @@
 <resources>
     <string-array name="drawer_items">
         <item>获取二维码</item>
-        <item>历史订单</item>
+        <item>我的订单</item>
+        <item>选择城市</item>
         <item>账户设置</item>
         <item>应用设置</item>
     </string-array>
