@@ -1,6 +1,5 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.getbase.floatingactionbutton.AddFloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
 import com.mikepenz.materialdrawer.Drawer;
@@ -20,7 +18,6 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.application.MyApplication;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
@@ -103,7 +100,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 findViewById(R.id.action_bills);
 
         fab_menu.removeButton(fab_bills);
-        showHint(fab_bills, fab_menu);
+        updateHint(fab_bills, fab_menu);
 
         /* fab menu listener register */
         fab_bills.setOnClickListener(this);
@@ -244,11 +241,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         switch (id) {
             case R.id.action_bills:
                 fab_menu.collapse();
+
                 info.ticket.setTicketsCode(null);
-                Log.e("At onClick",""+info.ticket.getCount());
-                showHint(fab_bills,fab_menu);
+                updateHint(fab_bills,fab_menu);
+
+                Bundle bundle = new Bundle();
+                bundle.putInt("TYPE", 2);
+                jumpToActivity(TicketManagerActivity.class, bundle);
                 return;
             case R.id.action_subway:
+                info.ticket.setTicketsCode(new String[]{"23333","sdfaf"});
+                updateHint(fab_bills,fab_menu);
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:
@@ -260,8 +263,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
-    private void showHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
-                          com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu){
+    private void updateHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
+                            com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu){
         Log.e("At shouHint",""+info.ticket.getCount());
         if (info.ticket.getCount() > 0){
             fab_menu.addButton(fab);
@@ -270,10 +273,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 public void run() {
                     fabProgressCircle.show();
                 }
-            },2000);
+            },3000);
         }
         else {
-                fabProgressCircle.beginFinalAnimation();
+                fabProgressCircle.hide();
                 fab_menu.removeButton(fab_bills);
             }
     }
