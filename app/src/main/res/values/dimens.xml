@@ -5,4 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="float_height">32dp</dimen>
     <dimen name="fab_actions_spacing">16dp</dimen>
+
+    <!-- Animator -->
+    <dimen name="raise_z">12dp</dimen>
 </resources>

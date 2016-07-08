@@ -9,8 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_margin="4dp"
-        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@animator/raise_z"
         android:clickable="true"
+        android:foreground="?attr/selectableItemBackground"
         >
 
         <TextView
