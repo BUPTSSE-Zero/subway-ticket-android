@@ -7,4 +7,33 @@
     <color name="transparent">#00000000</color>
 
     <color name="text_black">#000</color>
+
+    <!-- metro line spec color -->
+    <color name="line_1">#A8353A</color>
+    <color name="line_2">#004A88</color>
+    <color name="line_4">#008996</color>
+    <color name="line_5">#AF0061</color>
+    <color name="line_6">#B78500</color>
+    <color name="line_7">#FFC66E</color>
+    <color name="line_8">#009878</color>
+    <color name="line_9">#94D600</color>
+    <color name="line_10">#008FBF</color>
+    <color name="line_13">#F6DA40</color>
+    <color name="line_14">#CC9A8E</color>
+    <color name="line_15">#673278</color>
+    <color name="line_16">#6BA53A</color>
+    <color name="line_ba">#A8353A</color>
+    <color name="line_chang">#DE85BB</color>
+    <color name="line_da">#008996</color>
+    <color name="line_fang">#DC6016</color>
+    <color name="line_men">#A65A2A</color>
+    <color name="line_yan">#DC6016</color>
+    <color name="line_yi">#D6006E</color>
+    <color name="line_xi">#E1261C</color>
+    <color name="line_airport">#A292B3</color>
+
+
+
+
+    <color name="undefine">#808080</color>
 </resources>
