@@ -11,9 +11,6 @@ import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewCont
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 
-/**
- * Created by airfr on 2016/7/6.
- */
 public class TicketPossessFragment extends BaseFragment {
 
     @Override

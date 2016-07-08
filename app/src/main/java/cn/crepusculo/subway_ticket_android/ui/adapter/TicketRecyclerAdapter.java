@@ -75,18 +75,11 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
             super(v);
             mCardView = (CardView) v.findViewById(R.id.card_view);
 
-            expandableLinearLayout_expand = (ExpandableLinearLayout)v.findViewById(R.id.compat_expand);
-            expandableLinearLayout_raw = (ExpandableLinearLayout)v.findViewById(R.id.compat_collapse);
-
             titleCollapse= (TextView) v.findViewById(R.id.title_collapse);
             subtitleCollapse= (TextView) v.findViewById(R.id.sub_title_collapse);
             statusCollapse= (TextView) v.findViewById(R.id.status_collapse);
             dateCollapse= (TextView) v.findViewById(R.id.date_collapse);
-            titleExpanded1= (TextView) v.findViewById(R.id.title_expand_1);
-            titleExpanded2= (TextView) v.findViewById(R.id.title_expand_2);
-            subtitleExpanded= (TextView) v.findViewById(R.id.sub_title_expand);
-            statusExpanded= (TextView) v.findViewById(R.id.status_expand);
-            dateExpanded= (TextView) v.findViewById(R.id.date_expand);
+
 
         }
 
@@ -94,18 +87,12 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    /* its not work */
                     listener.onItemClick(item);
                     Log.e("Adapter/onClick",""+item);
-                    if (expandableLinearLayout_raw.isExpanded()) {
-                        expandableLinearLayout_raw.collapse();
-                        expandableLinearLayout_expand.expand();
                     }
-                    else {
-                        expandableLinearLayout_raw.expand();
-                        expandableLinearLayout_expand.collapse();
-                    }
-                }
+
+
             });
         }
     }
@@ -131,12 +118,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         holder.titleCollapse.setText(dataset.get(p).title_collapse);
         holder.subtitleCollapse.setText(dataset.get(p).subtitle_collapse);
         holder.statusCollapse.setText(dataset.get(p).status_collapse);
-        holder.dateCollapse.setText(dataset.get(p).date_collapse);
-        holder.titleExpanded1.setText(dataset.get(p).title_expand_1);
-        holder.titleExpanded2.setText(dataset.get(p).title_expand_2);
-        holder.subtitleExpanded.setText(dataset.get(p).sub_title_expand);
-        holder.statusExpanded.setText(dataset.get(p).status_expand);
-        holder.dateExpanded.setText(dataset.get(p).date_expand);
+//        holder.dateCollapse.setText(dataset.get(p).date_collapse);
 
     }
 
