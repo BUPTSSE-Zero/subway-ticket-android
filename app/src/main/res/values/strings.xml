@@ -6,8 +6,8 @@
 
     <string name="common_exit">退出</string>
 
-    <string name="common_go">出发地</string>
-    <string name="common_from">目的地</string>
+    <string name="common_go">目的地</string>
+    <string name="common_from">出发地</string>
 
     <string name="common_go_prep">到</string>
     <string name="common_from_prep">从</string>
@@ -16,4 +16,7 @@
     <string name="ticket_tab1">未完成</string>
     <string name="ticket_tab2">待取</string>
     <string name="ticket_tab3">历史</string>
+
+    <string name="cardview_time">time</string>
+    <string name="cardview_status">status</string>
 </resources>

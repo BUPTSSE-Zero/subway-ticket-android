@@ -47,18 +47,28 @@
     <style name="AppTheme.CardView" parent="AppTheme">
 
     </style>
-    <style name="AppTheme.CardView.Card" parent="AppTheme">
+    <style name="AppTheme.CardView.Card" parent="AppTheme.CardView">
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
     </style>
-    <style name="AppTheme.CardView.Title">
+
+    <style name="AppTheme.CardView.NoPadding" parent="AppTheme.CardView">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Title" parent="AppTheme.CardView">
         <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:textColor">@color/light_primary_text</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
-        <item name="android:paddingStart">8dp</item>
-        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>
@@ -75,6 +85,26 @@
         <item name="android:paddingEnd">8dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Icon" parent="AppTheme.CardView">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Text" parent="AppTheme.CardView">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:textColor">@color/light_secondary_text</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
     </style>
 
 </resources>

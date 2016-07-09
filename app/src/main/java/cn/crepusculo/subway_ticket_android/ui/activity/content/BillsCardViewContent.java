@@ -1,7 +1,9 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.content;
 
+import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class BillsCardViewContent {
 
@@ -51,11 +53,14 @@ public class BillsCardViewContent {
         status = TICKET_UNPAID;
     }
 
-    public void ForTest(){
-        start = "菊花村西北口";
-        start_line = 1;
-        destination = "太阳监狱和我";
-        destination_line = 5;
+    public void ForTest(int i){
+        String[] ss = {"菊花村","傻逼监狱","智障关爱中心","百度全家桶","东村"};
+        String[] ds = {"地下城与高数","美容中心","洗脚城","宏福","五棵松上吊中心"};
+        start = ss[i%5];
+        start_line = i%30;
+        destination = ds[i*2%5];
+        destination_line = i%30;
+
         date = new Date();
         status = TICKET_UNBOUNCE;
     }

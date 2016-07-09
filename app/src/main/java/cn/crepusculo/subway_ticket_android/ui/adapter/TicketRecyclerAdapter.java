@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -59,10 +61,11 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     public static class Holder extends RecyclerView.ViewHolder {
         public CardView mCardView;
 
-        public TextView start_prep;
+        public ImageView start_p;
         public TextView start;
-        public TextView destination_prep;
+
         public TextView destination;
+        public ImageView destination_p;
 
         public TextView date;
         public TextView status;
@@ -72,16 +75,14 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
             super(v);
             mCardView = (CardView) v.findViewById(R.id.card_view);
 
-            start_prep = (TextView) v.findViewById(R.id.come);
-            destination_prep = (TextView) v.findViewById(R.id.go);
-
             start= (TextView) v.findViewById(R.id.start);
             destination = (TextView) v.findViewById(R.id.destination);
 
             date = (TextView) v.findViewById(R.id.date);
             status= (TextView) v.findViewById(R.id.status);
 
-
+            start_p = (ImageView) v.findViewById(R.id.come);
+            destination_p = (ImageView) v.findViewById(R.id.go);
         }
 
         public void bind(final BillsCardViewContent item, final OnItemClickListener listener){
@@ -123,14 +124,15 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
         GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
-        Log.e("Adapter/UpdateText", "" + dataset.get(p).start_line + " " + dataset.get(p).destination_line);
+
 //        SubwayLineUtil.getColor(dataset.get(p).start_line);
 //        SubwayLineUtil.getColor(dataset.get(p).destination_line);
-        setTagColor(grad_s,SubwayLineUtil.getColor(dataset.get(p).start_line),
-                grad_d,SubwayLineUtil.getColor(dataset.get(p).destination_line));
+
+        setTagColor(holder.start_p,SubwayLineUtil.getColor(dataset.get(p).start_line),
+                holder.destination_p,SubwayLineUtil.getColor(dataset.get(p).destination_line));
     }
-    private void setTagColor(GradientDrawable s, int c1, GradientDrawable d, int c2){
-        s.setColor(context.getResources().getColor(c1));
-        d.setColor(context.getResources().getColor(c2));
+    private void setTagColor(ImageView s, int c1, ImageView d, int c2){
+        s.setColorFilter(context.getResources().getColor(c1));
+        d.setColorFilter(context.getResources().getColor(c2));
     }
 }

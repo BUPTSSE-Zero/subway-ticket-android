@@ -32,8 +32,8 @@ public class TicketHistoryFragment  extends BaseFragment {
 
         ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            BillsCardViewContent b= new BillsCardViewContent();
-            b.ForTest();
+            BillsCardViewContent b = new BillsCardViewContent();
+            b.ForTest(i);
             b.start_line = i+1;
             b.destination_line = i+1;
             itemsData.add(b);
