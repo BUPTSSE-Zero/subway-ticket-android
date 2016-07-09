@@ -42,5 +42,39 @@
         <item name="android:windowBackground">@drawable/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    
+    <!-- Card View -->
+    <style name="AppTheme.CardView" parent="AppTheme">
+
+    </style>
+    <style name="AppTheme.CardView.Card" parent="AppTheme">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+    <style name="AppTheme.CardView.Title">
+        <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Title.Station">
+        <item name="android:textSize">@dimen/title_station_size</item>
+        <item name="android:background">@drawable/style_textview</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
 
 </resources>

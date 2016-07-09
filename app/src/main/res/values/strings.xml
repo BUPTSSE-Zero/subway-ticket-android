@@ -9,8 +9,8 @@
     <string name="common_go">出发地</string>
     <string name="common_from">目的地</string>
 
-    <string name="common_go_prep">从</string>
-    <string name="common_from_prep">到</string>
+    <string name="common_go_prep">到</string>
+    <string name="common_from_prep">从</string>
 
     <!-- ticket tab -->
     <string name="ticket_tab1">未完成</string>

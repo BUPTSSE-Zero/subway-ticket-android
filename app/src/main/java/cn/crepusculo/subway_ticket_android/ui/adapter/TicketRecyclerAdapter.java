@@ -3,21 +3,20 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAdapter.Holder> {
     private Context context;
@@ -59,26 +58,28 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
     public static class Holder extends RecyclerView.ViewHolder {
         public CardView mCardView;
-        public ExpandableLinearLayout expandableLinearLayout_raw;
-        public ExpandableLinearLayout expandableLinearLayout_expand;
-        public TextView titleCollapse;
-        public TextView subtitleCollapse;
-        public TextView statusCollapse;
-        public TextView dateCollapse;
-        public TextView titleExpanded1;
-        public TextView titleExpanded2;
-        public TextView subtitleExpanded;
-        public TextView statusExpanded;
-        public TextView dateExpanded;
+
+        public TextView start_prep;
+        public TextView start;
+        public TextView destination_prep;
+        public TextView destination;
+
+        public TextView date;
+        public TextView status;
+
 
         public Holder(View v) {
             super(v);
             mCardView = (CardView) v.findViewById(R.id.card_view);
 
-            titleCollapse= (TextView) v.findViewById(R.id.title_collapse);
-            subtitleCollapse= (TextView) v.findViewById(R.id.sub_title_collapse);
-            statusCollapse= (TextView) v.findViewById(R.id.status_collapse);
-            dateCollapse= (TextView) v.findViewById(R.id.date_collapse);
+            start_prep = (TextView) v.findViewById(R.id.come);
+            destination_prep = (TextView) v.findViewById(R.id.go);
+
+            start= (TextView) v.findViewById(R.id.start);
+            destination = (TextView) v.findViewById(R.id.destination);
+
+            date = (TextView) v.findViewById(R.id.date);
+            status= (TextView) v.findViewById(R.id.status);
 
 
         }
@@ -115,11 +116,21 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
     protected void updateText(Holder holder,int p){
         ArrayList<TextView> a = new ArrayList<>();
-        holder.titleCollapse.setText(dataset.get(p).title_collapse);
-        holder.subtitleCollapse.setText(dataset.get(p).subtitle_collapse);
-        holder.statusCollapse.setText(dataset.get(p).status_collapse);
-        holder.dateCollapse.setText(dataset.get(p).date_collapse);
+        holder.start.setText(dataset.get(p).start);
+        holder.destination.setText(dataset.get(p).destination);
+        holder.date.setText("SASAD");
+        holder.status.setText(dataset.get(p).getStatus());
 
+        GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
+        GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
+        Log.e("Adapter/UpdateText", "" + dataset.get(p).start_line + " " + dataset.get(p).destination_line);
+//        SubwayLineUtil.getColor(dataset.get(p).start_line);
+//        SubwayLineUtil.getColor(dataset.get(p).destination_line);
+        setTagColor(grad_s,SubwayLineUtil.getColor(dataset.get(p).start_line),
+                grad_d,SubwayLineUtil.getColor(dataset.get(p).destination_line));
     }
-
+    private void setTagColor(GradientDrawable s, int c1, GradientDrawable d, int c2){
+        s.setColor(context.getResources().getColor(c1));
+        d.setColor(context.getResources().getColor(c2));
+    }
 }

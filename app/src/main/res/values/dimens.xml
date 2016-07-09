@@ -10,4 +10,5 @@
     <dimen name="raise_z">12dp</dimen>
 
     <dimen name="title_size">24sp</dimen>
+    <dimen name="title_station_size">18sp</dimen>
 </resources>
