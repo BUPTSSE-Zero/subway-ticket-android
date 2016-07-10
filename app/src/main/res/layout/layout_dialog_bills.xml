@@ -1,87 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:background="@color/md_white_1000"
     android:theme="@style/AppTheme.Dialog.Linear"
     style="@style/AppTheme.Dialog.Linear"
-    android:padding="32dp"
     android:transitionName="@string/cardview_dialog_transition"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:id="@+id/dialog_bills">
 
     <LinearLayout
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:id="@+id/title_1"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.CardView.NoPadding"
-        android:theme="@style/AppTheme.CardView.NoPadding"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/come_dialog"
-            android:src="@drawable/ic_fiber_manual_record_black_24dp"
-            style="@style/AppTheme.Dialog.Title.Icon"
-            android:theme="@style/AppTheme.Dialog.Title.Icon"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/start_dialog"
-            style="@style/AppTheme.Dialog.Title"
-            android:theme="@style/AppTheme.CardView.Title"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/title_2"
-        android:layout_alignStart="@id/title_1"
-        android:layout_alignTop="@+id/title_1"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.CardView.NoPadding"
-        android:theme="@style/AppTheme.CardView.NoPadding"
-        >
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/go_dialog"
-            android:src="@drawable/ic_fiber_manual_record_black_24dp"
-            style="@style/AppTheme.Dialog.Title.Icon"
-            android:theme="@style/AppTheme.Dialog.Title.Icon"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/destination_dialog"
-            style="@style/AppTheme.Dialog.Title"
-            android:theme="@style/AppTheme.CardView.Title"
-            />
-    </LinearLayout>
-
-    <TextView
-        android:drawableStart="@drawable/ic_information_outline"
-        android:layout_alignStart="@id/title_2"
-        android:layout_alignTop="@+id/title_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/status"
-        style="@style/AppTheme.CardView.Text"
-        android:theme="@style/AppTheme.CardView.Text"/>
+        android:orientation="vertical"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
+        android:theme="@style/AppTheme.Dialog.Linear.NoPadding"
+        android:id="@+id/linearLayout">
 
-    <TextView
-        android:drawableStart="@drawable/ic_time_black_24dp"
-        android:layout_alignStart="@id/status"
-        android:layout_alignTop="@+id/status"
+        <LinearLayout
+            android:id="@+id/title_1"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.Dialog.Linear.NoPadding"
+            android:theme="@style/AppTheme.Dialog.Linear.NoPadding">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/come_dialog"
+                android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                style="@style/AppTheme.Dialog.Title.Icon"
+                android:theme="@style/AppTheme.Dialog.Title.Icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/start_dialog"
+                style="@style/AppTheme.Dialog.Title"
+                android:theme="@style/AppTheme.CardView.Title"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/title_2"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.Dialog.Linear.NoPadding"
+            android:theme="@style/AppTheme.Dialog.Linear.NoPadding"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/go_dialog"
+                android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                style="@style/AppTheme.Dialog.Title.Icon"
+                android:theme="@style/AppTheme.Dialog.Title.Icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/destination_dialog"
+                style="@style/AppTheme.Dialog.Title"
+                android:theme="@style/AppTheme.CardView.Title"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:drawableStart="@drawable/ic_information_outline"
+            android:drawablePadding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            style="@style/AppTheme.Dialog.Text"
+            android:theme="@style/AppTheme.CardView.Text"/>
+
+        <TextView
+            android:drawableStart="@drawable/ic_time_black_24dp"
+            android:drawablePadding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/date"
+            style="@style/AppTheme.Dialog.Text"
+            android:theme="@style/AppTheme.CardView.Text" />
+    </LinearLayout>
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expanded_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/date"
-        style="@style/AppTheme.CardView.Text"
-        android:theme="@style/AppTheme.CardView.Text" />
+        android:orientation="horizontal"
+        app:ael_expanded="true"
+        android:layout_alignParentBottom="true"
+        app:theme="@style/AppTheme.Dialog.Linear.NoPadding"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
+        >
+        <Button
+            android:id="@+id/dialog_btn_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/AppTheme.Dialog.Button"
+            app:theme="@style/AppTheme.Dialog.Button"
+            android:background="@drawable/ripple_effect"
+            android:text="@string/dialog_btn_3"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentStart="true" />
+
+
+        <Button
+            android:id="@+id/dialog_btn_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/AppTheme.Dialog.Button"
+            app:theme="@style/AppTheme.Dialog.Button"
+            android:background="@drawable/ripple_effect"
+            android:text="@string/dialog_btn_1"
+            android:layout_below="@+id/linearLayout"
+            android:layout_toStartOf="@+id/dialog_btn_2" />
+
+        <Button
+            android:id="@+id/dialog_btn_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            style="@style/AppTheme.Dialog.Button"
+            app:theme="@style/AppTheme.Dialog.Button"
+            android:background="@drawable/ripple_effect"
+            android:text="@string/dialog_btn_2"
+            android:layout_marginStart="0dp"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentEnd="true" />
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
 
 
 </RelativeLayout>
