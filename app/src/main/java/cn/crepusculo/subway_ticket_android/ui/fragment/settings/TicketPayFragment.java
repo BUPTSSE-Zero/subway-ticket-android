@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 

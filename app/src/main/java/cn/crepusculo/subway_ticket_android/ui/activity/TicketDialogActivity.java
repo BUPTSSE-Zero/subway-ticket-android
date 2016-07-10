@@ -1,5 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.support.v7.app.ActionBar;
+import android.view.Window;
 import android.widget.TextView;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -14,6 +16,12 @@ public class TicketDialogActivity extends BaseActivity {
     private TextView destination;
     private TextView status;
     private TextView time;
+
+    @Override
+    public void beforeAddContent() {
+        super.beforeAddContent();
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+    }
 
     @Override
     protected void initView() {

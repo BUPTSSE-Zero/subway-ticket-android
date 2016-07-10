@@ -4,22 +4,19 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 
@@ -124,7 +121,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         ArrayList<TextView> a = new ArrayList<>();
         holder.start.setText(dataset.get(p).start);
         holder.destination.setText(dataset.get(p).destination);
-        holder.date.setText(dataset.get(p).date.getDay());
+        holder.date.setText("2017-4-26");
         holder.status.setText(dataset.get(p).getStatus());
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();

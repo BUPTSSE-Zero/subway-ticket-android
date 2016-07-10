@@ -111,5 +111,10 @@
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
         <item name="android:gravity">center</item>
         <item name="android:excludeFromRecents">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowIsFloating">true</item>
     </style>
 </resources>

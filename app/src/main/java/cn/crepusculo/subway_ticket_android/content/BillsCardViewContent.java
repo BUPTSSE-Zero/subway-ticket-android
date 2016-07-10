@@ -1,12 +1,9 @@
-package cn.crepusculo.subway_ticket_android.ui.activity.content;
+package cn.crepusculo.subway_ticket_android.content;
 
 import android.content.Context;
 import android.widget.ImageView;
 
-import java.sql.Time;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 public class BillsCardViewContent {
 
