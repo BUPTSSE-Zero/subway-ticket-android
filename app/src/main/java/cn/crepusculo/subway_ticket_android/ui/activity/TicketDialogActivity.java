@@ -1,33 +1,57 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.support.v7.app.ActionBar;
-import android.view.Window;
+import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class TicketDialogActivity extends BaseActivity {
     @Override
     protected int getLayoutResource() {
-        return R.layout.item_dialog_bills;
+        return R.layout.layout_dialog_bills;
     }
 
     private TextView start;
     private TextView destination;
     private TextView status;
-    private TextView time;
-
-    @Override
-    public void beforeAddContent() {
-        super.beforeAddContent();
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-    }
+    private TextView date;
+    private BillsCardViewContent bills;
 
     @Override
     protected void initView() {
-        start = (TextView)findViewById(R.id.start);
-        destination = (TextView)findViewById(R.id.destination);
+        getInfo();
+        initResource();
+        initTextView();
+    }
+    private void getInfo(){
+        String myBills;
+        Bundle bundle = getBundle();
+        if (bundle != null){
+            myBills = bundle.getString("BILLS");
+            bills = new Gson().fromJson(myBills, BillsCardViewContent.class);
+        }
+    }
+
+    private void initResource(){
+        start = (TextView)findViewById(R.id.start_dialog);
+        destination = (TextView)findViewById(R.id.destination_dialog);
         status =(TextView)findViewById(R.id.status);
-        time = (TextView)findViewById(R.id.time);
+        date = (TextView)findViewById(R.id.date);
+    }
+    private void initTextView(){
+        start.setText(bills.start);
+        destination.setText(bills.destination);
+        date.setText("2017-4-26");
+        status.setText(bills.getStatus());
+        ImageView v_s = (ImageView)findViewById(R.id.come_dialog);
+        ImageView v_d = (ImageView)findViewById(R.id.go_dialog);
+//        v_s.setColorFilter(R.color.accent);
+        BillsCardViewContent.setTagColor(getBaseContext(), v_s, SubwayLineUtil.getColor(bills.start_line),
+                v_d,SubwayLineUtil.getColor(bills.destination_line));
     }
 }

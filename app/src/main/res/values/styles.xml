@@ -43,7 +43,7 @@
         <item name="android:windowBackground">@drawable/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
-    
+
     <!-- Card View -->
     <style name="AppTheme.CardView" parent="AppTheme">
 
@@ -64,7 +64,7 @@
     </style>
 
     <style name="AppTheme.CardView.Title" parent="AppTheme.CardView">
-        <item name="android:textSize">@dimen/title_size</item>
+        <item name="android:textSize">@dimen/cardview_title_size</item>
         <item name="android:textColor">@color/light_primary_text</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
@@ -109,6 +109,8 @@
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:width">0dp</item>
+        <item name="android:height">0dp</item>
         <item name="android:gravity">center</item>
         <item name="android:excludeFromRecents">true</item>
         <item name="android:windowNoTitle">true</item>
@@ -117,4 +119,11 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <style name="AppTheme.Dialog.Title.Icon">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
 </resources>

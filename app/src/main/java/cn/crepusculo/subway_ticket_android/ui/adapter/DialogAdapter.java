@@ -38,7 +38,7 @@ public class DialogAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
-                view = layoutInflater.inflate(R.layout.item_dialog_bills, parent, false);
+                view = layoutInflater.inflate(R.layout.layout_dialog_bills, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.start = (TextView) view.findViewById(R.id.start);
             viewHolder.destination = (TextView) view.findViewById(R.id.destination);
