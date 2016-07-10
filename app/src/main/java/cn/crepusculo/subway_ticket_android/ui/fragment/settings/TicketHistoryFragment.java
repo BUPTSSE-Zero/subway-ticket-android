@@ -1,16 +1,30 @@
 package cn.crepusculo.subway_ticket_android.ui.fragment.settings;
 
+import android.app.Application;
+import android.app.Dialog;
+import android.os.Build;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Scene;
+import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.ui.activity.TicketDialogActivity;
 import cn.crepusculo.subway_ticket_android.ui.activity.TicketManagerActivity;
 import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.ui.adapter.DialogAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
+
 
 public class TicketHistoryFragment  extends BaseFragment {
 
@@ -44,10 +58,17 @@ public class TicketHistoryFragment  extends BaseFragment {
             @Override
             public void onItemClick(BillsCardViewContent item) {
                 Log.e("Fragment/onItemClick",""+item);
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+//                    final Scene scene = Scene.getSceneForLayout(mContainer, R.layout.item_dialog_bills, mActivity);
+//                    TransitionManager.go(scene);
+                }
+                showDialog(item);
             }
         });
         recyclerView.setAdapter(adapter);
     }
 
-
+    private void showDialog(BillsCardViewContent item){
+        jumpToActivity(TicketDialogActivity.class);
+    }
 }

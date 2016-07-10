@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@color/md_white_1000"
+    android:transitionName="@string/cardview_dialog_transition"
     android:layout_width="500dp"
     android:layout_height="400dp">
 

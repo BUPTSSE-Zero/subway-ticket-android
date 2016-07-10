@@ -1,5 +1,8 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.content;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import java.sql.Time;
 import java.util.Calendar;
 import java.util.Date;
@@ -63,5 +66,10 @@ public class BillsCardViewContent {
 
         date = new Date();
         status = TICKET_UNBOUNCE;
+    }
+
+    public static void setTagColor(Context context, ImageView s, int c1, ImageView d, int c2){
+        s.setColorFilter(context.getResources().getColor(c1));
+        d.setColorFilter(context.getResources().getColor(c2));
     }
 }

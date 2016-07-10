@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.fragment;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +18,8 @@ public abstract class BaseFragment extends Fragment {
 
     protected View mRootView;
     protected Activity mActivity;
-
+    protected Context mContext;
+    protected ViewGroup mContainer;
     /**
      * Return the fragment layout resource
      * @return The fragment layout resource
@@ -38,6 +40,9 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mRootView = inflater.inflate(getFragmentLayout(), container, false);
         mActivity = getActivity();
+        mContext = getContext();
+        mContainer = container;
+
         initView();
         return mRootView;
     }
