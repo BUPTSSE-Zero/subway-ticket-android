@@ -4,12 +4,14 @@ buildscript {
     repositories {
         jcenter()
         maven{
+            url "https://jitpack.io"
+        }
+        maven{
             url 'http://101.200.144.204:16082/nexus/content/repositories/releases'
         }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

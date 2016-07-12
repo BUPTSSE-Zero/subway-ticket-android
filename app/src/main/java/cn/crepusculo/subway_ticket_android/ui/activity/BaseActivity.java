@@ -13,6 +13,7 @@ import android.view.View;
 
 public abstract class BaseActivity extends AppCompatActivity {
     abstract protected int getLayoutResource();
+
     abstract protected void initView();
 
     @Override
@@ -23,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
     }
 
-    public void beforeAddContent(){
+    public void beforeAddContent() {
 
     }
 
@@ -79,13 +80,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 this, intent, optionsCompat.toBundle());
     }
 
-    public void backToPreviousActicity(){
+    public void backToPreviousActicity() {
         Intent intent = new Intent();
         this.setResult(RESULT_OK, intent);
         this.finish();
     }
 
-    public void backToPreviousActicity2(){
+    public void backToPreviousActicity2() {
         this.finishActivity(RESULT_OK);
     }
 
