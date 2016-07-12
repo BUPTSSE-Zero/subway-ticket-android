@@ -2,6 +2,7 @@ package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,14 +13,18 @@ import android.view.View;
 
 public abstract class BaseActivity extends AppCompatActivity {
     abstract protected int getLayoutResource();
-
     abstract protected void initView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        beforeAddContent();
         setContentView(getLayoutResource());
         initView();
+    }
+
+    public void beforeAddContent(){
+
     }
 
     /**

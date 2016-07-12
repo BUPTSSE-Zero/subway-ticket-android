@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <!-- Status Bar -->
     </style>
 
@@ -41,6 +42,88 @@
     <style name="AppTheme.TransparentBackground" parent="android:style/Theme.Translucent">
         <item name="android:windowBackground">@drawable/transparent</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- Card View -->
+    <style name="AppTheme.CardView" parent="AppTheme">
+
+    </style>
+    <style name="AppTheme.CardView.Card" parent="AppTheme.CardView">
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.NoPadding" parent="AppTheme.CardView">
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Title" parent="AppTheme.CardView">
+        <item name="android:textSize">@dimen/cardview_title_size</item>
+        <item name="android:textColor">@color/light_primary_text</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Title.Station">
+        <item name="android:textSize">@dimen/title_station_size</item>
+        <item name="android:background">@drawable/style_textview</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Icon" parent="AppTheme.CardView">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="AppTheme.CardView.Text" parent="AppTheme.CardView">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:textColor">@color/light_secondary_text</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:width">0dp</item>
+        <item name="android:height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:excludeFromRecents">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Title.Icon">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">16dp</item>
     </style>
 
 </resources>

@@ -1,9 +1,57 @@
 <resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="android:windowContentTransitions">true</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:excludeFromRecents">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsFloating">true</item>
+
+    </style>
+
+    <style name="AppTheme.Dialog.Linear">
+        <item name="android:excludeFromRecents">true</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Linear.NoPadding">
+        <item name="android:excludeFromRecents">true</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Title">
+        <item name="android:textSize">@dimen/dialog_title_size</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Text">
+        <item name="android:textSize">@dimen/dialog_title_size_small</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Title.Icon">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Button">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 </resources>

@@ -3,21 +3,22 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 import android.content.Context;
 import android.content.res.Resources;
 
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
+
 
 public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAdapter.Holder> {
     private Context context;
@@ -58,40 +59,53 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
         public CardView mCardView;
-        public ExpandableLinearLayout expandableLinearLayout_raw;
-        public ExpandableLinearLayout expandableLinearLayout_expand;
+
+        public ImageView start_p;
+        public TextView start;
+
+        public TextView destination;
+        public ImageView destination_p;
+
+        public TextView date;
+        public TextView status;
+        public View v;
 
         public Holder(View v) {
             super(v);
+            this.v = v;
             mCardView = (CardView) v.findViewById(R.id.card_view);
-            expandableLinearLayout_expand = (ExpandableLinearLayout)v.findViewById(R.id.compat_expand);
-            expandableLinearLayout_raw = (ExpandableLinearLayout)v.findViewById(R.id.compat_collapse);
+
+            start= (TextView) v.findViewById(R.id.start);
+            destination = (TextView) v.findViewById(R.id.destination);
+
+            date = (TextView) v.findViewById(R.id.date);
+            status= (TextView) v.findViewById(R.id.status);
+
+            start_p = (ImageView) v.findViewById(R.id.come);
+            destination_p = (ImageView) v.findViewById(R.id.go);
         }
 
         public void bind(final BillsCardViewContent item, final OnItemClickListener listener){
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    /* its not work */
                     listener.onItemClick(item);
                     Log.e("Adapter/onClick",""+item);
-                    if (expandableLinearLayout_raw.isExpanded()) {
-                        expandableLinearLayout_raw.collapse();
-                        expandableLinearLayout_expand.expand();
+
                     }
-                    else {
-                        expandableLinearLayout_raw.expand();
-                        expandableLinearLayout_expand.collapse();
-                    }
-                }
+
+
             });
         }
     }
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
+        holder.mCardView.animate();
         initCardView(holder.mCardView);
+        updateText(holder,position);
         holder.bind(dataset.get(position), listener);
     }
 
@@ -101,7 +115,23 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     protected void initCardView(CardView cardView){
+    }
 
+    protected void updateText(Holder holder,int p){
+        ArrayList<TextView> a = new ArrayList<>();
+        holder.start.setText(dataset.get(p).start);
+        holder.destination.setText(dataset.get(p).destination);
+        holder.date.setText("2017-4-26");
+        holder.status.setText(dataset.get(p).getStatus());
+
+        GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
+        GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
+
+//        SubwayLineUtil.getColor(dataset.get(p).start_line);
+//        SubwayLineUtil.getColor(dataset.get(p).destination_line);
+
+        BillsCardViewContent.setTagColor(context, holder.start_p,SubwayLineUtil.getColor(dataset.get(p).start_line),
+                holder.destination_p,SubwayLineUtil.getColor(dataset.get(p).destination_line));
     }
 
 }

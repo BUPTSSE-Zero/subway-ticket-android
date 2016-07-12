@@ -8,4 +8,9 @@
 
     <!-- Animator -->
     <dimen name="raise_z">12dp</dimen>
+
+    <dimen name="cardview_title_size">20sp</dimen>
+    <dimen name="dialog_title_size_small">16sp</dimen>
+    <dimen name="dialog_title_size">24sp</dimen>
+    <dimen name="title_station_size">18sp</dimen>
 </resources>

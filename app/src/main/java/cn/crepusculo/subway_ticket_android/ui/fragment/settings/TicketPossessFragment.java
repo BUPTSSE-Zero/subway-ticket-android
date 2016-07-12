@@ -6,14 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
-import cn.crepusculo.subway_ticket_android.ui.activity.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 
-/**
- * Created by airfr on 2016/7/6.
- */
 public class TicketPossessFragment extends BaseFragment {
 
     @Override

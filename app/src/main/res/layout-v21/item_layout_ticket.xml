@@ -1,105 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="120dp"
     android:layout_margin="4dp"
-    android:stateListAnimator="@animator/raise_z"
     android:clickable="true"
+    android:stateListAnimator="@animator/raise_z"
+    android:transitionName="@string/cardview_dialog_transition"
+    style="@style/AppTheme.CardView.Card"
+    android:theme="@style/AppTheme.CardView.Card"
     android:foreground="?attr/selectableItemBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <com.github.aakira.expandablelayout.ExpandableLinearLayout
-            android:id="@+id/compat_collapse"
-            app:ael_expanded="true"
-            app:ael_interpolator="bounce"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/AppTheme.CardView.NoPadding"
+        android:theme="@style/AppTheme.CardView.NoPadding"
+        android:paddingTop="8dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.CardView.NoPadding"
+            android:theme="@style/AppTheme.CardView.NoPadding">
+
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.CardView.NoPadding"
+                android:theme="@style/AppTheme.CardView.NoPadding">
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/title_collapse"
+                    android:id="@+id/come"
+                    android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                    android:theme="@style/AppTheme.CardView.Title"
                     />
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sub_title_collapse"
-                    />
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/status_collapse"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/date_collapse"/>
-                </LinearLayout>
+                    android:id="@+id/start"
+                    style="@style/AppTheme.CardView.Title"
+                    android:theme="@style/AppTheme.CardView.Title"/>
             </LinearLayout>
-        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
-        <com.github.aakira.expandablelayout.ExpandableLinearLayout
-            app:ael_expanded="false"
-            android:id="@+id/compat_expand"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/title_expand_1"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/title_expand_2"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sub_title_expand"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/status_expand"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/date_expand"/>
-                    </LinearLayout>
-                </LinearLayout>
-                <android.support.v7.widget.ButtonBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/get_ticket"/>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/refund_ticket"
-                        />
-                </android.support.v7.widget.ButtonBarLayout>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/AppTheme.CardView.NoPadding"
+                android:theme="@style/AppTheme.CardView.NoPadding"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/go"
+                    android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                    android:theme="@style/AppTheme.CardView.Title"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/destination"
+                    style="@style/AppTheme.CardView.Title"
+                    android:theme="@style/AppTheme.CardView.Title"
+                    />
             </LinearLayout>
-        </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AppTheme.CardView.NoPadding"
+            android:theme="@style/AppTheme.CardView.NoPadding"
+            android:orientation="horizontal">
+            <TextView
+                android:drawableStart="@drawable/ic_information_outline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/status"
+                style="@style/AppTheme.CardView.Text"
+                android:theme="@style/AppTheme.CardView.Text"/>
+
+
+
+            <TextView
+                android:drawableStart="@drawable/ic_time_black_24dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/date"
+                style="@style/AppTheme.CardView.Text"
+                android:theme="@style/AppTheme.CardView.Text" />
+        </LinearLayout>
+    </LinearLayout>
+
 </android.support.v7.widget.CardView>

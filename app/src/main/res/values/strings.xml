@@ -6,11 +6,24 @@
 
     <string name="common_exit">退出</string>
 
-    <string name="common_go">出发地</string>
-    <string name="common_from">目的地</string>
+    <string name="common_go">目的地</string>
+    <string name="common_from">出发地</string>
+
+    <string name="common_go_prep">到</string>
+    <string name="common_from_prep">从</string>
 
     <!-- ticket tab -->
     <string name="ticket_tab1">未完成</string>
     <string name="ticket_tab2">待取</string>
     <string name="ticket_tab3">历史</string>
+
+    <!-- card view -->
+    <string name="cardview_time">time</string>
+    <string name="cardview_status">status</string>
+
+    <!-- dialog -->
+    <string name="dialog_btn_1">提票</string>
+    <string name="dialog_btn_2">退票</string>
+    <string name="dialog_btn_3">取消</string>
+    <string name="cardview_dialog_transition">cardview_dialog_transition</string>
 </resources>
