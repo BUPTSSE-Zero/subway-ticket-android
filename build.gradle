@@ -3,7 +3,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven{
+        maven {
             url 'http://101.200.144.204:16082/nexus/content/repositories/releases'
         }
     }
@@ -18,6 +18,9 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
+        maven {
+            url 'http://101.200.144.204:16082/nexus/content/repositories/releases'
+        }
     }
 }
 
