@@ -28,13 +28,13 @@ public class SelectActivity extends BaseActivity {
         Bundle bundle = getBundle();
         initString();
         search_object = bundle.getInt("TYPE", 0);
-        setSearchResult();
+
     }
 
     @Override
-    protected void onPause() {
+    public void onBackPressed() {
         setSearchResult();
-        super.onPause();
+        super.onBackPressed();
     }
 
     private void initString(){

@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -46,6 +48,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
     /* EditText */
+    private ImageButton editText_btn;
     private EditText editText_come;
     private EditText editText_go;
 
@@ -183,6 +186,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         editText_come = (EditText) findViewById(R.id.edittext_come);
         editText_go = (EditText) findViewById(R.id.edittext_go);
+        editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
 
         editText_come.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +200,19 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 showSearch(SelectActivity.ET_GO);
             }
         });
+
+        editText_btn.setBackgroundColor(getResources().getColor(R.color.transparent));
+        editText_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String c = editText_go.getText().toString().trim();
+                String g = editText_come.getText().toString().trim();
+                editText_go.setText(g);
+                editText_come.setText(c);
+            }
+        });
     }
+
     private void showSearch(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt("TYPE", type);

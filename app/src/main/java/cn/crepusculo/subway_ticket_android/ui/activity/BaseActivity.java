@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.View;
 
+import cn.crepusculo.subway_ticket_android.R;
+
 
 public abstract class BaseActivity extends AppCompatActivity {
     abstract protected int getLayoutResource();
@@ -99,5 +101,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         intent.setClass(this, c);
         intent.putExtras(extras);
         this.startActivityForResult(intent,REQUESET_CODE);
+        overridePendingTransition(R.anim.in_anim, R.anim.fade_out_center);
     }
 }
