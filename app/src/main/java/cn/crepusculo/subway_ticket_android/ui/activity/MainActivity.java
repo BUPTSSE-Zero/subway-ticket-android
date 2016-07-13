@@ -5,15 +5,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -28,7 +32,7 @@ import cn.crepusculo.subway_ticket_android.preferences.Info;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
-        com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener {
+        com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener,TextWatcher {
     /* Static constant */
 
     /* view */
@@ -51,6 +55,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private ImageButton editText_btn;
     private EditText editText_come;
     private EditText editText_go;
+    private ImageView i_come,i_go;
 
     @Override
     protected int getLayoutResource() {
@@ -183,10 +188,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     protected void initSelectButton() {
-
+        i_come = (ImageView)findViewById(R.id.edittext_drawable_come);
+        i_go = (ImageView)findViewById(R.id.edittext_drawable_go);
         editText_come = (EditText) findViewById(R.id.edittext_come);
         editText_go = (EditText) findViewById(R.id.edittext_go);
         editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
+        editText_come.addTextChangedListener(this);
+        editText_come.setLongClickable(false);
+        editText_go.setLongClickable(false);
 
         editText_come.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +210,21 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             }
         });
 
+        i_come.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText_come.setText(null);
+                updateEditTextDrawable();
+            }
+        });
+
+        i_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editText_go.setText(null);
+                updateEditTextDrawable();
+            }
+        });
         editText_btn.setBackgroundColor(getResources().getColor(R.color.transparent));
         editText_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,6 +249,36 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     // --------------------------------- listener --------------------------------------------------
 
+    private void updateEditTextDrawable(){
+        if(editText_come.getText().toString().trim().length() < 1){
+            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        }else {
+            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+        }
+        if(editText_go.getText().toString().trim().length() < 1){
+            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        }else {
+            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+        }
+    }
+
+    /* ---- Text Change Listener Start ---- */
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        updateEditTextDrawable();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        updateEditTextDrawable();
+    }
+    /* ---- Text Change Listener End ---- */
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -237,6 +291,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             Log.e("MainActivity/Result", "No Result Receive");
         }
+        updateEditTextDrawable();
     }
 
     @Override
