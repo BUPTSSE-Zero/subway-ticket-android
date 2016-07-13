@@ -75,8 +75,7 @@ public class NetworkMethodWrapper {
         return request;
     }
 
-    public static <T> Request<T> put(int method,
-                                     String url,
+    public static <T> Request<T> put(String url,
                                      Class<T> classType,
                                      Object putObject,
                                      Response.Listener<T> listener,

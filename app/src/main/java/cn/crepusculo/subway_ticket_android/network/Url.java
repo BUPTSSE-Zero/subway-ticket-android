@@ -15,7 +15,7 @@ public class Url {
     private static final String MOBILE_API_PREFIX = "/subway-ticket-web/mobileapi/";
     private static final String API_VERSION = "v1/";
 
-    private String getUrlPrefix() {
+    private static String getUrlPrefix() {
         return "http://" + HOST_NAME + ":" + String.valueOf(PORT) +
                 MOBILE_API_PREFIX + API_VERSION;
     }
@@ -27,7 +27,7 @@ public class Url {
      * @return The url
      * @throws IllegalArgumentException When the apiName is not a full name.
      */
-    public String getUrl(String apiFullName) throws IllegalArgumentException {
+    public static String getUrl(String apiFullName) throws IllegalArgumentException {
         if (!apiFullName.contains("/")) {
             throw new IllegalArgumentException(apiFullName + "is not a full api name!\n" +
                     "It must contain its category.");
@@ -45,7 +45,7 @@ public class Url {
      * @param params      The string of params
      * @return The url
      */
-    public String getUrl(String apiFullName, String... params) {
+    public static String getUrl(String apiFullName, String... params) {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String param
