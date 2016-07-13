@@ -41,6 +41,9 @@ dependencies {
     /* Gson*/
     compile 'com.google.code.gson:gson:2.6.2'
 
+    /* Volley */
+    compile 'com.android.volley:volley:1.0.0'
+
     /* FAB */
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
