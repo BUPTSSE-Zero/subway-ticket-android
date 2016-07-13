@@ -38,6 +38,7 @@ dependencies {
         transitive = true
     }
 
+    /* Pic scale*/
     compile 'com.bm.photoview:library:1.4.0'
 
     /* DragSheet */
@@ -58,4 +59,6 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.5.1@aar'
     /* Dialog */
     compile 'com.orhanobut:dialogplus:1.11@aar'
+    compile 'com.afollestad.material-dialogs:core:0.8.6.1'
+
 }

@@ -26,4 +26,6 @@
     <string name="dialog_btn_2">退票</string>
     <string name="dialog_btn_3">取消</string>
     <string name="cardview_dialog_transition">cardview_dialog_transition</string>
+    <string name="choose">确认</string>
+    <string name="choice_city">选择城市</string>
 </resources>

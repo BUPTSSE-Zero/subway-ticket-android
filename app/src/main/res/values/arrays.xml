@@ -7,4 +7,15 @@
         <item>账户设置</item>
         <item>应用设置</item>
     </string-array>
+    <string-array name="supported_citys">
+        <item>北京</item>
+        <item>上海</item>
+        <item>杭州</item>
+        <item>深圳</item>
+        <item>广州</item>
+        <item>成都</item>
+        <item>西安</item>
+        <item>天津</item>
+    </string-array>
+
 </resources>

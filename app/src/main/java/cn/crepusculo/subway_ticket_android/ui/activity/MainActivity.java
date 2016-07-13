@@ -1,7 +1,6 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,16 +9,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bm.library.PhotoView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -29,13 +27,10 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.application.MyApplication;
-
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
@@ -362,7 +357,11 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.PROFILE) {
+        }else if(id == SideNavBtn.CITYS){
+            showCitysDialog();
+            drawer.closeDrawer();
+        }
+        else if (id == SideNavBtn.PROFILE) {
 
             drawer.closeDrawer();
         } else if (id == SideNavBtn.SETTINGS) {
@@ -439,6 +438,20 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
+    private void showCitysDialog(){
+        new MaterialDialog.Builder(this)
+                .title(R.string.choice_city)
+                .items(R.array.supported_citys)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        Log.e("Main/Choice","Dialog Chioce"+which);
+                        return true;
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
+    }
 }
 
 
