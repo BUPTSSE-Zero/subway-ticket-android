@@ -6,7 +6,8 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
  * Deal with position and id interface do not correspond
  */
 public class PositionTranslationAdapter {
-    private PositionTranslationAdapter(){};
+    private PositionTranslationAdapter(){}
+
     public static int DrawerIdtoTablayoutId(int drawerId){
         return drawerId - 1;
     }

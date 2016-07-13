@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "cn.crepusculo.blank"
@@ -37,6 +37,9 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
+
+    compile 'com.bm.photoview:library:1.4.0'
+
     /* DragSheet */
     //    compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     //    compile 'com.github.javiersantos:BottomDialogs:1.1'

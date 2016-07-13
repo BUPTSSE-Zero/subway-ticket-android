@@ -35,6 +35,7 @@ public class SelectActivity extends BaseActivity {
     public void onBackPressed() {
         setSearchResult();
         super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
     }
 
     private void initString(){

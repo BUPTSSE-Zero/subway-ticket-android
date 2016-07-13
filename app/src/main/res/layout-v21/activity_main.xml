@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,101 +17,99 @@
     <!--<include layout="@layout/toolbar_main"/>-->
 
     <!-- map -->
-    <FrameLayout
-        android:id="@+id/content"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/container"
+        <com.bm.library.PhotoView
+            android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="right|top">
+            android:scaleType="centerCrop"
+            android:src="@mipmap/subway_map_beijing" />
 
-        </FrameLayout>
-    </FrameLayout>
+    </LinearLayout>
 
     <android.support.v7.widget.CardView
-        app:cardCornerRadius="0dp"
         android:id="@+id/nav_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="4dp"
         android:elevation="36dp"
-        app:cardUseCompatPadding="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:cardCornerRadius="0dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="4dp">
 
             <LinearLayout
-                android:minWidth="180dp"
-                android:layout_alignParentStart="true"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                >
+                android:layout_weight="1"
+                android:minWidth="180dp">
 
                 <ImageView
+                    android:id="@+id/edittext_drawable_come"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:id="@+id/edittext_drawable_come"
-                    android:src="@drawable/ic_hexagon_outline"/>
+                    android:src="@drawable/ic_hexagon_outline" />
+
                 <EditText
-                    android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:id="@+id/edittext_come"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:inputType="textNoSuggestions"
+                    android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:focusable="false"
                     android:gravity="center_vertical"
-                    android:hint="@string/common_go"
+                    android:hint="@string/common_from"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
                     android:singleLine="true" />
             </LinearLayout>
 
             <ImageButton
-                android:layout_centerVertical="true"
+                android:id="@+id/edittext_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_swap_black_24dp"
-                android:id="@+id/edittext_btn"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_gravity="center"
+                android:src="@drawable/ic_swap_black_24dp" />
 
             <LinearLayout
-                android:minWidth="180dp"
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-               >
+                android:layout_weight="1"
+                android:minWidth="180dp">
 
                 <ImageView
                     android:id="@+id/edittext_drawable_go"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_hexagon_outline"/>
+                    android:src="@drawable/ic_hexagon_outline" />
+
                 <EditText
-                    android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:id="@+id/edittext_go"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:inputType="textNoSuggestions"
+                    android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:focusable="false"
                     android:gravity="center_vertical"
                     android:hint="@string/common_go"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
                     android:singleLine="true" />
             </LinearLayout>
-        </RelativeLayout>
-
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
     <com.github.jorgecastilloprz.FABProgressCircle
@@ -140,9 +139,7 @@
             app:fab_colorNormal="@color/transparent"
             app:fab_colorPressed="@color/transparent"
             app:fab_plusIconColor="@color/transparent"
-            app:rippleColor="@color/transparent"
-
-            />
+            app:rippleColor="@color/transparent" />
     </com.github.jorgecastilloprz.FABProgressCircle>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -204,5 +201,14 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/action_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nav_content"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:src="@drawable/ic_find_in_page_white_24dp"
+        app:fabSize="mini"
+        app:layout_behavior="cn.crepusculo.subway_ticket_android.ui.behavior" />
 </RelativeLayout>

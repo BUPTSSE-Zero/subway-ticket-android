@@ -44,7 +44,7 @@ public class TicketDialogMaker implements View.OnClickListener{
     /* inflate and adjust layout */
         LayoutInflater inflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.layout_dialog_bills, null);
-        layout.setMinimumWidth((int)(displayRectangle.width()));
+        layout.setMinimumWidth(displayRectangle.width());
         layout.setMinimumHeight((int)(displayRectangle.height() * 0.7f));
 
         dialog = new Dialog(mContext,R.style.AppTheme_Dialog);

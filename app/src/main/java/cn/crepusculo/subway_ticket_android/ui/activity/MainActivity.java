@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.Intent;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,16 +10,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.bm.library.PhotoView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
 import com.mikepenz.materialdrawer.Drawer;
@@ -27,12 +29,17 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.preferences.Info;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.application.MyApplication;
+
+import cn.crepusculo.subway_ticket_android.preferences.Info;
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
-        com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener,TextWatcher {
+        com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener, TextWatcher {
     /* Static constant */
 
     /* view */
@@ -51,11 +58,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
+    private android.support.design.widget.FloatingActionButton fab_search;
     /* EditText */
     private ImageButton editText_btn;
     private EditText editText_come;
     private EditText editText_go;
-    private ImageView i_come,i_go;
+    private ImageView i_come, i_go;
 
     @Override
     protected int getLayoutResource() {
@@ -69,11 +77,22 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         if (Build.VERSION.SDK_INT > 21) {
             window.setStatusBarColor(getResources().getColor(R.color.transparent));
         }
+        initBackGround();
         initInfo();
         initToolbar();
         initFab();
         initDrawer();
         initSelectButton();
+    }
+
+    private void initBackGround(){
+        PhotoView map = (PhotoView) findViewById(R.id.map);
+        map.enable();
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+            }
+        });
     }
 
     private void initInfo() {
@@ -87,6 +106,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void initFab() {
+        fab_search = (android.support.design.widget.FloatingActionButton)
+                findViewById(R.id.action_search);
+
         fab_unfoucs = (FloatingActionButton)
                 findViewById(R.id.action_unfoucs);
 
@@ -118,6 +140,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /* fab listener register */
         fab_settings.setOnClickListener(this);
 
+        fab_search.setOnClickListener(this);
     }
 
     private void initDrawer() {
@@ -188,8 +211,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     protected void initSelectButton() {
-        i_come = (ImageView)findViewById(R.id.edittext_drawable_come);
-        i_go = (ImageView)findViewById(R.id.edittext_drawable_go);
+        i_come = (ImageView) findViewById(R.id.edittext_drawable_come);
+        i_go = (ImageView) findViewById(R.id.edittext_drawable_go);
         editText_come = (EditText) findViewById(R.id.edittext_come);
         editText_go = (EditText) findViewById(R.id.edittext_go);
         editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
@@ -249,16 +272,23 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     // --------------------------------- listener --------------------------------------------------
 
-    private void updateEditTextDrawable(){
-        if(editText_come.getText().toString().trim().length() < 1){
+    private void updateEditTextDrawable() {
+        if (editText_come.getText().toString().trim().length() < 1) {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
-        }else {
+        } else {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
-        if(editText_go.getText().toString().trim().length() < 1){
+        if (editText_go.getText().toString().trim().length() < 1) {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
-        }else {
+        } else {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+        }
+
+        if (editText_come.getText().toString().trim().length() >= 1 && editText_go.getText().toString().trim().length() >= 1 ){
+            fab_search.setVisibility(View.VISIBLE);
+        }
+        else {
+            fab_search.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -371,6 +401,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 return;
             case R.id.action_settings:
                 drawer.openDrawer();
+                return;
+            case R.id.action_search:
+                List<String> route = new ArrayList<>();
+                Bundle b = new Bundle();
+                b.putString("Route_Start",editText_come.getText().toString().trim());
+                b.putString("Route_End",editText_go.getText().toString().trim());
+//                jumpToActivity;
         }
 
     }
