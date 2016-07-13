@@ -15,11 +15,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
 
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
 
     </style>
 
@@ -33,12 +33,14 @@
     </style>
 
     <drawable name="translucent">#7f000000</drawable>
+
     <style name="AppTheme.TranslucentBackground" parent="android:style/Theme.Translucent">
         <item name="android:windowBackground">@drawable/translucent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
     <drawable name="transparent">#00000000</drawable>
+
     <style name="AppTheme.TransparentBackground" parent="android:style/Theme.Translucent">
         <item name="android:windowBackground">@drawable/transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -48,6 +50,7 @@
     <style name="AppTheme.CardView" parent="AppTheme">
 
     </style>
+
     <style name="AppTheme.CardView.Card" parent="AppTheme.CardView">
         <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">8dp</item>
@@ -126,4 +129,7 @@
         <item name="android:paddingEnd">16dp</item>
     </style>
 
+    <style name="AppTheme.ClickEditText" parent="android:Widget.Holo.Button">
+
+    </style>
 </resources>

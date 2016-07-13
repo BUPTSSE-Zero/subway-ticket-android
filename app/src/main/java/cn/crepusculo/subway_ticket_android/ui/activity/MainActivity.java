@@ -1,5 +1,6 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
@@ -25,27 +27,16 @@ import cn.crepusculo.subway_ticket_android.preferences.Info;
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
         com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener {
-    private class SideNavBtn {
-        public final static int GET_QR = 0;
-        public final static int BILLS = 1;
-        public final static int CITYS = 2;
-        public final static int PROFILE = 3;
-        public final static int SETTINGS = 4;
-        public final static int EXIT = 9;
+    /* Static constant */
 
-    }
-
+    /* view */
     private View view;
-
     /* Info */
     private Info info;
-
     /* nav */
     private View nav;
-
     /* Side Menu */
     private Drawer drawer;
-
     /* Fabs */
     private com.github.jorgecastilloprz.FABProgressCircle fabProgressCircle;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
@@ -54,6 +45,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
+    /* EditText */
+    private EditText editText_come;
+    private EditText editText_go;
 
     @Override
     protected int getLayoutResource() {
@@ -71,8 +65,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         initToolbar();
         initFab();
         initDrawer();
+        initSelectButton();
     }
-
 
     private void initInfo() {
         info = Info.getInstance();
@@ -184,7 +178,50 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .withCloseOnClick(true)
                 .build();
     }
+
+    protected void initSelectButton() {
+
+        editText_come = (EditText) findViewById(R.id.edittext_come);
+        editText_go = (EditText) findViewById(R.id.edittext_go);
+
+        editText_come.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSearch(SelectActivity.ET_COME);
+            }
+        });
+        editText_go.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSearch(SelectActivity.ET_GO);
+            }
+        });
+    }
+    private void showSearch(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("TYPE", type);
+        if (type == SelectActivity.ET_GO) {
+            jumpToActivityWithResult(SelectActivity.class, bundle, SelectActivity.EDIT_TEXT_REQUEST_CODE_GO);
+        } else {
+            jumpToActivityWithResult(SelectActivity.class, bundle, SelectActivity.EDIT_TEXT_REQUEST_CODE_COME);
+        }
+    }
+
     // --------------------------------- listener --------------------------------------------------
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SelectActivity.EDIT_TEXT_REQUEST_CODE_COME) {
+            String result = data.getStringExtra("result_come");
+            editText_come.setText(result);
+        } else if (requestCode == SelectActivity.EDIT_TEXT_REQUEST_CODE_GO) {
+            String result = data.getStringExtra("result_go");
+            editText_go.setText(result);
+        } else {
+            Log.e("MainActivity/Result", "No Result Receive");
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -282,6 +319,16 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             fabProgressCircle.hide();
             fab_menu.removeButton(fab_bills);
         }
+    }
+
+    private class SideNavBtn {
+        public final static int GET_QR = 0;
+        public final static int BILLS = 1;
+        public final static int CITYS = 2;
+        public final static int PROFILE = 3;
+        public final static int SETTINGS = 4;
+        public final static int EXIT = 9;
+
     }
 
 }

@@ -94,4 +94,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         return this.getIntent().getExtras();
     }
 
+    public void jumpToActivityWithResult(Class<?> c, Bundle extras, int REQUESET_CODE) {
+        Intent intent = new Intent();
+        intent.setClass(this, c);
+        intent.putExtras(extras);
+        this.startActivityForResult(intent,REQUESET_CODE);
+    }
 }

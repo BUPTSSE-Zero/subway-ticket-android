@@ -26,6 +26,10 @@
             android:name=".ui.activity.TicketDialogActivity"
             android:theme="@style/AppTheme.Dialog"
             />
+        <activity
+            android:name=".ui.activity.SelectActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>
