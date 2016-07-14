@@ -1,9 +1,11 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bm.library.PhotoView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -60,16 +63,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private EditText editText_come;
     private EditText editText_go;
     private ImageView i_come, i_go;
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen()) {
-            drawer.closeDrawer();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
 
     @Override
     protected int getLayoutResource() {
@@ -276,7 +269,72 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         }
     }
 
+
+    private void updateHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
+                            com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu) {
+        Log.e("At shouHint", "" + info.ticket.getCount());
+        if (info.ticket.getCount() > 0) {
+            fab_menu.addButton(fab);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fabProgressCircle.show();
+                }
+            }, 3000);
+        } else {
+            fabProgressCircle.hide();
+            fab_menu.removeButton(fab_bills);
+        }
+    }
+
+    private void showCitysDialog() {
+        new MaterialDialog.Builder(this)
+                .titleColor(getResources().getColor(R.color.primary))
+                .positiveColor(getResources().getColor(R.color.primary))
+                .title(R.string.choice_city)
+                .items(R.array.supported_citys)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        Log.e("Main/Choice", "Dialog Chioce" + which);
+                        return true;
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
+    }
+
+    private void finishApp(){
+        int type = 0;
+        new MaterialDialog.Builder(this)
+                .titleColor(getResources().getColor(R.color.primary))
+                .positiveColor(getResources().getColor(R.color.primary))
+                .negativeColor(getResources().getColor(R.color.primary))
+                .title(R.string.exit_dialog)
+                .content(R.string.exit_dialog_content)
+                .positiveText(R.string.agree)
+                .autoDismiss(true)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                      MainActivity.this.finish();
+                    }
+                })
+                .negativeText(R.string.cancel)
+                .show();
+    }
     // --------------------------------- listener --------------------------------------------------
+
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        } else {
+            finishApp();
+//            super.onBackPressed();
+        }
+    }
 
     private void updateEditTextDrawable() {
         if (editText_come.getText().toString().trim().length() < 1) {
@@ -378,7 +436,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             drawer.closeDrawer();
         } else if (id == SideNavBtn.EXIT) {
             drawer.closeDrawer();
-            finish();
         }
         return true;
     }
@@ -420,22 +477,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
-    private void updateHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
-                            com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu) {
-        Log.e("At shouHint", "" + info.ticket.getCount());
-        if (info.ticket.getCount() > 0) {
-            fab_menu.addButton(fab);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fabProgressCircle.show();
-                }
-            }, 3000);
-        } else {
-            fabProgressCircle.hide();
-            fab_menu.removeButton(fab_bills);
-        }
-    }
 
     private class SideNavBtn {
         public final static int GET_QR = 0;
@@ -447,20 +488,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
-    private void showCitysDialog() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.choice_city)
-                .items(R.array.supported_citys)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        Log.e("Main/Choice", "Dialog Chioce" + which);
-                        return true;
-                    }
-                })
-                .positiveText(R.string.choose)
-                .show();
-    }
 }
 
 
