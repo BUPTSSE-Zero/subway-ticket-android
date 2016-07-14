@@ -19,6 +19,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
+import java.net.PortUnreachableException;
 import java.util.Map;
 
 /**
@@ -38,8 +39,6 @@ public class GsonRequest<T> extends Request<T> {
     protected final String PROTOCOL_CHARSET = "utf-8";
     protected final String PROTOCOL_CONTENT_TYPE =
             String.format("application/json; charset=%s", PROTOCOL_CHARSET);
-
-    private static final String POST_PREFIX = "data=";
 
     private final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -98,6 +97,43 @@ public class GsonRequest<T> extends Request<T> {
 
 
     /**
+     * Make a GET request with custom header and return a parsed object
+     * <br>
+     * from JSON by {@link Gson}
+     *
+     * @param url The GET request url
+     * @param classType The classType of response object
+     * @param typeToken The specified type token, when the
+     *                  response json is a <b>JSONArray</b>,
+     *                  use it
+     * @param headers The custom header.
+     * @param listener The response listener for
+     *                 {@link Response#success(Object, Cache.Entry)}
+     *                 callback
+     * @param errorListener The error listener for
+     *                      {@link Response#error(VolleyError)}
+     *                      callback
+     */
+    public GsonRequest(@NonNull String url,
+                       @Nullable Class<T> classType,
+                       @Nullable TypeToken<T> typeToken,
+                       @NonNull Map<String, String> headers,
+                       @NonNull Response.Listener<T> listener,
+                       @NonNull Response.ErrorListener errorListener) {
+
+        super(Method.GET, url, errorListener);
+
+        checkNullPointer(classType, typeToken);
+
+        this.classType = classType;
+        this.listener = listener;
+        this.headers = headers;
+        this.typeToken = typeToken;
+
+        this.postObject = null;
+    }
+
+    /**
      * Make a POST request and return a parsed object from JSON by
      * {@link com.google.gson.Gson}
      *
@@ -124,6 +160,39 @@ public class GsonRequest<T> extends Request<T> {
 
         this.postObject = postObject;
         this.headers = null;
+
+        this.listener = listener;
+    }
+
+
+    /**
+     * Make a POST request with custom header and return a parsed object form JSON by
+     * {@link Gson}
+     *
+     * @param url The request url
+     * @param classType The class type of the response object
+     * @param postObject The object ready to be post, <b>NONNULL</b>
+     * @param header The custom header
+     * @param listener The response listener for
+     *                 {@link Response#success(Object, Cache.Entry)}
+     *                 callback
+     * @param errorListener The error listener for
+     *                      {@link Response#error(VolleyError)}
+     *                      callback
+     */
+    public GsonRequest(@NonNull String url,
+                       @NonNull Class<T> classType,
+                       @NonNull Object postObject,
+                       @NonNull Map<String, String> header,
+                       @NonNull Response.Listener<T> listener,
+                       @NonNull Response.ErrorListener errorListener) {
+        super(Method.POST, url, errorListener);
+
+        this.classType = classType;
+        this.typeToken = null;
+
+        this.postObject = postObject;
+        this.headers = header;
 
         this.listener = listener;
     }
