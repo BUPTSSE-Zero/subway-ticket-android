@@ -66,7 +66,7 @@
                     android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:focusable="false"
                     android:gravity="center_vertical"
-                    android:hint="@string/common_from"
+                    android:hint="@string/common_start"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
                     android:paddingLeft="4dp"
@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_swap_black_24dp" />
 
             <LinearLayout
@@ -102,7 +103,7 @@
                     android:drawableEnd="@drawable/ic_format_list_bulleted_24dp"
                     android:focusable="false"
                     android:gravity="center_vertical"
-                    android:hint="@string/common_go"
+                    android:hint="@string/common_end"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
                     android:paddingLeft="4dp"
@@ -140,6 +141,7 @@
             app:fab_colorPressed="@color/transparent"
             app:fab_plusIconColor="@color/transparent"
             app:rippleColor="@color/transparent" />
+
     </com.github.jorgecastilloprz.FABProgressCircle>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
@@ -152,7 +154,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_build_black_24dp"
-
         app:fab_colorNormal="@color/md_white_1000"
         app:fab_colorPressed="@color/md_amber_400"
         app:fab_title="Action subway" />

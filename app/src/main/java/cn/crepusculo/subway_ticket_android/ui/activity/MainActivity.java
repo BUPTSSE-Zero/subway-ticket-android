@@ -1,6 +1,5 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -304,7 +303,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .show();
     }
 
-    private void finishApp(){
+    private void finishApp() {
         int type = 0;
         new MaterialDialog.Builder(this)
                 .titleColor(getResources().getColor(R.color.primary))
@@ -317,7 +316,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                      MainActivity.this.finish();
+                        MainActivity.this.finish();
                     }
                 })
                 .negativeText(R.string.cancel)
@@ -470,9 +469,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             case R.id.action_search:
                 List<String> route = new ArrayList<>();
                 Bundle b = new Bundle();
-                b.putString("Route_Start", editText_come.getText().toString().trim());
-                b.putString("Route_End", editText_go.getText().toString().trim());
-//                jumpToActivity;
+                b.putString("route_start", editText_come.getText().toString().trim());
+                b.putString("route_end", editText_go.getText().toString().trim());
+                jumpToActivity(PayActivity.class,b);
         }
 
     }

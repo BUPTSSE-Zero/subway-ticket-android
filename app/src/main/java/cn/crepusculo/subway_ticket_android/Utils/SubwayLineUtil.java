@@ -33,7 +33,10 @@ public class SubwayLineUtil {
 
 
     private SubwayLineUtil(){}
+    public static int getLine(String station) {
 
+        return 5;
+    }
     public static int getColor(int line) {
         switch (line) {
             case ONE:

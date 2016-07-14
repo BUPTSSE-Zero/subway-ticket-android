@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/come_dialog"
-                android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                android:src="@drawable/ic_fiber_manual_record_black_16dp"
                 style="@style/AppTheme.Dialog.Title.Icon"
                 android:theme="@style/AppTheme.Dialog.Title.Icon"/>
             <TextView
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/go_dialog"
-                android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                android:src="@drawable/ic_fiber_manual_record_black_16dp"
                 style="@style/AppTheme.Dialog.Title.Icon"
                 android:theme="@style/AppTheme.Dialog.Title.Icon"/>
             <TextView

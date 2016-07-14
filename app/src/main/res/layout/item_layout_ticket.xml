@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/come"
-                    android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                    android:src="@drawable/ic_fiber_manual_record_black_16dp"
                     android:theme="@style/AppTheme.CardView.Title"
                     />
                 <TextView
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/go"
-                    android:src="@drawable/ic_fiber_manual_record_black_24dp"
+                    android:src="@drawable/ic_fiber_manual_record_black_16dp"
                     android:theme="@style/AppTheme.CardView.Title"/>
                 <TextView
                     android:layout_width="wrap_content"

@@ -12,7 +12,7 @@ public class BillsCardViewContent {
     public String destination;
     public int destination_line;
 
-    public Date date;
+    public String date;
     public Double prize;
 
     public String getStatus() {
@@ -61,7 +61,7 @@ public class BillsCardViewContent {
         destination = ds[i*2%5];
         destination_line = i%30;
 
-        date = new Date();
+        date = new Date().toString();
         status = TICKET_UNBOUNCE;
     }
 
