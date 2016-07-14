@@ -40,6 +40,7 @@ public class TicketManagerActivity extends BaseActivity {
         checkPagePosition();
     }
 
+
     protected void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

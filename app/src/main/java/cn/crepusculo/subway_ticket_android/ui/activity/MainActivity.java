@@ -32,6 +32,7 @@ import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
+
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
         com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener, TextWatcher {
@@ -61,6 +62,16 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private ImageView i_come, i_go;
 
     @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
     }
@@ -80,7 +91,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         initSelectButton();
     }
 
-    private void initBackGround(){
+    private void initBackGround() {
         PhotoView map = (PhotoView) findViewById(R.id.map);
         map.enable();
         new Handler().post(new Runnable() {
@@ -279,10 +290,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
 
-        if (editText_come.getText().toString().trim().length() >= 1 && editText_go.getText().toString().trim().length() >= 1 ){
+        if (editText_come.getText().toString().trim().length() >= 1 && editText_go.getText().toString().trim().length() >= 1) {
             fab_search.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             fab_search.setVisibility(View.INVISIBLE);
         }
     }
@@ -357,11 +367,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        }else if(id == SideNavBtn.CITYS){
+        } else if (id == SideNavBtn.CITYS) {
             showCitysDialog();
             drawer.closeDrawer();
-        }
-        else if (id == SideNavBtn.PROFILE) {
+        } else if (id == SideNavBtn.PROFILE) {
 
             drawer.closeDrawer();
         } else if (id == SideNavBtn.SETTINGS) {
@@ -404,8 +413,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             case R.id.action_search:
                 List<String> route = new ArrayList<>();
                 Bundle b = new Bundle();
-                b.putString("Route_Start",editText_come.getText().toString().trim());
-                b.putString("Route_End",editText_go.getText().toString().trim());
+                b.putString("Route_Start", editText_come.getText().toString().trim());
+                b.putString("Route_End", editText_go.getText().toString().trim());
 //                jumpToActivity;
         }
 
@@ -438,14 +447,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
-    private void showCitysDialog(){
+    private void showCitysDialog() {
         new MaterialDialog.Builder(this)
                 .title(R.string.choice_city)
                 .items(R.array.supported_citys)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        Log.e("Main/Choice","Dialog Chioce"+which);
+                        Log.e("Main/Choice", "Dialog Chioce" + which);
                         return true;
                     }
                 })
