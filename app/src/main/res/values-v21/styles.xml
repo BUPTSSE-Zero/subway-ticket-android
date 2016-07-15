@@ -99,4 +99,16 @@
         <item name="android:layout_marginStart">8dp</item>
     </style>
 
+    <style name="AppTheme.Clear.EditText" parent="AppTheme.Clear">
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlHighlight">@color/primary</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorAccent">@color/primary</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
 </resources>

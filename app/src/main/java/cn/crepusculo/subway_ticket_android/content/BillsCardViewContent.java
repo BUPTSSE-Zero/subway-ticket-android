@@ -13,7 +13,9 @@ public class BillsCardViewContent {
     public int destination_line;
 
     public String date;
-    public Double prize;
+    public Double price;
+
+    public int City;
 
     public String getStatus() {
         if(status==TICKET_UNBOUNCE){
@@ -36,6 +38,13 @@ public class BillsCardViewContent {
 
     public int status;
 
+    public static int CITY_BEIJING = 0;
+    public static int CITY_SHANGHAI = 0;
+    public static int CITY_GUANGZHOU = 0;
+    public static int CITY_HANGZHOU = 0;
+    public static int CITY_CHENGDU = 0;
+    public static int CITY_XIAN = 0;
+
     public static int TICKET_UNPAID = 0;
     public static int TICKET_UNBOUNCE = 1;
     public static int TICKET_FINISHED = 2;
@@ -49,13 +58,13 @@ public class BillsCardViewContent {
         destination = null;
         destination_line = 0;
         date = null;
-        prize = 0.0;
+        price = 0.0;
         status = TICKET_UNPAID;
     }
 
     public void ForTest(int i){
-        String[] ss = {"菊花村","傻逼监狱","智障关爱中心","百度全家桶","东村"};
-        String[] ds = {"地下城与高数","美容中心","洗脚城","宏福","五棵松上吊中心"};
+        String[] ss = {"李家庄","宋家庄","惠新西街南口","百度全家桶","东村"};
+        String[] ds = {"地下城","美容中心","洗脚城","宏福","五棵松中心"};
         start = ss[i%5];
         start_line = i%30;
         destination = ds[i*2%5];

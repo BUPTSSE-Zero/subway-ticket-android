@@ -24,6 +24,7 @@ public class CalendarUtils {
         c.set(Calendar.MINUTE,0);
 //        result += c.get(Calendar.MINUTE);
         result += "00";
+        result += "  前";
 
         return result;
     }

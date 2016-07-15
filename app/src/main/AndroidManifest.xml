@@ -27,12 +27,14 @@
             android:theme="@style/AppTheme.Dialog"
             />
         <activity
-            android:name=".ui.activity.SelectActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".ui.activity.SearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/AppTheme"
             />
         <activity
             android:name=".ui.activity.PayActivity"
             android:theme="@style/AppTheme.NoActionBar"
+
             />
     </application>
 

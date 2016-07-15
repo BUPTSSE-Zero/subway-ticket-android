@@ -1,14 +1,20 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.dd.morphingbutton.MorphingButton;
 
 import java.util.Calendar;
 
@@ -28,8 +34,16 @@ public class PayActivity extends BaseActivity {
 
     private TextView date;
     private TextView dateLimit;
+
+    private EditText editCount;
+    private EditText editBills;
+    private EditText editPrice;
+
     private BillsCardViewContent payRequest;
 
+    private Activity activity;
+
+    private Button checkButton;
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_pay;
@@ -37,6 +51,7 @@ public class PayActivity extends BaseActivity {
 
     @Override
     protected void initView() {
+        activity = this;
         payRequest = new BillsCardViewContent();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -46,12 +61,12 @@ public class PayActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
-
-        loadCompats();
         buildBills();
+        loadCompacts();
+        setCardInfo(payRequest);
     }
 
-    private void loadCompats() {
+    private void loadCompacts() {
         startPic = (ImageButton) findViewById(R.id.start_pic);
         destinationPic = (ImageButton) findViewById(R.id.destination_pic);
         startTitle = (TextView) findViewById(R.id.start_title);
@@ -60,8 +75,48 @@ public class PayActivity extends BaseActivity {
         destination = (TextView) findViewById(R.id.destination);
         date = (TextView) findViewById(R.id.date);
         dateLimit = (TextView) findViewById(R.id.date_limit);
+
         destinationPic.setOnClickListener(new ImageButtonOnClickListener());
         startPic.setOnClickListener(new ImageButtonOnClickListener());
+
+        editCount = (EditText) findViewById(R.id.count);
+        editPrice = (EditText) findViewById(R.id.price);
+        editBills = (EditText) findViewById(R.id.show_money);
+
+        editPrice.setText(String.valueOf(payRequest.price));
+
+        editCount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String result = "";
+                if (editCount.getText().toString().trim().length() != 0) {
+                    Log.e("233","num"+editCount.getText().toString().trim());
+                    double count = payRequest.price * Integer.parseInt(editCount.getText().toString().trim());
+                    result += count;
+                } else {
+                    result = "0.0";
+                }
+                editBills.setText(result);
+            }
+        });
+
+        checkButton = (Button)findViewById(R.id.check_button);
+        checkButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void buildBills() {
@@ -78,7 +133,7 @@ public class PayActivity extends BaseActivity {
             Calendar c = Calendar.getInstance();
             payRequest.date = CalendarUtils.format(c);
             payRequest.status = BillsCardViewContent.TICKET_UNPAID;
-            setCardInfo(payRequest);
+            payRequest.price = 3.0;
         } else {
             /* Failure to get tickle info */
             new MaterialDialog.Builder(this)
@@ -101,12 +156,18 @@ public class PayActivity extends BaseActivity {
                 destinationPic, SubwayLineUtil.getColor(info.destination_line));
         dateLimit.setText(CalendarUtils.format_limit(c));
     }
-    private class ImageButtonOnClickListener implements View.OnClickListener{
+
+    private class ImageButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String swap = start.getText().toString();
-            start.setText(destination.getText());
-            destination.setText(swap);
+            String swap = payRequest.start;
+            payRequest.start = payRequest.destination;
+            payRequest.destination = swap;
+            start.setText(payRequest.start);
+            destination.setText(payRequest.destination);
+            BillsCardViewContent.setTagColor(activity,
+                    startPic, SubwayLineUtil.getColor(payRequest.start_line),
+                    destinationPic, SubwayLineUtil.getColor(payRequest.destination_line));
         }
     }
 }

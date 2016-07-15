@@ -38,4 +38,11 @@
     <string name="exit_dialog_content">您未完成的订单将不会被保存</string>
 
     <string name="error_failure_to_get_ticket_info">未能正确得到所查询的路线票务</string>
+
+    <string name="post_bill">提交订单</string>
+
+    <string name="ticket_count">购票张数</string>
+    <!-- the space is necessary -->
+    <string name="ticket_all_pay">总金额　</string>
+    <string name="ticket_pay">单价　　</string>
 </resources>

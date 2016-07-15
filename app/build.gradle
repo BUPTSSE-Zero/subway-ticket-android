@@ -40,10 +40,13 @@ dependencies {
 
     /* Pic scale*/
     compile 'com.bm.photoview:library:1.4.0'
+    /* Progress Button */
+    compile 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56' // commit hash
 
     /* DragSheet */
-    //    compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
+    compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     //    compile 'com.github.javiersantos:BottomDialogs:1.1'
+
     /* Gson*/
     compile 'com.google.code.gson:gson:2.6.2'
     /* FAB */

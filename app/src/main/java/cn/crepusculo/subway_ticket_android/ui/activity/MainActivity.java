@@ -145,12 +145,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /* get side menu resource */
         String[] drawerItemsNames = getResources().getStringArray(R.array.drawer_items);
         int[] drawerItemIcons = {
-                R.drawable.ic_find_in_page_white_24dp,
-                R.drawable.ic_find_in_page_white_24dp,
-                R.drawable.ic_find_in_page_white_24dp,
-                R.drawable.ic_find_in_page_white_24dp,
-                R.drawable.ic_find_in_page_white_24dp,
-                R.drawable.ic_find_in_page_white_24dp
+                R.drawable.ic_find_in_page_black_24dp,
+                R.drawable.ic_find_in_page_black_24dp,
+                R.drawable.ic_find_in_page_black_24dp,
+                R.drawable.ic_find_in_page_black_24dp,
+                R.drawable.ic_find_in_page_black_24dp,
+                R.drawable.ic_find_in_page_black_24dp
         };
 
         /* init side menu concept */
@@ -221,13 +221,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         editText_come.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SelectActivity.ET_COME);
+                showSearch(SearchActivity.ET_COME);
             }
         });
         editText_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SelectActivity.ET_GO);
+                showSearch(SearchActivity.ET_GO);
             }
         });
 
@@ -261,10 +261,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private void showSearch(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt("TYPE", type);
-        if (type == SelectActivity.ET_GO) {
-            jumpToActivityWithResult(SelectActivity.class, bundle, SelectActivity.EDIT_TEXT_REQUEST_CODE_GO);
+        if (type == SearchActivity.ET_GO) {
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_GO);
         } else {
-            jumpToActivityWithResult(SelectActivity.class, bundle, SelectActivity.EDIT_TEXT_REQUEST_CODE_COME);
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_COME);
         }
     }
 
@@ -374,10 +374,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SelectActivity.EDIT_TEXT_REQUEST_CODE_COME) {
+        if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_COME) {
             String result = data.getStringExtra("result_come");
             editText_come.setText(result);
-        } else if (requestCode == SelectActivity.EDIT_TEXT_REQUEST_CODE_GO) {
+        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_GO) {
             String result = data.getStringExtra("result_go");
             editText_go.setText(result);
         } else {

@@ -13,4 +13,6 @@
     <dimen name="dialog_title_size_small">16sp</dimen>
     <dimen name="dialog_title_size">24sp</dimen>
     <dimen name="title_station_size">18sp</dimen>
+
+    <dimen name="mb_height_56">56dp</dimen>
 </resources>
