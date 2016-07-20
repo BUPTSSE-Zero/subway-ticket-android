@@ -29,8 +29,10 @@
         <activity
             android:name=".ui.activity.SearchActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
-            android:theme="@style/AppTheme"
-            />
+            android:theme="@style/AppTheme">
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".ui.activity.PayActivity"
             android:theme="@style/AppTheme.NoActionBar"

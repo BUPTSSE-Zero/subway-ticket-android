@@ -1,5 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -44,8 +46,15 @@ public class SearchActivity extends BaseActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
-        searchItem.expandActionView();
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        searchItem.expandActionView();
+
         searchView.setOnQueryTextListener(this);
         searchView.setIconifiedByDefault(false);
         return true;
@@ -69,6 +78,7 @@ public class SearchActivity extends BaseActivity implements
         Bundle bundle = getBundle();
         initString();
         search_object = bundle.getInt("TYPE", 0);
+        listView.clearChoices();
 
 //        searchView.setOnQueryTextListener(this);
 //        searchView.setSubmitButtonEnabled(false);
@@ -105,11 +115,11 @@ public class SearchActivity extends BaseActivity implements
         stationArrayList.add(new Station("ABC", 4));
         stationArrayList.add(new Station("ACB", 5));
         stationArrayList.add(new Station("BVF", 6));
-        stationArrayList.add(new Station("BRT", 13));
-        stationArrayList.add(new Station("ANM", 1));
         stationArrayList.add(new Station("南京路", 1));
         stationArrayList.add(new Station("北京路", 2));
         stationArrayList.add(new Station("东京路", 7));
+        stationArrayList.add(new Station("BRT", 13));
+        stationArrayList.add(new Station("ANM", 1));
         stationArrayList.add(new Station("太平洋广场", 4));
     }
 

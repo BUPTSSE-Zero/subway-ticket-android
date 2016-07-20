@@ -45,4 +45,6 @@
     <!-- the space is necessary -->
     <string name="ticket_all_pay">总金额　</string>
     <string name="ticket_pay">单价　　</string>
+
+    <string name="search_hint">搜索您的目的地</string>
 </resources>
