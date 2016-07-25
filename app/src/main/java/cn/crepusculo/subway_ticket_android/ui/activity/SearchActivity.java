@@ -1,12 +1,12 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +46,19 @@ public class SearchActivity extends BaseActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
+        MenuItemCompat.setOnActionExpandListener(searchItem,new MenuItemCompat.OnActionExpandListener() {
 
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                onBackPressed();
+                return false;
+            }
+        });
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -141,4 +153,6 @@ public class SearchActivity extends BaseActivity implements
         // User pressed the search button
         return false;
     }
+
+
 }
