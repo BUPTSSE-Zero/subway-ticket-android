@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 
@@ -37,7 +38,7 @@ public class TicketPayFragment extends BaseFragment {
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(BillsCardViewContent item) {
-
+                        TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
                     }
                 });
         recyclerView.setAdapter(adapter);
