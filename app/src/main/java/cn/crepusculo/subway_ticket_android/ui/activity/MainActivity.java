@@ -375,17 +375,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
+        if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
             // Only write start_edit_text
             int line = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
             String name = data.getStringExtra(SearchActivity.KEY_NAME_START);
             editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line,name));
-        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
+        } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
             int line = data.getIntExtra(SearchActivity.KEY_LINE_END, 0);
             String name = data.getStringExtra(SearchActivity.KEY_NAME_END);
             editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line,name));
-        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
+        } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
             int line_s = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
             String name_s = data.getStringExtra(SearchActivity.KEY_NAME_START);
@@ -393,7 +393,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             String name_e = data.getStringExtra(SearchActivity.KEY_NAME_END);
             editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line_s,name_s));
             editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line_e,name_e));
-        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
+        } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
             // None of edit_text will be rewrite
         } else {
             Log.e("MainActivity/Result", "No Result Receive");

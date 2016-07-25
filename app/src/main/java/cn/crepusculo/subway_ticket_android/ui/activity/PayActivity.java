@@ -1,13 +1,13 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.dd.morphingbutton.MorphingButton;
 
 import java.util.Calendar;
 
@@ -46,6 +45,7 @@ public class PayActivity extends BaseActivity {
     private Activity activity;
 
     private Button checkButton;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_pay;
@@ -102,7 +102,7 @@ public class PayActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 String result = "";
                 if (editCount.getText().toString().trim().length() != 0) {
-                    Log.e("233","num"+editCount.getText().toString().trim());
+                    Log.e("233", "num" + editCount.getText().toString().trim());
                     double count = payRequest.price * Integer.parseInt(editCount.getText().toString().trim());
                     result += count;
                 } else {
@@ -112,7 +112,7 @@ public class PayActivity extends BaseActivity {
             }
         });
 
-        checkButton = (Button)findViewById(R.id.check_button);
+        checkButton = (Button) findViewById(R.id.check_button);
 //        checkButton.setBackgroundColor(getResources().getColor(R.color.primary));
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +160,22 @@ public class PayActivity extends BaseActivity {
                 startPic, SubwayLineUtil.getColor(info.start_line),
                 destinationPic, SubwayLineUtil.getColor(info.destination_line));
         dateLimit.setText(CalendarUtils.format_limit(c));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 
     private class ImageButtonOnClickListener implements View.OnClickListener {
