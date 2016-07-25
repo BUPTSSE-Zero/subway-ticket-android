@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
@@ -125,10 +126,12 @@ public class PayActivity extends BaseActivity {
             String start_str = b.getString("route_start");
             String destination_str = b.getString("route_end");
             Log.e("PayActivity", start_str + destination_str);
-            payRequest.start = start_str;
-            payRequest.start_line = SubwayLineUtil.getLine(start_str);
-            payRequest.destination = destination_str;
-            payRequest.destination_line = SubwayLineUtil.getLine(destination_str);
+            Station start = SubwayLineUtil.CutLineNameStr(start_str);
+            Station end = SubwayLineUtil.CutLineNameStr(destination_str);
+            payRequest.start = start.getName();
+            payRequest.start_line = start.getLine();
+            payRequest.destination = end.getName();
+            payRequest.destination_line = end.getLine();
             /* default set date with system date */
             Calendar c = Calendar.getInstance();
             payRequest.date = CalendarUtils.format(c);

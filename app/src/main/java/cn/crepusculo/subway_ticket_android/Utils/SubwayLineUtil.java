@@ -3,6 +3,7 @@ package cn.crepusculo.subway_ticket_android.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
@@ -91,7 +92,9 @@ public class SubwayLineUtil {
 
     public static Station CutLineNameStr(String str){
         String strs[] = str.split(" ");
-        return new Station(strs[0],Integer.parseInt(strs[1]));
+        Log.e("strs",strs[0]);
+        Log.e("strs",strs[1]);
+        return new Station(strs[1],Integer.parseInt(strs[0]));
     }
 
     public static String ConnectLineNameStr(int line, String str){
