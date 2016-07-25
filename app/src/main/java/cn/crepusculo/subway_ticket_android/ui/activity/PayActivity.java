@@ -113,6 +113,7 @@ public class PayActivity extends BaseActivity {
         });
 
         checkButton = (Button)findViewById(R.id.check_button);
+//        checkButton.setBackgroundColor(getResources().getColor(R.color.primary));
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
