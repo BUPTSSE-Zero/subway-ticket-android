@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -168,6 +169,11 @@ public class PayActivity extends BaseActivity {
             payRequest.destination = swap;
             start.setText(payRequest.start);
             destination.setText(payRequest.destination);
+
+            int swap2 = payRequest.start_line;
+            payRequest.start_line = payRequest.destination_line;
+            payRequest.destination_line = swap2;
+
             BillsCardViewContent.setTagColor(activity,
                     startPic, SubwayLineUtil.getColor(payRequest.start_line),
                     destinationPic, SubwayLineUtil.getColor(payRequest.destination_line));
