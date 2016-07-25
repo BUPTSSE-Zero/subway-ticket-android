@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.GradientDrawable;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.content.Station;
 
 
 public class SubwayLineUtil {
@@ -31,8 +32,8 @@ public class SubwayLineUtil {
     public final static int XIJIAO = 24;
     public final static int AIRPORT = 25;
 
-
     private SubwayLineUtil(){}
+
     public static int getLine(String station) {
 
         return 5;
@@ -86,5 +87,14 @@ public class SubwayLineUtil {
             default:
                 return R.color.undefine;
         }
+    }
+
+    public static Station CutLineNameStr(String str){
+        String strs[] = str.split(" ");
+        return new Station(strs[0],Integer.parseInt(strs[1]));
+    }
+
+    public static String ConnectLineNameStr(int line, String str){
+        return line + " " + str;
     }
 }

@@ -1,6 +1,5 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,10 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -19,16 +21,23 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.ui.adapter.StationAdapter;
 
 public class SearchActivity extends BaseActivity implements
-        SearchView.OnQueryTextListener {
-    public static int ET_COME = 1;
-    public static int ET_GO = -1;
-    public static int EDIT_TEXT_REQUEST_CODE_COME = 1000;
-    public static int EDIT_TEXT_REQUEST_CODE_GO = 1001;
+        SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
+    public static int ET_START = 1;
+    public static int ET_END = -1;
+
+    /* ID back to main*/
+    public static int EDIT_TEXT_REQUEST_CODE_START = 1000;
+    public static int EDIT_TEXT_REQUEST_CODE_END = 1001;
+    public static int EDIT_TEXT_REQUEST_CODE_BOTH = 1002;
+    public static int EDIT_TEXT_REQUEST_CODE_EMPTY = 1003;
+
+    public static String KEY_NAME_START = "name_start";
+    public static String KEY_LINE_START = "line_start";
+    public static String KEY_NAME_END = "name_end";
+    public static String KEY_LINE_END = "line_end";
     /* var */
-    private int search_object;
+    private int SEARCH_STATUS;
     private Bundle result;
-    private String result_come;
-    private String result_go;
     /* search list */
     private ArrayList<Station> stationArrayList;
     private StationAdapter stationAdapter;
@@ -46,7 +55,7 @@ public class SearchActivity extends BaseActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
-        MenuItemCompat.setOnActionExpandListener(searchItem,new MenuItemCompat.OnActionExpandListener() {
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
 
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -86,10 +95,10 @@ public class SearchActivity extends BaseActivity implements
         stationAdapter = new StationAdapter(SearchActivity.this, stationArrayList);
         listView.setAdapter(stationAdapter);
         listView.setTextFilterEnabled(true);
-
+        listView.setOnItemClickListener(this);
         Bundle bundle = getBundle();
         initString();
-        search_object = bundle.getInt("TYPE", 0);
+        SEARCH_STATUS = bundle.getInt("TYPE", 0);
         listView.clearChoices();
 
 //        searchView.setOnQueryTextListener(this);
@@ -100,27 +109,53 @@ public class SearchActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        setSearchResult();
+        Intent intent = new Intent();
+        setResult(EDIT_TEXT_REQUEST_CODE_EMPTY, intent);
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
     }
 
     private void initString() {
         result = new Bundle();
-        result_come = "23333";
-        result_go = "xinbaqi";
     }
 
-    private void setSearchResult() {
-        result.putString("result_come", result_come);
-        result.putString("result_go", result_go);
+    private void setSearchResult(int result_come_line, String result_come, int result_go_line, String result_go) {
+        result.putString(KEY_NAME_START, result_come);
+        result.putString(KEY_NAME_END, result_go);
+        result.putInt(KEY_LINE_START, result_come_line);
+        result.putInt(KEY_LINE_END, result_go_line);
 
+        putIntent(result);
+    }
+
+    private void setSearchResult(Station start, Station end) {
+        result.putString(KEY_NAME_START, start.getName());
+        result.putString(KEY_NAME_END, end.getName());
+        result.putInt(KEY_LINE_START, start.getLine());
+        result.putInt(KEY_LINE_END, end.getLine());
+        putIntent(result);
+    }
+
+    private void setSearchResult(Station s) {
+        if (SEARCH_STATUS == ET_START) {
+            result.putString(KEY_NAME_START, s.getName());
+            result.putInt(KEY_LINE_START, s.getLine());
+        } else if (SEARCH_STATUS == ET_END) {
+            result.putString(KEY_NAME_END, s.getName());
+            result.putInt(KEY_LINE_END, s.getLine());
+        }
+        putIntent(this.result);
+    }
+
+    private void putIntent(Bundle b) {
         Intent intent = new Intent();
-        intent.putExtras(result);
-        if (search_object == ET_COME)
-            setResult(EDIT_TEXT_REQUEST_CODE_COME, intent);
+        intent.putExtras(b);
+        if (SEARCH_STATUS == ET_START)
+            setResult(EDIT_TEXT_REQUEST_CODE_START, intent);
+        else if (SEARCH_STATUS == ET_END)
+            setResult(EDIT_TEXT_REQUEST_CODE_END, intent);
         else
-            setResult(EDIT_TEXT_REQUEST_CODE_GO, intent);
+            setResult(EDIT_TEXT_REQUEST_CODE_BOTH, intent);
     }
 
     public void loadData(ArrayList<Station> stationArrayList) {
@@ -154,5 +189,14 @@ public class SearchActivity extends BaseActivity implements
         return false;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        TextView lineView = (TextView) view.findViewById(R.id.txtLine);
+        TextView nameView = (TextView) view.findViewById(R.id.txtName);
 
+        String name = nameView.getText().toString().trim();
+        int line = Integer.parseInt(lineView.getText().toString().trim());
+        setSearchResult(new Station(name, line));
+        this.finish();
+    }
 }

@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
-import cn.jpush.android.api.JPushInterface;
-
 /**
  * The MyApplication class
  * Please put more info here.
@@ -23,9 +21,6 @@ public class MyApplication extends Application {
         MyApplication.context = getApplicationContext();
         MyApplication.resources = getResources();
 
-
-        JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
     }
 
 

@@ -1,16 +1,20 @@
 package cn.crepusculo.subway_ticket_android.content;
 
-/**
- * Created by airfr on 2016/7/16.
- */
 public class Station {
 
     private String name;
     private int line;
 
-    public  Station(String name,int line){
+    public Station(String name, int line) {
         this.name = name;
         this.line = line;
+    }
+
+    public Station(int i) {
+        String[] ss = {"李家庄", "宋家庄", "惠新西街南口", "百度全家桶", "东村"};
+        String[] ds = {"地下城", "美容中心", "洗脚城", "宏福", "五棵松中心"};
+        name = ss[i%5];
+        line = i%23;
     }
 
     public int getLine() {

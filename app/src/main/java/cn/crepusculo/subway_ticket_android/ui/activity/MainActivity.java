@@ -59,8 +59,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private android.support.design.widget.FloatingActionButton fab_search;
     /* EditText */
     private ImageButton editText_btn;
-    private EditText editText_come;
-    private EditText editText_go;
+    private EditText editText_start;
+    private EditText editText_end;
     private ImageView i_come, i_go;
 
     @Override
@@ -211,30 +211,30 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     protected void initSelectButton() {
         i_come = (ImageView) findViewById(R.id.edittext_drawable_come);
         i_go = (ImageView) findViewById(R.id.edittext_drawable_go);
-        editText_come = (EditText) findViewById(R.id.edittext_come);
-        editText_go = (EditText) findViewById(R.id.edittext_go);
+        editText_start = (EditText) findViewById(R.id.edittext_come);
+        editText_end = (EditText) findViewById(R.id.edittext_go);
         editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
-        editText_come.addTextChangedListener(this);
-        editText_come.setLongClickable(false);
-        editText_go.setLongClickable(false);
+        editText_start.addTextChangedListener(this);
+        editText_start.setLongClickable(false);
+        editText_end.setLongClickable(false);
 
-        editText_come.setOnClickListener(new View.OnClickListener() {
+        editText_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SearchActivity.ET_COME);
+                showSearch(SearchActivity.ET_START);
             }
         });
-        editText_go.setOnClickListener(new View.OnClickListener() {
+        editText_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SearchActivity.ET_GO);
+                showSearch(SearchActivity.ET_END);
             }
         });
 
         i_come.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText_come.setText(null);
+                editText_start.setText(null);
                 updateEditTextDrawable();
             }
         });
@@ -242,7 +242,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         i_go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText_go.setText(null);
+                editText_end.setText(null);
                 updateEditTextDrawable();
             }
         });
@@ -250,10 +250,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         editText_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String c = editText_go.getText().toString().trim();
-                String g = editText_come.getText().toString().trim();
-                editText_go.setText(g);
-                editText_come.setText(c);
+                String c = editText_end.getText().toString().trim();
+                String g = editText_start.getText().toString().trim();
+                editText_end.setText(g);
+                editText_start.setText(c);
             }
         });
     }
@@ -261,10 +261,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private void showSearch(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt("TYPE", type);
-        if (type == SearchActivity.ET_GO) {
-            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_GO);
+        if (type == SearchActivity.ET_END) {
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
         } else {
-            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_COME);
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
         }
     }
 
@@ -336,18 +336,18 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void updateEditTextDrawable() {
-        if (editText_come.getText().toString().trim().length() < 1) {
+        if (editText_start.getText().toString().trim().length() < 1) {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
-        if (editText_go.getText().toString().trim().length() < 1) {
+        if (editText_end.getText().toString().trim().length() < 1) {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
 
-        if (editText_come.getText().toString().trim().length() >= 1 && editText_go.getText().toString().trim().length() >= 1) {
+        if (editText_start.getText().toString().trim().length() >= 1 && editText_end.getText().toString().trim().length() >= 1) {
             fab_search.setVisibility(View.VISIBLE);
         } else {
             fab_search.setVisibility(View.INVISIBLE);
@@ -374,12 +374,26 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_COME) {
-            String result = data.getStringExtra("result_come");
-            editText_come.setText(result);
-        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_GO) {
-            String result = data.getStringExtra("result_go");
-            editText_go.setText(result);
+        if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
+            // Only write start_edit_text
+            int line = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
+            String name = data.getStringExtra(SearchActivity.KEY_NAME_START);
+            editText_start.setText(line + name);
+        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
+            // Only write end_edit_text
+            int line = data.getIntExtra(SearchActivity.KEY_LINE_END, 0);
+            String name = data.getStringExtra(SearchActivity.KEY_NAME_END);
+            editText_end.setText(line + name);
+        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
+            // Both write two edit_text
+            int line_s = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
+            String name_s = data.getStringExtra(SearchActivity.KEY_NAME_START);
+            int line_e = data.getIntExtra(SearchActivity.KEY_LINE_END, 0);
+            String name_e = data.getStringExtra(SearchActivity.KEY_NAME_END);
+            editText_start.setText(line_s + name_s);
+            editText_end.setText(line_e + name_e);
+        } else if (requestCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
+            // None of edit_text will be rewrite
         } else {
             Log.e("MainActivity/Result", "No Result Receive");
         }
@@ -469,9 +483,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             case R.id.action_search:
                 List<String> route = new ArrayList<>();
                 Bundle b = new Bundle();
-                b.putString("route_start", editText_come.getText().toString().trim());
-                b.putString("route_end", editText_go.getText().toString().trim());
-                jumpToActivity(PayActivity.class,b);
+                b.putString("route_start", editText_start.getText().toString().trim());
+                b.putString("route_end", editText_end.getText().toString().trim());
+                jumpToActivity(PayActivity.class, b);
         }
 
     }
