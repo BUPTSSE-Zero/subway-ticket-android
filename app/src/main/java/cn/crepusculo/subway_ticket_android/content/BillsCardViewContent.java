@@ -3,14 +3,15 @@ package cn.crepusculo.subway_ticket_android.content;
 import android.content.Context;
 import android.widget.ImageView;
 
+import java.util.Calendar;
 import java.util.Date;
+
+import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
 
 public class BillsCardViewContent {
 
-    public String start;
-    public int start_line;
-    public String destination;
-    public int destination_line;
+    public Station start;
+    public Station end;
 
     public String date;
     public Double price;
@@ -53,10 +54,8 @@ public class BillsCardViewContent {
     public static int TICKET_REFUND = -2;
 
     public BillsCardViewContent(){
-        start = null;
-        start_line = 0;
-        destination = null;
-        destination_line = 0;
+        start = new Station();
+        end = new Station();
         date = null;
         price = 0.0;
         status = TICKET_UNPAID;
@@ -65,12 +64,13 @@ public class BillsCardViewContent {
     public void ForTest(int i){
         String[] ss = {"李家庄","宋家庄","惠新西街南口","百度全家桶","东村"};
         String[] ds = {"地下城","美容中心","洗脚城","宏福","五棵松中心"};
-        start = ss[i%5];
-        start_line = i%30;
-        destination = ds[i*2%5];
-        destination_line = i%30;
 
-        date = new Date().toString();
+        start.setName(ss[i%5]);
+        start.setLine(i%30);
+        end.setName(ss[i%3]);
+        end.setLine(i%25);
+
+        date = CalendarUtils.format(Calendar.getInstance());
         status = TICKET_UNBOUNCE;
     }
 

@@ -130,10 +130,10 @@ public class PayActivity extends BaseActivity {
             Log.e("PayActivity", start_str + destination_str);
             Station start = SubwayLineUtil.CutLineNameStr(start_str);
             Station end = SubwayLineUtil.CutLineNameStr(destination_str);
-            payRequest.start = start.getName();
-            payRequest.start_line = start.getLine();
-            payRequest.destination = end.getName();
-            payRequest.destination_line = end.getLine();
+            payRequest.start.setName(start.getName());
+            payRequest.start.setLine(start.getLine());
+            payRequest.end.setName(end.getName());
+            payRequest.end.setLine(end.getLine());
             /* default set date with system date */
             Calendar c = Calendar.getInstance();
             payRequest.date = CalendarUtils.format(c);
@@ -153,12 +153,12 @@ public class PayActivity extends BaseActivity {
 
     private void setCardInfo(BillsCardViewContent info) {
         Calendar c = Calendar.getInstance();
-        start.setText(info.start);
-        destination.setText(info.destination);
+        start.setText(info.start.getName());
+        destination.setText(info.end.getName());
         date.setText(CalendarUtils.format(c));
         BillsCardViewContent.setTagColor(this,
-                startPic, SubwayLineUtil.getColor(info.start_line),
-                destinationPic, SubwayLineUtil.getColor(info.destination_line));
+                startPic, SubwayLineUtil.getColor(info.start.getLine()),
+                destinationPic, SubwayLineUtil.getColor(info.end.getLine()));
         dateLimit.setText(CalendarUtils.format_limit(c));
     }
 
@@ -181,19 +181,15 @@ public class PayActivity extends BaseActivity {
     private class ImageButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            String swap = payRequest.start;
-            payRequest.start = payRequest.destination;
-            payRequest.destination = swap;
-            start.setText(payRequest.start);
-            destination.setText(payRequest.destination);
-
-            int swap2 = payRequest.start_line;
-            payRequest.start_line = payRequest.destination_line;
-            payRequest.destination_line = swap2;
+            Station swap = payRequest.start;
+            payRequest.start = payRequest.end;
+            payRequest.end = swap;
+            start.setText(payRequest.start.getName());
+            destination.setText(payRequest.end.getName());
 
             BillsCardViewContent.setTagColor(activity,
-                    startPic, SubwayLineUtil.getColor(payRequest.start_line),
-                    destinationPic, SubwayLineUtil.getColor(payRequest.destination_line));
+                    startPic, SubwayLineUtil.getColor(payRequest.start.getLine()),
+                    destinationPic, SubwayLineUtil.getColor(payRequest.end.getLine()));
         }
     }
 }

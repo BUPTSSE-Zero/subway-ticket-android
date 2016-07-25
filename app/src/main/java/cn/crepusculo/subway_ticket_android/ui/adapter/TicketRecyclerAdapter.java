@@ -119,8 +119,8 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
     protected void updateText(Holder holder,int p){
         ArrayList<TextView> a = new ArrayList<>();
-        holder.start.setText(dataset.get(p).start);
-        holder.destination.setText(dataset.get(p).destination);
+        holder.start.setText(dataset.get(p).start.getName());
+        holder.destination.setText(dataset.get(p).end.getName());
         holder.date.setText(dataset.get(p).date);
         holder.status.setText(dataset.get(p).getStatus());
 
@@ -130,8 +130,8 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 //        SubwayLineUtil.getColor(dataset.get(p).start_line);
 //        SubwayLineUtil.getColor(dataset.get(p).destination_line);
 
-        BillsCardViewContent.setTagColor(context, holder.start_p,SubwayLineUtil.getColor(dataset.get(p).start_line),
-                holder.destination_p,SubwayLineUtil.getColor(dataset.get(p).destination_line));
+        BillsCardViewContent.setTagColor(context, holder.start_p,SubwayLineUtil.getColor(dataset.get(p).start.getLine()),
+                holder.destination_p,SubwayLineUtil.getColor(dataset.get(p).end.getLine()));
     }
 
 }

@@ -73,15 +73,15 @@ public class TicketDialogMaker implements View.OnClickListener{
         this.buttonLayout = (ExpandableRelativeLayout)dialog.findViewById(R.id.expanded_btn);
         this.qrLayout = (ExpandableLinearLayout)dialog.findViewById(R.id.expanded_qr);
 
-        start.setText(item.start);
-        destination.setText(item.destination);
+        start.setText(item.start.getName());
+        destination.setText(item.end.getName());
         date.setText("2017-4-26");
         status.setText(item.getStatus());
         ImageView v_s = (ImageView)dialog.findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView)dialog.findViewById(R.id.go_dialog);
 //        v_s.setColorFilter(R.color.accent);
-        BillsCardViewContent.setTagColor(mContext, v_s, SubwayLineUtil.getColor(item.start_line),
-                v_d,SubwayLineUtil.getColor(item.destination_line));
+        BillsCardViewContent.setTagColor(mContext, v_s, SubwayLineUtil.getColor(item.start.getLine()),
+                v_d,SubwayLineUtil.getColor(item.end.getLine()));
 
         buttons = new ArrayList<>();
 

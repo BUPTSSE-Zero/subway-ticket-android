@@ -6,8 +6,11 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.Calendar;
+
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class TicketDialogActivity extends BaseActivity {
@@ -44,14 +47,14 @@ public class TicketDialogActivity extends BaseActivity {
         date = (TextView)findViewById(R.id.date);
     }
     private void initTextView(){
-        start.setText(bills.start);
-        destination.setText(bills.destination);
-        date.setText("2017-4-26");
+        start.setText(bills.start.getName());
+        destination.setText(bills.end.getName());
+        date.setText(CalendarUtils.format_limit(Calendar.getInstance()));
         status.setText(bills.getStatus());
         ImageView v_s = (ImageView)findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView)findViewById(R.id.go_dialog);
 //        v_s.setColorFilter(R.color.accent);
-        BillsCardViewContent.setTagColor(getBaseContext(), v_s, SubwayLineUtil.getColor(bills.start_line),
-                v_d,SubwayLineUtil.getColor(bills.destination_line));
+        BillsCardViewContent.setTagColor(getBaseContext(), v_s, SubwayLineUtil.getColor(bills.start.getLine()),
+                v_d,SubwayLineUtil.getColor(bills.end.getLine()));
     }
 }

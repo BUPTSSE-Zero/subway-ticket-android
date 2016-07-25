@@ -3,7 +3,9 @@ package cn.crepusculo.subway_ticket_android.content;
 public class Station {
 
     private String name;
-    private int line;
+    private int line = 0;
+
+    public Station() {}
 
     public Station(String name, int line) {
         this.name = name;
