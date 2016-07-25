@@ -1,8 +1,5 @@
 package cn.crepusculo.subway_ticket_android.utils;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -33,12 +30,14 @@ public class SubwayLineUtil {
     public final static int XIJIAO = 24;
     public final static int AIRPORT = 25;
 
-    private SubwayLineUtil(){}
+    private SubwayLineUtil() {
+    }
 
     public static int getLine(String station) {
 
         return 5;
     }
+
     public static int getColor(int line) {
         switch (line) {
             case ONE:
@@ -90,14 +89,14 @@ public class SubwayLineUtil {
         }
     }
 
-    public static Station CutLineNameStr(String str){
+    public static Station CutLineNameStr(String str) {
         String strs[] = str.split(" ");
-        Log.e("strs",strs[0]);
-        Log.e("strs",strs[1]);
-        return new Station(strs[1],Integer.parseInt(strs[0]));
+        Log.e("strs", strs[0]);
+        Log.e("strs", strs[1]);
+        return new Station(strs[1], Integer.parseInt(strs[0]));
     }
 
-    public static String ConnectLineNameStr(int line, String str){
+    public static String ConnectLineNameStr(int line, String str) {
         return line + " " + str;
     }
 }

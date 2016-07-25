@@ -180,7 +180,7 @@
             android:src="@drawable/ic_subway_white_24dp"
             app:fab_colorNormal="@color/md_white_1000"
             app:fab_colorPressed="@color/md_amber_400"
-            app:fab_title="Action subway" />
+            />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_locate"
@@ -189,7 +189,7 @@
             android:src="@drawable/ic_place_white_24dp"
             app:fab_colorNormal="@color/md_white_1000"
             app:fab_colorPressed="@color/md_amber_400"
-            app:fab_title="Action locate" />
+            />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_bills"
@@ -198,7 +198,7 @@
             android:src="@drawable/ic_ticket_white_24dp"
             app:fab_colorNormal="@color/md_white_1000"
             app:fab_colorPressed="@color/md_amber_400"
-            app:fab_title="Action Bills" />
+            />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 

@@ -129,8 +129,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_bills);
 
-        fab_menu.removeButton(fab_bills);
-        updateHint(fab_bills, fab_menu);
+        updateHint();
 
         /* fab menu listener register */
         fab_bills.setOnClickListener(this);
@@ -203,7 +202,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .addStickyDrawerItems(new PrimaryDrawerItem()
                         .withName(R.string.common_exit)
                         .withSelectable(true)
-                        .withIdentifier(SideNavBtn.EXIT))
+                        .withIdentifier(SideNavBtn.EXIT)
+                        .withOnDrawerItemClickListener(this))
                 .withOnDrawerItemClickListener(this)
                 .withCloseOnClick(true)
                 .build();
@@ -270,11 +270,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
 
-    private void updateHint(com.getbase.floatingactionbutton.FloatingActionButton fab,
-                            com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu) {
-        Log.e("At shouHint", "" + info.ticket.getCount());
-        if (info.ticket.getCount() > 0) {
-            fab_menu.addButton(fab);
+    private void updateHint() {
+        int ticketCount = 0;
+        // net request here
+
+        if (ticketCount > 0) {
+            if (fab_menu.getChildCount() == 2)
+                fab_menu.addButton(fab_bills);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -282,8 +284,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 }
             }, 3000);
         } else {
-            fabProgressCircle.hide();
-            fab_menu.removeButton(fab_bills);
+            if (fabProgressCircle.isActivated())
+                fabProgressCircle.hide();
+            if (fab_menu.getChildCount() == 3)
+                fab_menu.removeButton(fab_bills);
         }
     }
 
@@ -297,6 +301,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                         Log.e("Main/Choice", "Dialog Chioce" + which);
+                        //TODO:持久化
                         return true;
                     }
                 })
@@ -377,22 +382,38 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
             // Only write start_edit_text
-            int line = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
-            String name = data.getStringExtra(SearchActivity.KEY_NAME_START);
-            editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line,name));
+            int line = data.getIntExtra(
+                    SearchActivity.KEY_LINE_START, 0);
+            String name = data.getStringExtra(
+                    SearchActivity.KEY_NAME_START);
+
+            editText_start.setText(
+                    SubwayLineUtil.ConnectLineNameStr(line, name));
+
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
-            int line = data.getIntExtra(SearchActivity.KEY_LINE_END, 0);
-            String name = data.getStringExtra(SearchActivity.KEY_NAME_END);
-            editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line,name));
+            int line = data.getIntExtra(
+                    SearchActivity.KEY_LINE_END, 0);
+            String name = data.getStringExtra(
+                    SearchActivity.KEY_NAME_END);
+
+            editText_end.setText(
+                    SubwayLineUtil.ConnectLineNameStr(line, name));
+
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
-            int line_s = data.getIntExtra(SearchActivity.KEY_LINE_START, 0);
-            String name_s = data.getStringExtra(SearchActivity.KEY_NAME_START);
-            int line_e = data.getIntExtra(SearchActivity.KEY_LINE_END, 0);
-            String name_e = data.getStringExtra(SearchActivity.KEY_NAME_END);
-            editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line_s,name_s));
-            editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line_e,name_e));
+            int line_s = data.getIntExtra(
+                    SearchActivity.KEY_LINE_START, 0);
+            String name_s = data.getStringExtra(
+                    SearchActivity.KEY_NAME_START);
+            int line_e = data.getIntExtra(
+                    SearchActivity.KEY_LINE_END, 0);
+            String name_e = data.getStringExtra(
+                    SearchActivity.KEY_NAME_END);
+
+            editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line_s, name_s));
+            editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line_e, name_e));
+
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
             // None of edit_text will be rewrite
         } else {
@@ -429,13 +450,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         if (id == SideNavBtn.GET_QR) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE", position);
+            bundle.putInt("TYPE", position + 1);
             Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.BILLS) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE", position);
+            bundle.putInt("TYPE", position + 1);
             Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
@@ -449,6 +470,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
             drawer.closeDrawer();
         } else if (id == SideNavBtn.EXIT) {
+            finishApp();
             drawer.closeDrawer();
         }
         return true;
@@ -463,16 +485,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             case R.id.action_bills:
                 fab_menu.collapse();
 
-                info.ticket.setTicketsCode(null);
-                updateHint(fab_bills, fab_menu);
+                updateHint();
 
                 Bundle bundle = new Bundle();
                 bundle.putInt("TYPE", 2);
                 jumpToActivity(TicketManagerActivity.class, bundle);
                 return;
             case R.id.action_subway:
-                info.ticket.setTicketsCode(new String[]{"23333", "sdfaf"});
-                updateHint(fab_bills, fab_menu);
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:

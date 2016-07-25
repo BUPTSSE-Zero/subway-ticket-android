@@ -20,7 +20,7 @@ public class TicketPossessFragment extends BaseFragment {
     @Override
     protected void initView() {
         RecyclerView recyclerView;
-        recyclerView = (RecyclerView)mRootView.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
 
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getActivity());

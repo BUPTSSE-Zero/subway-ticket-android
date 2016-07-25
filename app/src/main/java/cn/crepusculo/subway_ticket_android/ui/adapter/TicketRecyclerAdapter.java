@@ -121,7 +121,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         ArrayList<TextView> a = new ArrayList<>();
         holder.start.setText(dataset.get(p).start);
         holder.destination.setText(dataset.get(p).destination);
-        holder.date.setText("2017-4-26");
+        holder.date.setText(dataset.get(p).date);
         holder.status.setText(dataset.get(p).getStatus());
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
