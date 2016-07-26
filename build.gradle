@@ -21,6 +21,9 @@ allprojects {
     repositories {
         jcenter()
         maven { url "https://jitpack.io" }
+        maven {
+            url 'http://101.200.144.204:16082/nexus/content/repositories/releases'
+        }
     }
 }
 
