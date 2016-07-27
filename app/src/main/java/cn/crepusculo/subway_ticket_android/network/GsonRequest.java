@@ -261,10 +261,10 @@ public class GsonRequest<T> extends Request<T> {
     @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-            String json = new String(
-                    response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
-
+//            String json = new String(
+//                    response.data,
+//                    HttpHeaderParser.parseCharset(response.headers));
+            String json = new String(response.data, PROTOCOL_CHARSET);
             if (this.typeToken == null) {
                 // The response json is a object
                 return Response.success(

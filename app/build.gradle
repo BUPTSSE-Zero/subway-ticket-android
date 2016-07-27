@@ -17,12 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
 }
 
 dependencies {
@@ -45,7 +39,7 @@ dependencies {
 
     /* DragSheet */
     compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
-    //    compile 'com.github.javiersantos:BottomDialogs:1.1'
+    compile 'com.github.javiersantos:BottomDialogs:1.1'
 
     /* Gson*/
     compile 'com.google.code.gson:gson:2.6.2'

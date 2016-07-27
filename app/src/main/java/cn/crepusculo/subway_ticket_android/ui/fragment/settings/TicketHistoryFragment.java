@@ -5,6 +5,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.subwayticket.model.result.CityListResult;
+
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -12,6 +16,7 @@ import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 
 public class TicketHistoryFragment extends BaseFragment {
