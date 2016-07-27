@@ -17,6 +17,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -96,7 +97,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     private void initInfo() {
         info = Info.getInstance();
-        info.initTest();
     }
 
     private void initToolbar() {
@@ -492,6 +492,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 jumpToActivity(TicketManagerActivity.class, bundle);
                 return;
             case R.id.action_subway:
+////                Date date = new Date(2016, 7, 27);
+//                Toast.makeText(this, "" + System.currentTimeMillis()
+//                        , Toast.LENGTH_LONG).show();
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:

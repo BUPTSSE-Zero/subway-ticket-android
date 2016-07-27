@@ -1,44 +1,54 @@
 package cn.crepusculo.subway_ticket_android.preferences;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
-import junit.framework.TestCase;
-
 import java.util.Arrays;
+
+import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 
 public class Info {
 
     private static Info mInstance = null;
+    private static final String filename = "info";
+    private SharedPreferences preferences = SharedPreferencesUtils.getPreferences(filename);
+
+    public String token = null;
 
     public User user;
     public Ticket ticket;
     public App app;
 
+    public String getToken() {
+        return token;
+    }
+
+    public Info setToken(String token) {
+        this.token = token;
+        return this;
+    }
+
     private Info() {
         user = new User();
         ticket = new Ticket();
         app = new App();
-        // Required empty
+
+        user.id = preferences.getString(InfoKeys.KEYS_ID, null);
+        user.password = preferences.getString(InfoKeys.KEYS_PASSWORD, null);
+        app.city = preferences.getString(InfoKeys.KEYS_CITY, null);
+        token = preferences.getString(InfoKeys.KEYS_TOKEN, null);
     }
 
-    public static Info getInstance(){
+    public static Info getInstance() {
         if (mInstance == null) {
             mInstance = new Info();
-            Log.e("Info","-- Bulid new instance --");
+            Log.e("Info", "-- Bulid new instance --");
         }
 
         return mInstance;
     }
 
-    public void initTest(){
-        mInstance.user.setId("23323323333");
-        mInstance.user.setPassword("233");
-        String[] s = {"13131","224242"};
-        mInstance.ticket.setTicketsCode(s);
-        mInstance.app.setCity("Beijing");
-    }
-
-    public class User{
+    public class User {
         private String id = null;
         private String password = null;
 
@@ -52,6 +62,7 @@ public class Info {
 
         public User setId(String id) {
             this.id = id;
+            SharedPreferencesUtils.putString(preferences, InfoKeys.KEYS_ID, id);
             return this;
         }
 
@@ -61,13 +72,14 @@ public class Info {
 
         public User setPassword(String password) {
             this.password = password;
+            SharedPreferencesUtils.putString(preferences, InfoKeys.KEYS_PASSWORD, password);
             return this;
         }
 
 
     }
 
-    public class Ticket{
+    public class Ticket {
         private String[] ticketsCode = null;
 
         public Ticket() {
@@ -100,14 +112,14 @@ public class Info {
             return this;
         }
 
-        public int getCount(){
+        public int getCount() {
             if (ticketsCode != null)
                 return ticketsCode.length;
             return 0;
         }
     }
 
-    public class App{
+    public class App {
         private String city = null;
 
         private App() {
@@ -121,6 +133,7 @@ public class Info {
 
         public App setCity(String city) {
             this.city = city;
+            SharedPreferencesUtils.putString(preferences, InfoKeys.KEYS_CITY, city);
             return this;
         }
     }

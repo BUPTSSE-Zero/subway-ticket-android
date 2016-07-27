@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -27,8 +28,10 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.Station;
+import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class PayActivity extends BaseActivity {
@@ -124,25 +127,29 @@ public class PayActivity extends BaseActivity {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NetworkUtils.subwayGetCityList(
-                        new Response.Listener<CityListResult>() {
-                            @Override
-                            public void onResponse(CityListResult response) {
-                                List<City> list = response.getCityList();
-                                String result = "" + list.size() + "  ";;
-                                for (City c : list
-                                        ) {
-                                    result += c.getCityName();
-                                }
-                                Toast.makeText(PayActivity.this, result, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                        , new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        }
-                );
+                Info info  = Info.getInstance();
+                String id = info.user.getId();
+                String psw = info.user.getPassword();
+                Toast.makeText(PayActivity.this, id+psw, Toast.LENGTH_LONG).show();
+//                NetworkUtils.subwayGetCityList(
+//                        new Response.Listener<CityListResult>() {
+//                            @Override
+//                            public void onResponse(CityListResult response) {
+//                                List<City> list = response.getCityList();
+//                                String result = "" + list.size() + "  ";;
+//                                for (City c : list
+//                                        ) {
+//                                    result += c.getCityName();
+//                                }
+//                                Toast.makeText(PayActivity.this, result, Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+//                        , new Response.ErrorListener() {
+//                            @Override
+//                            public void onErrorResponse(VolleyError error) {
+//                            }
+//                        }
+//                );
             }
         });
     }
