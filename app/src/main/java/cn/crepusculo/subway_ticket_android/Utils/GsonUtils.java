@@ -7,9 +7,6 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by airfr on 2016/7/30.
- */
 public class GsonUtils {
     protected static final String PROTOCOL_CHARSET = "utf-8";
 

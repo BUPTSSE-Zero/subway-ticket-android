@@ -1,6 +1,8 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.login;
 
 import android.os.Handler;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +31,7 @@ import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
 import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity<T> extends BaseActivity {
     private static class Mode {
         public static String REGISTER = "register";
         public static String LOGIN = "login";
@@ -38,6 +40,7 @@ public class LoginActivity extends BaseActivity {
 
         private Mode() {}
     }
+    ViewGroup.LayoutParams buttonSize;
 
     // Default method login
     private String mode = Mode.LOGIN;
@@ -62,6 +65,9 @@ public class LoginActivity extends BaseActivity {
     protected void initView() {
         initCard();
         initExpandableMode();
+        buttonSize = new ViewGroup.LayoutParams(
+                forgetBtn.getLayoutParams().width,
+                forgetBtn.getLayoutParams().height);
     }
 
     private void initCard() {
@@ -192,7 +198,7 @@ public class LoginActivity extends BaseActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                                    Toast.makeText(LoginActivity.this,r.result_description,Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(findViewById(R.id.login_activity),r.result_description,Snackbar.LENGTH_LONG).show();
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
@@ -235,6 +241,14 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        hideView(signBtn);hideView(forgetBtn);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showView(signBtn);
+                showView(forgetBtn);
+            }
+        },2000);
         loginBtn.setProgress(0);
         if (forgetBtn.getVisibility() == View.INVISIBLE) {
             mode = Mode.LOGIN;
@@ -274,31 +288,82 @@ public class LoginActivity extends BaseActivity {
         setSubmitTitle();
 
         if (mode.equals(Mode.CAPTCHA)) {
-            editTextUserName.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - pwdEditText
+             */
             editTextPassword.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - captchaEditText
+             */
             editTextCaptcha.setVisibility(View.INVISIBLE);
+            /**
+             * Captcha - forgetBtn
+             */
             forgetBtn.setVisibility(View.INVISIBLE);
+            /**
+             * Captcha - signUpBtn
+             */
             signBtn.setVisibility(View.INVISIBLE);
+
         } // == END IF == captcha
         else if (mode.equals(Mode.REGISTER)) {
-            editTextUserName.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - pwdEditText
+             */
             editTextPassword.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - captchaEditText
+             */
+            ViewGroup.LayoutParams lp = editTextUserName.getLayoutParams();
+            editTextCaptcha.setLayoutParams(lp);
             editTextCaptcha.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - forgetBtn
+             */
+            ViewGroup.LayoutParams btz = buttonSize;
+            btz.height = 0;
             forgetBtn.setVisibility(View.INVISIBLE);
+            forgetBtn.setLayoutParams(btz);
+            /**
+             * Captcha - signUpBtn
+             */
             signBtn.setVisibility(View.INVISIBLE);
+            signBtn.setLayoutParams(btz);
         } // == END IF == register
         else if (mode.equals(Mode.LOGIN)) {
-            editTextUserName.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - pwdEditText
+             */
             editTextPassword.setVisibility(View.VISIBLE);
-            editTextCaptcha.setVisibility(View.INVISIBLE);
-            forgetBtn.setVisibility(View.INVISIBLE);
+            /**
+             * Captcha - captchaEditText
+             */
+            editTextCaptcha.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - forgetBtn
+             */
+            forgetBtn.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - signUpBtn
+             */
             signBtn.setVisibility(View.INVISIBLE);
         } // == END IF == login
         else if (mode.equals(Mode.UPDATE)) {
-            editTextUserName.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - pwdEditText
+             */
             editTextPassword.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - captchaEditText
+             */
             editTextCaptcha.setVisibility(View.VISIBLE);
+            /**
+             * Captcha - forgetBtn
+             */
             forgetBtn.setVisibility(View.INVISIBLE);
+            /**
+             * Captcha - signUpBtn
+             */
             signBtn.setVisibility(View.INVISIBLE);
         } // == END IF == update
         else {
@@ -306,4 +371,24 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    protected void showView(View v){
+        if(v.getClass().toString().equals(forgetBtn.getClass().toString())){
+            // if is btn
+            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(buttonSize.width,buttonSize.height);
+            v.setLayoutParams(lp);
+        }else {
+            // if is edit text
+            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(
+                    editTextUserName.getLayoutParams().width,
+                    editTextUserName.getLayoutParams().height);
+            v.setLayoutParams(lp);
+        }
+
+    }
+
+    protected void hideView(View v){
+        ViewGroup.LayoutParams lp = v.getLayoutParams();
+        lp.height = 0;
+        v.setLayoutParams(lp);
+    }
 }
