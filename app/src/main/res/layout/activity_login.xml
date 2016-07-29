@@ -62,7 +62,7 @@
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_check_circle_black_24dp"
             android:hint="@string/login_user_password_captcha"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:maxLength="6"
             android:textColorHint="@color/primary"
             android:visibility="invisible"
