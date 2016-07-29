@@ -75,7 +75,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         view = this.findViewById(R.id.main_activity);
         Window window = getWindow();
         if (Build.VERSION.SDK_INT > 21) {
-            window.setStatusBarColor(getResources().getColor(R.color.transparent));
+            window.setStatusBarColor(getResources().getColor(R.color.primary));
         }
         initBackGround();
         initInfo();
@@ -186,7 +186,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withHeader(R.layout.header_drawer)
-                .withTranslucentNavigationBar(false)
+                .withTranslucentNavigationBar(true)
+                .withDisplayBelowStatusBar(false)
                 .withCloseOnClick(true)
                 .withActionBarDrawerToggle(false)
                 .withSelectedItem(-1)
