@@ -22,16 +22,21 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'junit:junit:4.12'
-    compile 'com.android.support:support-v4:24.0.0'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
-    compile 'com.android.support:recyclerview-v7:24.0.0'
-    compile 'com.android.support:cardview-v7:24.0.0'
+    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:cardview-v7:24.1.1'
     /* Side menu */
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
-
+    /* Util */
+    compile 'com.jaeger.statusbaruitl:library:1.2.0'
+    /* Marquee */
+    compile 'com.sunfusheng:marqueeview:1.1.0'
+    /* SubmitButton */
+    compile 'me.spark:submitbutton:1.0.1'
     /* Pic scale*/
     compile 'com.bm.photoview:library:1.4.0'
     /* Progress Button */

@@ -9,6 +9,9 @@ buildscript {
         maven{
             url 'http://101.200.144.204:16082/nexus/content/repositories/releases'
         }
+        maven {
+            url 'https://dl.bintray.com/spark/maven'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
