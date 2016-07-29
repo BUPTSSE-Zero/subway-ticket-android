@@ -74,22 +74,6 @@
             app:met_maxCharacters="6"
             app:met_primaryColor="@color/primary" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_text_check"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_lock_black_24dp"
-            android:hint="@string/login_user_password_update"
-            android:inputType="textPassword"
-            android:maxLength="15"
-            android:textColorHint="@color/primary"
-            android:visibility="invisible"
-            app:met_baseColor="@color/primary"
-            app:met_clearButton="true"
-            app:met_floatingLabel="highlight"
-            app:met_primaryColor="@color/primary" />
-
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/login_login"
             android:layout_width="match_parent"

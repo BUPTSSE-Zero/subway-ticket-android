@@ -49,7 +49,6 @@ public class LoginActivity<T> extends BaseActivity {
     private MaterialEditText editTextUserName;
     private MaterialEditText editTextPassword;
 
-    private MaterialEditText editTextCheck;
     private MaterialEditText editTextCaptcha;
 
     private ActionProcessButton loginBtn;
@@ -77,7 +76,7 @@ public class LoginActivity<T> extends BaseActivity {
         editTextPassword = (MaterialEditText) findViewById(R.id.edit_text_pwd);
 
         editTextCaptcha = (MaterialEditText) findViewById(R.id.edit_text_captcha);
-        editTextCheck = (MaterialEditText) findViewById(R.id.edit_text_check);
+
         signBtn = (Button) findViewById(R.id.login_signup);
         forgetBtn = (Button) findViewById(R.id.login_forget);
         loginBtn = (ActionProcessButton) findViewById(R.id.login_login);
@@ -152,13 +151,9 @@ public class LoginActivity<T> extends BaseActivity {
                                      * IF AND ONLY IF getCaptcha successful
                                      *
                                      */
-                                    editTextCaptcha.setVisibility(View.VISIBLE);
-                                    ViewGroup.LayoutParams lp = editTextCaptcha.getLayoutParams();
-                                    ViewGroup.LayoutParams newlp = editTextUserName.getLayoutParams();
-                                    lp.height = newlp.height;
-                                    editTextCaptcha.setLayoutParams(lp);
-                                    signBtn.setVisibility(View.INVISIBLE);
-                                    forgetBtn.setVisibility(View.INVISIBLE);
+                                    showView(editTextCaptcha);
+                                    hideView(signBtn);
+                                    hideView(forgetBtn);
                                 }
                             },
                             new Response.ErrorListener() {
@@ -216,6 +211,8 @@ public class LoginActivity<T> extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mode = Mode.CAPTCHA;
+                hideView(signBtn);
+                hideView(forgetBtn);
                 setSubmitTitle();
             }
         });
@@ -223,13 +220,9 @@ public class LoginActivity<T> extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mode = Mode.UPDATE;
-                editTextCheck.setVisibility(View.VISIBLE);
-                ViewGroup.LayoutParams lp = editTextCheck.getLayoutParams();
-                ViewGroup.LayoutParams newlp = editTextUserName.getLayoutParams();
-                lp.height = newlp.height;
-                editTextCheck.setLayoutParams(lp);
-                signBtn.setVisibility(View.INVISIBLE);
-                forgetBtn.setVisibility(View.INVISIBLE);
+                showView(editTextCaptcha);
+                hideView(signBtn);
+                hideView(forgetBtn);
                 setSubmitTitle();
             }
         });
@@ -241,29 +234,13 @@ public class LoginActivity<T> extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        hideView(signBtn);hideView(forgetBtn);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showView(signBtn);
-                showView(forgetBtn);
-            }
-        },2000);
         loginBtn.setProgress(0);
         if (forgetBtn.getVisibility() == View.INVISIBLE) {
             mode = Mode.LOGIN;
-            forgetBtn.setVisibility(View.VISIBLE);
-            signBtn.setVisibility(View.VISIBLE);
+            showView(forgetBtn);
+            showView(signBtn);
             if (editTextCaptcha.getVisibility() == View.VISIBLE) {
-                ViewGroup.LayoutParams lp = editTextCaptcha.getLayoutParams();
-                lp.height = 0;
-                editTextCaptcha.setLayoutParams(lp);
-                editTextCaptcha.setVisibility(View.INVISIBLE);
-            } else {
-                ViewGroup.LayoutParams lp = editTextCheck.getLayoutParams();
-                lp.height = 0;
-                editTextCheck.setLayoutParams(lp);
-                editTextCheck.setVisibility(View.INVISIBLE);
+                hideView(editTextCaptcha);
             }
             setSubmitTitle();
         }
@@ -383,12 +360,13 @@ public class LoginActivity<T> extends BaseActivity {
                     editTextUserName.getLayoutParams().height);
             v.setLayoutParams(lp);
         }
-
+        v.setVisibility(View.VISIBLE);
     }
 
     protected void hideView(View v){
         ViewGroup.LayoutParams lp = v.getLayoutParams();
         lp.height = 0;
         v.setLayoutParams(lp);
+        v.setVisibility(View.INVISIBLE);
     }
 }
