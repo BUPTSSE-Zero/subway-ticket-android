@@ -131,25 +131,25 @@ public class PayActivity extends BaseActivity {
                 String id = info.user.getId();
                 String psw = info.user.getPassword();
                 Toast.makeText(PayActivity.this, id+psw, Toast.LENGTH_LONG).show();
-//                NetworkUtils.subwayGetCityList(
-//                        new Response.Listener<CityListResult>() {
-//                            @Override
-//                            public void onResponse(CityListResult response) {
-//                                List<City> list = response.getCityList();
-//                                String result = "" + list.size() + "  ";;
-//                                for (City c : list
-//                                        ) {
-//                                    result += c.getCityName();
-//                                }
-//                                Toast.makeText(PayActivity.this, result, Toast.LENGTH_LONG).show();
-//                            }
-//                        }
-//                        , new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                            }
-//                        }
-//                );
+                NetworkUtils.subwayGetCityList(
+                        new Response.Listener<CityListResult>() {
+                            @Override
+                            public void onResponse(CityListResult response) {
+                                List<City> list = response.getCityList();
+                                String result = "" + list.size() + "  ";
+                                for (City c : list
+                                        ) {
+                                    result += c.getCityName();
+                                }
+                                Toast.makeText(PayActivity.this, result, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        , new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                            }
+                        }
+                );
             }
         });
     }

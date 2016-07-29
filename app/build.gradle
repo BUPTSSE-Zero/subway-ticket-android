@@ -41,7 +41,7 @@ dependencies {
     compile 'com.bm.photoview:library:1.4.0'
     /* Progress Button */
     compile 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56' // commit hash
-
+    compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     /* DragSheet */
     compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     compile 'com.github.javiersantos:BottomDialogs:1.1'
@@ -67,7 +67,6 @@ dependencies {
 
     /* Expandable view */
     compile 'com.github.aakira:expandable-layout:1.5.1@aar'
-
     /* Dialog */
     compile 'com.orhanobut:dialogplus:1.11@aar'
     compile 'com.afollestad.material-dialogs:core:0.8.6.1'

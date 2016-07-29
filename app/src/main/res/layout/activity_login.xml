@@ -5,10 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.spark.submitbutton.SubmitButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
         android:id="@+id/card"
         android:layout_width="match_parent"
@@ -18,29 +14,129 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="100dp"
-        android:padding="24dp"
-        android:paddingBottom="8dp"
         android:background="@color/md_white_1000"
         android:elevation="12dp"
         android:minHeight="200dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:paddingBottom="8dp">
 
-            <EditText
-                android:id="@+id/edit_text_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/login_user_name"
-                android:inputType="phone"
-                android:textColorHint="@color/primary" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edit_text_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_account"
+            android:hint="@string/login_user_name"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColorHint="@color/primary"
+            app:met_baseColor="@color/primary"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextColor="@color/primary"
+            app:met_helperText="@string/login_user_name_hint"
+            app:met_maxCharacters="11"
+            app:met_primaryColor="@color/primary" />
 
-            <EditText
-                android:id="@+id/edit_text_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/login_user_password"
-                android:inputType="phone"
-                android:textColorHint="@color/primary" />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edit_text_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_lock_black_24dp"
+            android:hint="@string/login_user_password"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:textColorHint="@color/primary"
+            app:met_baseColor="@color/primary"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_helperText="@string/login_user_pwd_hint"
+            app:met_primaryColor="@color/primary" />
 
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edit_text_captcha"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_check_circle_black_24dp"
+            android:hint="@string/login_user_password_captcha"
+            android:inputType="textPassword"
+            android:maxLength="6"
+            android:textColorHint="@color/primary"
+            android:visibility="invisible"
+            app:met_baseColor="@color/primary"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_helperText="@string/login_user_captcha_hint"
+            app:met_maxCharacters="6"
+            app:met_primaryColor="@color/primary" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edit_text_check"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_lock_black_24dp"
+            android:hint="@string/login_user_password_insure"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:textColorHint="@color/primary"
+            android:visibility="invisible"
+            app:met_baseColor="@color/primary"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@color/primary" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/login_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/login_submit"
+            android:textColor="@color/md_white_1000"
+            app:pb_colorComplete="@color/green_complete"
+            app:pb_colorNormal="@color/primary"
+            app:pb_cornerRadius="0dp"
+            android:shadowColor="@color/colorPrimaryDark"
+            app:pb_colorPressed="@color/blue_pressed"
+            app:pb_colorProgress="@color/purple_progress"
+            app:pb_textComplete="Success"
+            app:pb_textProgress="Loading"
+            app:pb_textError="Error"
+            app:pb_colorError="@color/red_error"  />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/login_forget"
+                style="@style/AppTheme.Dialog.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect"
+                android:gravity="center"
+                android:text="@string/login_forget"
+                android:theme="@style/AppTheme.Dialog.Button" />
+
+            <Button
+                android:id="@+id/login_signup"
+                style="@style/AppTheme.Dialog.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect"
+                android:gravity="center"
+                android:text="@string/login_signup"
+                android:theme="@style/AppTheme.Dialog.Button" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -59,12 +155,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"></LinearLayout>
+            android:layout_weight="4" />
     </LinearLayout>
-    <!--<FrameLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-
-    <!--</FrameLayout>-->
 
 </RelativeLayout>
