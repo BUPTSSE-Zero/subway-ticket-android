@@ -6,10 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.PhoneCaptchaRequest;
@@ -17,8 +22,11 @@ import com.subwayticket.model.request.RegisterRequest;
 import com.subwayticket.model.result.MobileLoginResult;
 import com.subwayticket.model.result.Result;
 
+import java.io.UnsupportedEncodingException;
+
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 public class LoginActivity extends BaseActivity {
@@ -28,9 +36,7 @@ public class LoginActivity extends BaseActivity {
         public static String UPDATE = "update";
         public static String CAPTCHA = "captcha";
 
-        private Mode() {
-
-        }
+        private Mode() {}
     }
 
     // Default method login
@@ -133,9 +139,9 @@ public class LoginActivity extends BaseActivity {
                                                     mode = Mode.REGISTER;
                                                     setSubmitTitle();
                                                 }
-                                            },1500);
+                                            }, 1500);
                                         }
-                                    },1500);
+                                    }, 1500);
                                     /**
                                      * IF AND ONLY IF getCaptcha successful
                                      *
@@ -159,7 +165,7 @@ public class LoginActivity extends BaseActivity {
                                             // Update mode
                                             loginBtn.setProgress(-1);
                                         }
-                                    },1500);
+                                    }, 1500);
                                 }
                             });
                 } else if (mode.equals(Mode.REGISTER)) {
@@ -178,20 +184,22 @@ public class LoginActivity extends BaseActivity {
                                             // Update mode
                                             loginBtn.setProgress(-1);
                                         }
-                                    },1500);
+                                    }, 1500);
                                 }
+
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Log.e("Register", "Error!" + error.getCause() + error.getMessage() + error.getLocalizedMessage());
+                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                    Toast.makeText(LoginActivity.this,r.result_description,Toast.LENGTH_SHORT).show();
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             // Update mode
                                             loginBtn.setProgress(-1);
                                         }
-                                    },1500);
+                                    }, 1500);
                                 }
                             }
                     );
@@ -253,11 +261,49 @@ public class LoginActivity extends BaseActivity {
             loginBtn.setText(R.string.login_submit);
         } else if (mode.equals(Mode.CAPTCHA)) {
             loginBtn.setText(R.string.login_captcha);
-        } else if (mode.equals(Mode.UPDATE)){
+        } else if (mode.equals(Mode.UPDATE)) {
             loginBtn.setText(R.string.login_update);
         } else {
             loginBtn.setText(R.string.login_signup);
         }
+    }
+
+    private void setSubmitTitle(String mode) {
+
+        loginBtn.setProgress(0);
+        setSubmitTitle();
+
+        if (mode.equals(Mode.CAPTCHA)) {
+            editTextUserName.setVisibility(View.VISIBLE);
+            editTextPassword.setVisibility(View.VISIBLE);
+            editTextCaptcha.setVisibility(View.INVISIBLE);
+            forgetBtn.setVisibility(View.INVISIBLE);
+            signBtn.setVisibility(View.INVISIBLE);
+        } // == END IF == captcha
+        else if (mode.equals(Mode.REGISTER)) {
+            editTextUserName.setVisibility(View.VISIBLE);
+            editTextPassword.setVisibility(View.VISIBLE);
+            editTextCaptcha.setVisibility(View.VISIBLE);
+            forgetBtn.setVisibility(View.INVISIBLE);
+            signBtn.setVisibility(View.INVISIBLE);
+        } // == END IF == register
+        else if (mode.equals(Mode.LOGIN)) {
+            editTextUserName.setVisibility(View.VISIBLE);
+            editTextPassword.setVisibility(View.VISIBLE);
+            editTextCaptcha.setVisibility(View.INVISIBLE);
+            forgetBtn.setVisibility(View.INVISIBLE);
+            signBtn.setVisibility(View.INVISIBLE);
+        } // == END IF == login
+        else if (mode.equals(Mode.UPDATE)) {
+            editTextUserName.setVisibility(View.VISIBLE);
+            editTextPassword.setVisibility(View.VISIBLE);
+            editTextCaptcha.setVisibility(View.VISIBLE);
+            forgetBtn.setVisibility(View.INVISIBLE);
+            signBtn.setVisibility(View.INVISIBLE);
+        } // == END IF == update
+        else {
+        } // == END ELSE == else
+
     }
 
 }

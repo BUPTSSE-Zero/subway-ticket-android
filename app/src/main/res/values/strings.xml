@@ -9,7 +9,7 @@
 
     <string name="login_user_name">用户名</string>
     <string name="login_user_password">密码</string>
-    <string name="login_user_password_insure">确认密码</string>
+    <string name="login_user_password_update">新密码</string>
     <string name="login_user_password_captcha">验证码</string>
 
     <string name="login_submit">进入应用</string>
