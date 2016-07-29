@@ -153,7 +153,13 @@ public class LoginActivity extends BaseActivity {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Log.e("Register GetCaptcha", "Error!" + editTextUserName.getText().toString().trim());
-                                    loginBtn.setProgress(-1);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Update mode
+                                            loginBtn.setProgress(-1);
+                                        }
+                                    },1500);
                                 }
                             });
                 } else if (mode.equals(Mode.REGISTER)) {
@@ -166,14 +172,26 @@ public class LoginActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(Result response) {
                                     Log.e("Register", "Success!" + response.getResultCode());
-                                    loginBtn.setProgress(100);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Update mode
+                                            loginBtn.setProgress(-1);
+                                        }
+                                    },1500);
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     Log.e("Register", "Error!" + error.getCause() + error.getMessage() + error.getLocalizedMessage());
-                                    loginBtn.setProgress(-1);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Update mode
+                                            loginBtn.setProgress(-1);
+                                        }
+                                    },1500);
                                 }
                             }
                     );
