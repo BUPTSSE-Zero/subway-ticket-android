@@ -29,6 +29,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialize.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -323,7 +324,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MainActivity.this.finish();
+                        moveTaskToBack(true);
+                        finish();
                     }
                 })
                 .negativeText(R.string.cancel)
@@ -337,7 +339,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         if (drawer.isDrawerOpen()) {
             drawer.closeDrawer();
         } else {
-            finishApp();
+            this.finishApp();
 //            super.onBackPressed();
         }
     }
