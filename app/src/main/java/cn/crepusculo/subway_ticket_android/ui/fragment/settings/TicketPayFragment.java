@@ -40,7 +40,7 @@ public class TicketPayFragment extends BaseFragment {
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
                 ""+TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
                 ""+0,
-                ""+(long)System.currentTimeMillis(),
+                ""+ System.currentTimeMillis(),
                 "", // FIXME::ERROR AUTHTOKEN
                 new Response.Listener<OrderListResult>() {
                     @Override

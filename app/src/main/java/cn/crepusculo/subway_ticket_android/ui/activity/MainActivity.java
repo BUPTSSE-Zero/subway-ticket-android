@@ -324,8 +324,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        moveTaskToBack(true);
-                        finish();
+                        MainActivity.this.finish();
                     }
                 })
                 .negativeText(R.string.cancel)

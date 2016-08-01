@@ -7,6 +7,8 @@
     <string name="action_settings">设置</string>
     <string name="action_search">查找</string>
 
+    <string name="retry">重试</string>
+
     <string name="login_user_name">用户名</string>
     <string name="login_user_password">密码</string>
     <string name="login_user_password_update">新密码</string>
@@ -14,10 +16,13 @@
 
     <string name="login_submit">进入应用</string>
     <string name="login_update">更新密码</string>
+    <string name="login_update_e">Reset password</string>
     <string name="login_forget">忘记密码</string>
     <string name="login_signup">注册账号</string>
+    <string name="login_signup_e">Sign up</string>
     <string name="login_captcha">获取验证码</string>
     <string name="login_backup">登录模式</string>
+    <string name="login_backup_e">Sign in</string>
     <string name="login_user_name_hint">请输入中国大陆11位手机号</string>
     <string name="login_user_pwd_hint">请输入 6~15 位英文数字混合密码</string>
     <string name="login_user_captcha_hint">请输入 6 位数字验证密码</string>
@@ -33,6 +38,10 @@
     <string name="common_go_prep">到</string>
     <string name="common_from_prep">从</string>
 
+    <string name="comeformthere">设为起点</string>
+    <string name="gotothere">设为目标</string>
+    
+    <string name="choice_usual_route">选择路线</string>
     <!-- ticket tab -->
     <string name="ticket_tab1">未完成</string>
     <string name="ticket_tab2">待取</string>
@@ -53,7 +62,7 @@
     <string name="exit_dialog_content">您未完成的订单将不会被保存</string>
 
     <string name="error_failure_to_get_ticket_info">未能正确得到所查询的路线票务</string>
-
+    <string name="error_failure_to_get_subway_list">获取站点列表失败</string>
     <string name="post_bill">提交订单</string>
 
     <string name="ticket_count">购票张数</string>

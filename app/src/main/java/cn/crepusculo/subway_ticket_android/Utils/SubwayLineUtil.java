@@ -99,4 +99,14 @@ public class SubwayLineUtil {
     public static String ConnectLineNameStr(int line, String str) {
         return line + " " + str;
     }
+
+    public static int ToServerTypeId(int line){
+        String s = "1"+line;
+        return Integer.parseInt(s);
+    }
+
+    public static int ToClientTypeId(int line){
+        String s = ""+line;
+        return Integer.parseInt(s.substring(1));
+    }
 }

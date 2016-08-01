@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "cn.crepusculo.blank"
@@ -62,8 +62,8 @@ dependencies {
     /* TabLayout */
     compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.0.2@aar'
 
-    /* subsay-ticket-model */
-    compile 'com.subwayticket:subway-ticket-models:0.11'
+    /* subway-ticket-model */
+    compile 'com.subwayticket:subway-ticket-models:1.0.0'
 
     /* Expandable view */
     compile 'com.github.aakira:expandable-layout:1.5.1@aar'

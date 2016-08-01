@@ -1,13 +1,20 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.login;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,8 +23,11 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.PhoneCaptchaRequest;
 import com.subwayticket.model.request.RegisterRequest;
+import com.subwayticket.model.request.ResetPasswordRequest;
 import com.subwayticket.model.result.MobileLoginResult;
 import com.subwayticket.model.result.Result;
+
+import org.w3c.dom.Text;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
@@ -53,6 +63,9 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     private Button signBtn;
     private Button forgetBtn;
 
+    private TextSwitcher textSwitcher;
+    private TextSwitcher textSwitcher2;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_login;
@@ -60,14 +73,46 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initView() {
-
         initCard();
+        initHint();
         initExpandableMode();
         buttonSize = new ViewGroup.LayoutParams(
                 forgetBtn.getLayoutParams().width,
                 forgetBtn.getLayoutParams().height);
     }
+    private void initHint(){
+        textSwitcher = (TextSwitcher)findViewById(R.id.hint);
+        textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+//                TextView textView = new TextView(LoginActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
+                TextView textView = (TextView) inflater.inflate(R.layout.item_hint , null);
+                textView.setPadding(40,70,0,0);
 
+                return textView;
+            }
+        });
+        textSwitcher.setInAnimation(this,R.anim.fade_in_center);
+        textSwitcher.setOutAnimation(this,R.anim.fade_out_center);
+
+        textSwitcher2 = (TextSwitcher)findViewById(R.id.hint_bigger);
+        textSwitcher2.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+//                TextView textView = new TextView(LoginActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
+                TextView textView = (TextView) inflater.inflate(R.layout.item_hint_bigger , null);
+                textView.setPadding(40,100,0,0);
+                return textView;
+            }
+        });
+        textSwitcher2.setInAnimation(this,R.anim.fade_in_center);
+        textSwitcher2.setOutAnimation(this,R.anim.fade_out_center);
+
+        textSwitcher.setText(getResources().getString(R.string.login_backup));
+        textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
+    }
     private void initCard() {
         card = (LinearLayout) findViewById(R.id.card);
 
@@ -132,12 +177,14 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     }
 
     private void setSubmitTitle(String mode) {
+
         this.mode = mode;
         loginBtn.setProgress(0);
         setSubmitTitle();
 
         if (mode.equals(Mode.CAPTCHA)) {
-
+            textSwitcher.setText(getResources().getString(R.string.login_signup));
+            textSwitcher2.setText(getResources().getString(R.string.login_signup_e));
             /**
              * Captcha - pwdEditText
              */
@@ -167,6 +214,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
 
         // == END IF == register
         else if (mode.equals(Mode.LOGIN)) {
+            textSwitcher.setText(getResources().getString(R.string.login_backup));
+            textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
             /**
              * Login - pwdEditText
              */
@@ -187,6 +236,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
 
         // == END IF == login
         else if (mode.equals(Mode.UPDATE)) {
+            textSwitcher.setText(getResources().getString(R.string.login_update));
+            textSwitcher2.setText(getResources().getString(R.string.login_update_e));
             /**
              * Update - pwdEditText
              */
@@ -300,18 +351,21 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     Info.getInstance().setToken("" + code);
 
                                     loginBtn.setProgress(100);
-                                    CircularAnimUtil.PERFECT_MILLS = 329;
-                                    CircularAnimUtil.startActivity(
+//                                    jumpToActivity(MainActivity.class);
+//                                    finish();
+                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                    CircularAnimUtil.startActivityThenFinish(
                                             LoginActivity.this,
-                                            MainActivity.class,
-                                            (View) loginBtn, R
-                                                    .color.primary);
-                                    CircularAnimUtil.resetMills();
+                                            intent,
+                                            false,
+                                            loginBtn,R.color.green_complete,329);
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
+                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                    Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
                                     loginBtn.setProgress(-1);
                                 }
                             }
@@ -362,7 +416,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.e("Register GetCaptcha", "Error!" + editTextUserName.getText().toString().trim());
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -386,7 +441,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                 @Override
                                 public void run() {
                                     // Update mode
-                                    loginBtn.setProgress(-1);
+                                    loginBtn.setProgress(100);
                                 }
                             }, 1500);
                         }
@@ -407,6 +462,40 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                         }
                     }
             );
+        }
+        else if(mode.equals(Mode.UPDATE)){
+            NetworkUtils.accountResetPassword(
+                    new ResetPasswordRequest(
+                            editTextUserName.getText().toString().trim(),
+                            editTextPassword.getText().toString().trim(),
+                            editTextCaptcha.getText().toString().trim()),
+                    new Response.Listener<Result>() {
+                        @Override
+                        public void onResponse(Result response) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Update mode
+                                    loginBtn.setProgress(100);
+                                }
+                            }, 1500);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Update mode
+                                    loginBtn.setProgress(-1);
+                                }
+                            }, 1500);
+                        }
+                    });
+
         }
     }
 

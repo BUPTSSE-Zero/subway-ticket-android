@@ -120,7 +120,7 @@ public class StationRecyclerAdapter extends RecyclerView.Adapter<StationRecycler
         ArrayList<TextView> a = new ArrayList<>();
         holder.start.setText(dataset.get(p).start.getName());
         holder.destination.setText(dataset.get(p).end.getName());
-        holder.date.setText("2017-4-26");
+        holder.date.setText("231-4-26");
         holder.status.setText(dataset.get(p).getStatus());
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();

@@ -29,10 +29,9 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void goToLoginActivity() {
-        Intent intent = new Intent();
-        CircularAnimUtil.PERFECT_MILLS = 329;
-        CircularAnimUtil.startActivity(this, LoginActivity.class, view, R.color.primary);
-        CircularAnimUtil.resetMills();
+//        jumpToActivity(LoginActivity.class);
+        Intent intent = new Intent(this,LoginActivity.class);
+        CircularAnimUtil.startActivityThenFinish(this,intent,false,view,R.color.primary,329);
     }
 
 }

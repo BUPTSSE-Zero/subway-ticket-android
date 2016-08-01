@@ -4,21 +4,37 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.subwayticket.database.model.SubwayLine;
+import com.subwayticket.database.model.SubwayStation;
+import com.subwayticket.model.result.SubwayLineListResult;
+import com.subwayticket.model.result.SubwayStationListResult;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
-import cn.crepusculo.subway_ticket_android.ui.adapter.StationAdapter;
+import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
+import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class SearchActivity extends BaseActivity implements
         SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
@@ -40,11 +56,12 @@ public class SearchActivity extends BaseActivity implements
     private Bundle result;
     /* search list */
     private ArrayList<Station> stationArrayList;
-    private StationAdapter stationAdapter;
+    private SearchAdapter searchAdapter;
+    private SearchHistoryAdapter searchHistoryAdapter;
 
     /* compats */
-    private SearchView searchView;
-    private ListView listView;
+    private RecyclerView listView;
+    private RecyclerView historyView;
 
     @Override
     protected int getLayoutResource() {
@@ -83,29 +100,25 @@ public class SearchActivity extends BaseActivity implements
 
     @Override
     protected void initView() {
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        listView = (RecyclerView) findViewById(R.id.list);
+        listView.setLayoutManager(new LinearLayoutManager(this));
 
-//        searchView = (SearchView) findViewById(R.id.search_view);
-        listView = (ListView) findViewById(R.id.list);
+        boolean status = initData();
+        searchAdapter.animateTo(stationArrayList);
 
-        stationArrayList = new ArrayList<Station>();
-        loadData(stationArrayList);
+        Station station1 = new Station("2333",4);
+        Station station2 = new Station("23333",5);
+        ArrayList<Object> objects = new ArrayList<>();
+        objects.add(station1);
+        objects.add(station2);
 
-        stationAdapter = new StationAdapter(SearchActivity.this, stationArrayList);
-        listView.setAdapter(stationAdapter);
-        listView.setTextFilterEnabled(true);
-        listView.setOnItemClickListener(this);
-        Bundle bundle = getBundle();
-        initString();
-        SEARCH_STATUS = bundle.getInt("TYPE", 0);
-        listView.clearChoices();
+        historyView = (RecyclerView) findViewById(R.id.history);
+        historyView.setLayoutManager(new LinearLayoutManager(this));
+        historyView.setAdapter(searchHistoryAdapter);
+        searchHistoryAdapter = new SearchHistoryAdapter(SearchActivity.this, objects);
 
-//        searchView.setOnQueryTextListener(this);
-//        searchView.setSubmitButtonEnabled(false);
-//        searchView.setIconifiedByDefault(false);
-//        searchView.setQueryHint("Search Here");
     }
+
 
     @Override
     public void onBackPressed() {
@@ -113,6 +126,56 @@ public class SearchActivity extends BaseActivity implements
         setResult(EDIT_TEXT_REQUEST_CODE_EMPTY, intent);
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
+    }
+
+    private boolean initData() {
+        stationArrayList = new ArrayList<>();
+        Log.e("Data", "initData!");
+        String beijingId = "1";
+        NetworkUtils.subwayGetLineListByCity(
+                beijingId,
+                new Response.Listener<SubwayLineListResult>() {
+                    @Override
+                    public void onResponse(SubwayLineListResult response) {
+                        List<SubwayLine> lineList = response.getSubwayLineList();
+                        for (SubwayLine line : lineList) {
+                            Log.e("Data", "Find Line!" + line.getSubwayLineName() + SubwayLineUtil.ToClientTypeId(line.getSubwayLineId()));
+
+                            NetworkUtils.subwayGetStationByLine(
+                                    "" + line.getSubwayLineId(),
+                                    new Response.Listener<SubwayStationListResult>() {
+                                        @Override
+                                        public void onResponse(SubwayStationListResult response) {
+                                            List<SubwayStation> stationList = response.getSubwayStationList();
+                                            for (SubwayStation s : stationList
+                                                    ) {
+                                                Station station = Station.SubwayStationAdapter(s);
+                                                stationArrayList.add(station);
+                                                Log.e("Data", "Add:!" + s.getSubwayStationId() + station.getName());
+                                            }
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+//                                            showErrorDialog();
+                                        }
+                                    });
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        showErrorDialog();
+                    }
+                });
+
+        searchAdapter = new SearchAdapter(SearchActivity.this, stationArrayList);
+        listView.setAdapter(searchAdapter);
+        searchAdapter.animateTo(stationArrayList);
+        return true;
     }
 
     private void initString() {
@@ -158,28 +221,12 @@ public class SearchActivity extends BaseActivity implements
             setResult(EDIT_TEXT_REQUEST_CODE_BOTH, intent);
     }
 
-    public void loadData(ArrayList<Station> stationArrayList) {
-        stationArrayList.add(new Station("ABC", 4));
-        stationArrayList.add(new Station("ACB", 5));
-        stationArrayList.add(new Station("BVF", 6));
-        stationArrayList.add(new Station("南京路", 1));
-        stationArrayList.add(new Station("北京路", 2));
-        stationArrayList.add(new Station("东京路", 7));
-        stationArrayList.add(new Station("BRT", 13));
-        stationArrayList.add(new Station("ANM", 1));
-        stationArrayList.add(new Station("太平洋广场", 4));
-    }
-
     @Override
     public boolean onQueryTextChange(String newText) {
         // User changed the text
-        if (TextUtils.isEmpty(newText)) {
-            // Clear the text filter.
-            listView.clearTextFilter();
-        } else {
-            // Sets the initial value for the text filter.
-            listView.setFilterText(newText);
-        }
+        final List<Station> filteredModelList = filter(stationArrayList, newText);
+        searchAdapter.animateTo(filteredModelList);
+        listView.scrollToPosition(0);
         return false;
     }
 
@@ -198,5 +245,47 @@ public class SearchActivity extends BaseActivity implements
         int line = Integer.parseInt(lineView.getText().toString().trim());
         setSearchResult(new Station(name, line));
         this.finish();
+    }
+
+    private List<Station> filter(List<Station> list, String query) {
+        if (TextUtils.isEmpty(query)) {
+            return stationArrayList;
+        } else {
+            query = query.toLowerCase();
+            final List<Station> filteredModelList = new ArrayList<>();
+            for (Station station : list) {
+                final String text = station.getName();
+                if (text.contains(query)) {
+                    filteredModelList.add(station);
+                }
+            }
+            return filteredModelList;
+        }
+    }
+
+    public void showErrorDialog() {
+        MaterialDialog dialog = new MaterialDialog.Builder(SearchActivity.this)
+                .title(R.string.error)
+                .content(R.string.error_failure_to_get_subway_list)
+                .positiveText(R.string.retry)
+                .positiveColor(getResources().getColor(R.color.primary))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        initData();
+                        dialog.dismiss();
+                    }
+                })
+                .negativeText(R.string.cancel)
+                .negativeColor(getResources().getColor(R.color.primary))
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                        Intent intent = new Intent();
+                        finish();
+                    }
+                })
+                .show();
     }
 }
