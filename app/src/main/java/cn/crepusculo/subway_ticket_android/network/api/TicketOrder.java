@@ -14,11 +14,11 @@ public class TicketOrder {
     private static final String PREFIX = "ticket_order/";
 
     public static final String SUBMIT= "submit";
-    public static final String CANCLE = "cancel";
+    public static final String CANCEL = "cancel";
     public static final String PAY = "pay";
     public static final String REFUND = "refund";
     public static final String GET_ORDER_INFO = "order_info";
-    public static final String GET_OERDER_LIST = "order_list";
+    public static final String GET_ORDER_LIST = "order_list";
 
     public static String getApiFullName(String apiName) {
         return PREFIX + apiName;

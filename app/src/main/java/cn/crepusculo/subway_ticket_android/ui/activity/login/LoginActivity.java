@@ -3,6 +3,7 @@ package cn.crepusculo.subway_ticket_android.ui.activity.login;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -442,6 +443,14 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                 public void run() {
                                     // Update mode
                                     loginBtn.setProgress(100);
+                                    try {
+                                        Thread.sleep(1000);
+                                        setSubmitTitle(Mode.LOGIN);
+                                    } catch (InterruptedException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
+
                                 }
                             }, 1500);
                         }
@@ -477,6 +486,13 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                 public void run() {
                                     // Update mode
                                     loginBtn.setProgress(100);
+                                    try {
+                                        Thread.sleep(1000);
+                                        setSubmitTitle(Mode.LOGIN);
+                                    } catch (InterruptedException e) {
+                                        // TODO Auto-generated catch block
+                                        e.printStackTrace();
+                                    }
                                 }
                             }, 1500);
                         }

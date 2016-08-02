@@ -21,6 +21,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.subwayticket.database.model.PreferRoute;
 import com.subwayticket.database.model.SubwayLine;
 import com.subwayticket.database.model.SubwayStation;
 import com.subwayticket.model.result.SubwayLineListResult;
@@ -106,16 +107,20 @@ public class SearchActivity extends BaseActivity implements
         boolean status = initData();
         searchAdapter.animateTo(stationArrayList);
 
+        /* TEST DATA */
         Station station1 = new Station("2333",4);
         Station station2 = new Station("23333",5);
+        PreferRoute preferRoute1 = new PreferRoute("99999999999",111,181);
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(station1);
         objects.add(station2);
-
+        objects.add(preferRoute1);
+//        NetworkUtils.subwayGetTicketPriceByStartStationAndEndStation()
         historyView = (RecyclerView) findViewById(R.id.history);
         historyView.setLayoutManager(new LinearLayoutManager(this));
         historyView.setAdapter(searchHistoryAdapter);
-        searchHistoryAdapter = new SearchHistoryAdapter(SearchActivity.this, objects);
+
+
 
     }
 

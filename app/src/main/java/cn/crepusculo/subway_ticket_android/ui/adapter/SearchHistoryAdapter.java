@@ -2,6 +2,7 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.subwayticket.database.model.PreferRoute;
-import com.subwayticket.database.model.SubwayLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,14 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     private final LayoutInflater mInflater;
     private List<Object> list;
 
-    public static final int STATUS_STAIONS = 0;
-    public static final int STATUS_ROUTE= 1;
+    public static final int STATUS_STATIONS = 0;
+    public static final int STATUS_ROUTE = 1;
 
     interface OnItemClickListener {
         void onItemClick(int position, Station data);
     }
 
-    public SearchHistoryAdapter(Context context, List<Object> list){
+    public SearchHistoryAdapter(Context context, List<Object> list) {
         mInflater = LayoutInflater.from(context);
         this.list = new ArrayList<>(list);
     }
@@ -50,36 +50,50 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
                 //(R.layout.item_row_history_route)
                 txtStart = (TextView) itemView.findViewById(R.id.txtNameStart);
                 txtEnd = (TextView) itemView.findViewById(R.id.txtNameEnd);
-            }
-            else if (type == STATUS_STAIONS) {
+            } else if (type == STATUS_STATIONS) {
                 //(R.layout.item_row_history_station)
-                txtName     = (TextView) itemView.findViewById(R.id.txtName);
-                goToThere     = (Button) itemView.findViewById(R.id.goToThere);
+                txtName = (TextView) itemView.findViewById(R.id.txtName);
+                goToThere = (Button) itemView.findViewById(R.id.goToThere);
                 comeFromThere = (Button) itemView.findViewById(R.id.comeFromThere);
+                txtName.setText("Null");
             }
         }
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == STATUS_ROUTE){
-            final View itemView = mInflater.inflate(R.layout.item_row_history_route, parent, false);
-            return new ViewHolder(itemView,viewType);
+    public int getItemViewType(int position) {
+        if (list.get(position).getClass().getName().equals(PreferRoute.class.getName())) {
+            Log.e("getItemViewType", "TYPE:route");
+            return STATUS_ROUTE;
+        } else {
+            Log.e("getItemViewType", "TYPE:stations");
+            return STATUS_STATIONS;
         }
-        else /*if(viewType == STATUS_STAIONS)*/{
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == STATUS_ROUTE) {
+            final View itemView = mInflater.inflate(R.layout.item_row_history_route, parent, false);
+            Log.e("onCreateViewHolder", "inflate item_row_history_route");
+            return new ViewHolder(itemView, STATUS_ROUTE);
+        } else /*if(viewType == STATUS_STATIONS)*/ {
             final View itemView = mInflater.inflate(R.layout.item_row_history_station, parent, false);
-            return new ViewHolder(itemView,viewType);
+            Log.e("onCreateViewHolder", "inflate item_row_history_station");
+            return new ViewHolder(itemView, STATUS_STATIONS);
         }
 
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (list.get(position).getClass().getName().equals(Station.class.getName())){
-            final Station station = (Station)list.get(position);
-        }
-        else{
-            final PreferRoute route= (PreferRoute)list.get(position);
+        if (list.get(position).getClass().getName().equals(Station.class.getName())) {
+            Log.e("onBindViewHolder", "Status station");
+            final Station station = (Station) list.get(position);
+            holder.txtName.setText(station.getName());
+        } else {
+            Log.e("onBindViewHolder", "Status route");
+            final PreferRoute route = (PreferRoute) list.get(position);
         }
 
     }
