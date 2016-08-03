@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
+import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 
 public class TicketPayFragment extends BaseFragment {
 
@@ -41,7 +43,7 @@ public class TicketPayFragment extends BaseFragment {
                 ""+TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
                 ""+0,
                 ""+ System.currentTimeMillis(),
-                "", // FIXME::ERROR AUTHTOKEN
+                Info.getInstance().getToken(), // FIXME::ERROR AUTHTOKEN
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
@@ -51,7 +53,7 @@ public class TicketPayFragment extends BaseFragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(mActivity,"ERROR",Toast.LENGTH_SHORT).show();
+
                     }
                 });
         for (int i = 0; i < 30; i++) {

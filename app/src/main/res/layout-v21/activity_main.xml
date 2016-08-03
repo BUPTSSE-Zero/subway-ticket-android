@@ -210,7 +210,8 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:src="@drawable/ic_find_in_page_white_24dp"
-        app:fabSize="mini"
+        app:fabSize="normal"
+        android:layout_marginBottom="18dp"
         android:visibility="invisible"
         app:layout_behavior="cn.crepusculo.subway_ticket_android.ui.behavior" />
 </RelativeLayout>

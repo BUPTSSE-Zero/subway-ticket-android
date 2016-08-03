@@ -3,20 +3,40 @@
     android:id="@+id/item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:background="?attr/selectableItemBackground"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
-    <TextView
-        android:id="@+id/txtName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_expand" />
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:id="@+id/txtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:paddingTop="8dp"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/light_secondary_text" />
 
 </LinearLayout>
