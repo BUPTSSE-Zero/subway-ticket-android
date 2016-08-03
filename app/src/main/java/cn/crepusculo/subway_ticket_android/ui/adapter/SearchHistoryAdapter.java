@@ -55,7 +55,6 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
                 txtName = (TextView) itemView.findViewById(R.id.txtName);
                 goToThere = (Button) itemView.findViewById(R.id.goToThere);
                 comeFromThere = (Button) itemView.findViewById(R.id.comeFromThere);
-                txtName.setText("Null");
             }
         }
     }
@@ -94,6 +93,8 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         } else {
             Log.e("onBindViewHolder", "Status route");
             final PreferRoute route = (PreferRoute) list.get(position);
+            holder.txtStart.setText(route.getStartStation().getSubwayStationName());
+            holder.txtEnd.setText(route.getEndStation().getSubwayStationName());
         }
 
     }

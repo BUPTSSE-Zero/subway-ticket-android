@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
+import cn.crepusculo.subway_ticket_android.ui.adapter.RecycleViewDivider;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
@@ -106,18 +108,29 @@ public class SearchActivity extends BaseActivity implements
 
         boolean status = initData();
         searchAdapter.animateTo(stationArrayList);
-
+        listView.setVisibility(View.GONE);
         /* TEST DATA */
         Station station1 = new Station("2333",4);
         Station station2 = new Station("23333",5);
         PreferRoute preferRoute1 = new PreferRoute("99999999999",111,181);
+        SubwayStation ss1 = new SubwayStation(111);
+        ss1.setSubwayStationName("五道口");
+        SubwayStation ss2 = new SubwayStation(181);
+        ss2.setSubwayStationName("什刹海");
+        preferRoute1.setStartStation(ss1);
+        preferRoute1.setEndStation(ss2);
         ArrayList<Object> objects = new ArrayList<>();
         objects.add(station1);
         objects.add(station2);
         objects.add(preferRoute1);
 //        NetworkUtils.subwayGetTicketPriceByStartStationAndEndStation()
+        searchHistoryAdapter = new SearchHistoryAdapter(this, objects);
         historyView = (RecyclerView) findViewById(R.id.history);
         historyView.setLayoutManager(new LinearLayoutManager(this));
+        RecycleViewDivider dividerLine = new RecycleViewDivider(RecycleViewDivider.VERTICAL);
+        dividerLine.setSize(4);
+        dividerLine.setColor(0xFFDDDDDD);
+        historyView.addItemDecoration(dividerLine);
         historyView.setAdapter(searchHistoryAdapter);
 
 
@@ -132,6 +145,7 @@ public class SearchActivity extends BaseActivity implements
         super.onBackPressed();
         overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
     }
+
 
     private boolean initData() {
         stationArrayList = new ArrayList<>();
@@ -229,6 +243,8 @@ public class SearchActivity extends BaseActivity implements
     @Override
     public boolean onQueryTextChange(String newText) {
         // User changed the text
+        listView.setVisibility(View.VISIBLE);
+        historyView.setVisibility(View.GONE);
         final List<Station> filteredModelList = filter(stationArrayList, newText);
         searchAdapter.animateTo(filteredModelList);
         listView.scrollToPosition(0);

@@ -2,6 +2,9 @@ package cn.crepusculo.subway_ticket_android.utils;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.subwayticket.database.model.PreferRoute;
+import com.subwayticket.database.model.SubwayStation;
+import com.subwayticket.model.request.AddPreferStationRequest;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.ModifyPasswordRequest;
 import com.subwayticket.model.request.PayOrderRequest;
@@ -11,10 +14,13 @@ import com.subwayticket.model.request.RegisterRequest;
 import com.subwayticket.model.request.ResetPasswordRequest;
 import com.subwayticket.model.request.SubmitOrderRequest;
 import com.subwayticket.model.result.CityListResult;
+import com.subwayticket.model.result.HistoryRouteListResult;
 import com.subwayticket.model.result.MobileLoginResult;
 import com.subwayticket.model.result.OrderInfoResult;
 import com.subwayticket.model.result.OrderListResult;
 import com.subwayticket.model.result.PayOrderResult;
+import com.subwayticket.model.result.PreferRouteListResult;
+import com.subwayticket.model.result.PreferStationListResult;
 import com.subwayticket.model.result.RefundOrderResult;
 import com.subwayticket.model.result.Result;
 import com.subwayticket.model.result.SubmitOrderResult;
@@ -28,6 +34,7 @@ import java.util.Map;
 import cn.crepusculo.subway_ticket_android.network.NetworkMethodWrapper;
 import cn.crepusculo.subway_ticket_android.network.Url;
 import cn.crepusculo.subway_ticket_android.network.api.Account;
+import cn.crepusculo.subway_ticket_android.network.api.Preference;
 import cn.crepusculo.subway_ticket_android.network.api.Subway;
 import cn.crepusculo.subway_ticket_android.network.api.TicketOrder;
 
@@ -94,7 +101,6 @@ public class NetworkUtils {
         return NetworkMethodWrapper.put(url, Result.class, null, header, listener, errorListener);
     }
 
-
     // FIXME: 16/7/15 跟后端商量,返回结果是 JSON 数组还是对象
     public static Request subwayGetCityList(Response.Listener<CityListResult> listener,
                                             Response.ErrorListener errorListener) {
@@ -151,7 +157,7 @@ public class NetworkUtils {
                                                 String authToken,
                                                 Response.Listener<Result> listener,
                                                 Response.ErrorListener errorListener) {
-        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.CANCLE), orderId);
+        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.CANCEL), orderId);
 
         Map<String, String> header = generateHeaderByAuthToken(authToken);
 
@@ -200,7 +206,7 @@ public class NetworkUtils {
             Response.Listener<OrderListResult> listener,
             Response.ErrorListener errorListener
     ) {
-        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.GET_OERDER_LIST),
+        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.GET_ORDER_LIST),
                 status, startTimeStamp, endTimeStamp);
 
         Map<String, String> header = generateHeaderByAuthToken(authToken);
@@ -215,7 +221,7 @@ public class NetworkUtils {
             Response.Listener<OrderListResult> listener,
             Response.ErrorListener errorListener
     ) {
-        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.GET_OERDER_LIST),
+        String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.GET_ORDER_LIST),
                 startTimeStamp, endTimeStamp);
 
         Map<String, String> header = generateHeaderByAuthToken(authToken);
@@ -231,4 +237,62 @@ public class NetworkUtils {
         return header;
     }
 
+
+    public static Request preferenceHistory(
+            String authToken,
+            Response.Listener<HistoryRouteListResult> listener,
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.HISTORY_ROUTE));
+        return NetworkMethodWrapper.getObject(url, HistoryRouteListResult.class, listener, errorListener);
+    }
+
+    public static Request preferencePreferStation(
+            String authToken,
+            Response.Listener<PreferStationListResult> listener,
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION));
+        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, listener, errorListener);
+    }
+
+    public static Request preferenceAddPreferStation(
+            AddPreferStationRequest addPreferStationRequest,
+            String authToken,
+            Response.Listener<PreferStationListResult> listener,
+            Response.ErrorListener errorListener){
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION),Preference.getApiFullName(Preference.ADD));
+        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, listener, errorListener);
+    }
+
+    public static Request preferenceRemovePreferStation(
+            int stationID,
+            Response.Listener<Result> listener,
+            Response.ErrorListener errorListener){
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION),Preference.getApiFullName(Preference.REMOVE));
+        return NetworkMethodWrapper.getObject(url, Result.class, listener, errorListener);
+    }
+
+    public static Request preferencePrefeRoute(
+            String authToken,
+            Response.Listener<PreferRouteListResult> listener,
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE));
+        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, listener, errorListener);
+    }
+
+    public static Request preferenceAddPreferRoute(
+            AddPreferStationRequest addPreferRouteRequest,
+            String authToken,
+            Response.Listener<PreferRouteListResult> listener,
+            Response.ErrorListener errorListener){
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE),Preference.getApiFullName(Preference.ADD));
+        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, listener, errorListener);
+    }
+
+    public static Request preferenceRemovePreferRoute(
+            int stationID,
+            Response.Listener<Result> listener,
+            Response.ErrorListener errorListener){
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE),Preference.getApiFullName(Preference.REMOVE));
+        return NetworkMethodWrapper.getObject(url, Result.class, listener, errorListener);
+    }
 }
