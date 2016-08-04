@@ -21,22 +21,23 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
     private List<Object> list;
-
     public static final int STATUS_STATIONS = 0;
     public static final int STATUS_ROUTE = 1;
+    private OnItemClickListener mListener;
 
-    interface OnItemClickListener {
-        void onItemClick(int position, Station data);
+    public interface OnItemClickListener {
+        void onItemClick(int position, Object data);
     }
 
-    public SearchHistoryAdapter(Context context, List<Object> list) {
+    public SearchHistoryAdapter(Context context, List<Object> list, OnItemClickListener listener) {
         mInflater = LayoutInflater.from(context);
+        this.mListener = listener;
         this.list = new ArrayList<>(list);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-
+        private View itemView;
         private TextView txtStart;
         private TextView txtEnd;
 
@@ -46,6 +47,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
         public ViewHolder(View itemView, int type) {
             super(itemView);
+            this.itemView = (View) itemView;
             if (type == STATUS_ROUTE) {
                 //(R.layout.item_row_history_route)
                 txtStart = (TextView) itemView.findViewById(R.id.txtNameStart);
@@ -85,16 +87,34 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (list.get(position).getClass().getName().equals(Station.class.getName())) {
             Log.e("onBindViewHolder", "Status station");
             final Station station = (Station) list.get(position);
             holder.txtName.setText(station.getName());
+            holder.goToThere.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(position,list.get(position));
+                }
+            });
+            holder.comeFromThere.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(position,list.get(position));
+                }
+            });
         } else {
             Log.e("onBindViewHolder", "Status route");
             final PreferRoute route = (PreferRoute) list.get(position);
             holder.txtStart.setText(route.getStartStation().getSubwayStationName());
             holder.txtEnd.setText(route.getEndStation().getSubwayStationName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(position,list.get(position));
+                }
+            });
         }
 
     }

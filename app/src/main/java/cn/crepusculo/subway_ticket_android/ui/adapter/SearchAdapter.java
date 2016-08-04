@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,31 +24,34 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private final LayoutInflater mInflater;
     private List<Station> list;
     private Context mContext;
+    private OnItemClickListener mListener;
 
-    interface OnItemClickListener {
-        void onItemClick(int position, Station data);
+    public interface OnItemClickListener {
+        void onItemClick(Station data);
     }
 
-    public SearchAdapter(Context context, List<Station> list){
+    public SearchAdapter(Context context, List<Station> list,OnItemClickListener listener){
         mInflater = LayoutInflater.from(context);
         mContext = context;
+        mListener = listener;
         this.list = new ArrayList<>(list);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
+        private final View itemView;
         private final TextView txtName;
         private final TextView txtLine;
         private final ImageView imageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             txtName = (TextView) itemView.findViewById(R.id.txtName);
             txtLine = (TextView) itemView.findViewById(R.id.txtLine);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
         }
 
-        public void bind(Station station) {
+        public void bind(final Station station) {
             String name = station.getName();
             String line = station.getLine()+"号线";
             txtName.setText(name);
@@ -56,6 +60,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             imageView.getDrawable().setColorFilter(
                     mContext.getResources().getColor(SubwayLineUtil.getColor(station.getLine())),
                     PorterDuff.Mode.SRC_ATOP);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(station);
+                }
+            });
         }
     }
 

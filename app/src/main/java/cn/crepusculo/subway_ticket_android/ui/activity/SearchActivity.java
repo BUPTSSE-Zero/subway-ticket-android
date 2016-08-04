@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +15,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -30,6 +33,7 @@ import com.subwayticket.model.result.SubwayStationListResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
@@ -107,11 +111,23 @@ public class SearchActivity extends BaseActivity implements
         listView.setLayoutManager(new LinearLayoutManager(this));
 
         boolean status = initData();
+        searchAdapter = new SearchAdapter(
+                SearchActivity.this,
+                stationArrayList,
+                new SearchAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Station data) {
+                        Toast.makeText(SearchActivity.this,"Test for Item Cilck Listener",Toast.LENGTH_SHORT).show();
+                    }
+                });
+        listView.setAdapter(searchAdapter);
+        searchAdapter.animateTo(stationArrayList);
         searchAdapter.animateTo(stationArrayList);
         listView.setVisibility(View.GONE);
+
         /* TEST DATA */
-        Station station1 = new Station("2333",4);
-        Station station2 = new Station("23333",5);
+        Station station1 = new Station("惠新西街南口",4);
+        Station station2 = new Station("东市",5);
         PreferRoute preferRoute1 = new PreferRoute("99999999999",111,181);
         SubwayStation ss1 = new SubwayStation(111);
         ss1.setSubwayStationName("五道口");
@@ -124,7 +140,15 @@ public class SearchActivity extends BaseActivity implements
         objects.add(station2);
         objects.add(preferRoute1);
 //        NetworkUtils.subwayGetTicketPriceByStartStationAndEndStation()
-        searchHistoryAdapter = new SearchHistoryAdapter(this, objects);
+        searchHistoryAdapter = new SearchHistoryAdapter(
+                this,
+                objects,
+                new SearchHistoryAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int position, Object data) {
+                        Toast.makeText(SearchActivity.this,"Test for Item Cilck Listener",Toast.LENGTH_SHORT).show();
+                    }
+                });
         historyView = (RecyclerView) findViewById(R.id.history);
         historyView.setLayoutManager(new LinearLayoutManager(this));
         RecycleViewDivider dividerLine = new RecycleViewDivider(RecycleViewDivider.VERTICAL);
@@ -132,7 +156,6 @@ public class SearchActivity extends BaseActivity implements
         dividerLine.setColor(0xFFDDDDDD);
         historyView.addItemDecoration(dividerLine);
         historyView.setAdapter(searchHistoryAdapter);
-
 
 
     }
@@ -190,10 +213,6 @@ public class SearchActivity extends BaseActivity implements
                         showErrorDialog();
                     }
                 });
-
-        searchAdapter = new SearchAdapter(SearchActivity.this, stationArrayList);
-        listView.setAdapter(searchAdapter);
-        searchAdapter.animateTo(stationArrayList);
         return true;
     }
 
