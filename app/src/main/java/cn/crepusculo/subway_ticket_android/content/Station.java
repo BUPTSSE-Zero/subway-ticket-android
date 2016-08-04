@@ -1,8 +1,13 @@
 package cn.crepusculo.subway_ticket_android.content;
 
+import com.subwayticket.database.model.PreferRoute;
 import com.subwayticket.database.model.StationMessage;
 import com.subwayticket.database.model.SubwayLine;
 import com.subwayticket.database.model.SubwayStation;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
@@ -10,6 +15,15 @@ public class Station {
     private int clientLine = 0;
     private int serverLine = 0;
     private SubwayLine subwayLine;
+
+    public int getId() {
+        return id;
+    }
+
+    public Station setId(int id) {
+        this.id = id;
+        return this;
+    }
 
     private int id;
     private String name;
@@ -19,9 +33,10 @@ public class Station {
     public Station() {
     }
 
-    public Station(String name, int line) {
+    public Station(String name, int line, int id) {
         this.name = name;
         this.clientLine = line;
+        this.id = id;
     }
 
     public Station(int i) {
@@ -67,5 +82,20 @@ public class Station {
         s.available = subwayStation.isAvailable();
         s.id = subwayStation.getSubwayStationId();
         return s;
+    }
+
+    public static List<Station> PreferRouteAdapter(PreferRoute preferRoute){
+        List<Station> result = new ArrayList<>();
+        Station start = new Station(
+                preferRoute.getStartStation().getSubwayStationName(),
+                preferRoute.getStartStation().getSubwayLine().getSubwayLineId(),
+                preferRoute.getStartStationId());
+        Station end = new Station(
+                preferRoute.getEndStation().getSubwayStationName(),
+                preferRoute.getEndStation().getSubwayLine().getSubwayLineId(),
+                preferRoute.getEndStationId());
+        result.add(start);
+        result.add(end);
+        return result;
     }
 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.subwayticket.database.model.City;
 import com.subwayticket.model.result.CityListResult;
 
@@ -159,10 +160,10 @@ public class PayActivity extends BaseActivity {
         Bundle b = getBundle();
         if (b != null) {
             String start_str = b.getString("route_start");
-            String destination_str = b.getString("route_end");
-            Log.e("PayActivity", start_str + destination_str);
-            Station start = SubwayLineUtil.CutLineNameStr(start_str);
-            Station end = SubwayLineUtil.CutLineNameStr(destination_str);
+            String end_str = b.getString("route_end");
+            Log.e("PayActivity", start_str + end_str);
+            Station start = new Gson().fromJson(start_str, Station.class);
+            Station end = new Gson().fromJson(end_str, Station.class);
             payRequest.start.setName(start.getName());
             payRequest.start.setLine(start.getLine());
             payRequest.end.setName(end.getName());

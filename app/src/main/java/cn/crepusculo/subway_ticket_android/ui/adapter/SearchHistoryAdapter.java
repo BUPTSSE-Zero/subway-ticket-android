@@ -1,6 +1,7 @@
 package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,10 +24,12 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     private List<Object> list;
     public static final int STATUS_STATIONS = 0;
     public static final int STATUS_ROUTE = 1;
+    public static final int STATUS_COME = 2;
+    public static final int STATUS_GO = 3;
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, Object data);
+        void onItemClick(int position, Object data, int mode);
     }
 
     public SearchHistoryAdapter(Context context, List<Object> list, OnItemClickListener listener) {
@@ -95,13 +98,13 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
             holder.goToThere.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position,list.get(position));
+                    mListener.onItemClick(position,list.get(position), STATUS_GO);
                 }
             });
             holder.comeFromThere.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position,list.get(position));
+                    mListener.onItemClick(position,list.get(position), STATUS_COME);
                 }
             });
         } else {
@@ -112,7 +115,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mListener.onItemClick(position,list.get(position));
+                    mListener.onItemClick(position,list.get(position), STATUS_ROUTE);
                 }
             });
         }

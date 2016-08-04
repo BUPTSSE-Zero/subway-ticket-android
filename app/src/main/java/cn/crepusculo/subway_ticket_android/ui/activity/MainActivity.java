@@ -17,24 +17,24 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.bm.library.PhotoView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.github.jorgecastilloprz.FABProgressCircle;
+import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialize.util.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
@@ -43,6 +43,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener, TextWatcher {
     /* Static constant */
 
+    /* Storage */
+    private Station startStation;
+    private Station endStation;
     /* view */
     private View view;
     /* Info */
@@ -167,9 +170,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                         .withIdentifier(SideNavBtn.BILLS),
 
                 new PrimaryDrawerItem()
-                        .withName(drawerItemsNames[SideNavBtn.CITYS])
-                        .withIcon(drawerItemIcons[SideNavBtn.CITYS])
-                        .withIdentifier(SideNavBtn.CITYS),
+                        .withName(drawerItemsNames[SideNavBtn.CITES])
+                        .withIcon(drawerItemIcons[SideNavBtn.CITES])
+                        .withIdentifier(SideNavBtn.CITES),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.PROFILE])
@@ -196,7 +199,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .addDrawerItems(
                         primaryDrawerItems[SideNavBtn.GET_QR],
                         primaryDrawerItems[SideNavBtn.BILLS],
-                        primaryDrawerItems[SideNavBtn.CITYS],
+                        primaryDrawerItems[SideNavBtn.CITES],
                         new DividerDrawerItem(),
                         primaryDrawerItems[SideNavBtn.PROFILE],
                         primaryDrawerItems[SideNavBtn.SETTINGS]
@@ -384,37 +387,48 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
             // Only write start_edit_text
-            int line = data.getIntExtra(
-                    SearchActivity.KEY_LINE_START, 0);
-            String name = data.getStringExtra(
-                    SearchActivity.KEY_NAME_START);
-
+            String obj_str = data.getStringExtra(
+                    SearchActivity.KEY_START);
+            startStation = new Gson().fromJson(obj_str, Station.class);
             editText_start.setText(
-                    SubwayLineUtil.ConnectLineNameStr(line, name));
+                    SubwayLineUtil.ConnectLineNameStr(
+                            startStation.getLine(),
+                            startStation.getName()
+                    )
+            );
 
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
-            int line = data.getIntExtra(
-                    SearchActivity.KEY_LINE_END, 0);
-            String name = data.getStringExtra(
-                    SearchActivity.KEY_NAME_END);
-
+            String obj_str = data.getStringExtra(
+                    SearchActivity.KEY_END);
+            endStation = new Gson().fromJson(obj_str, Station.class);
             editText_end.setText(
-                    SubwayLineUtil.ConnectLineNameStr(line, name));
-
+                    SubwayLineUtil.ConnectLineNameStr(
+                            endStation.getLine(),
+                            endStation.getName()
+                    )
+            );
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
-            int line_s = data.getIntExtra(
-                    SearchActivity.KEY_LINE_START, 0);
-            String name_s = data.getStringExtra(
-                    SearchActivity.KEY_NAME_START);
-            int line_e = data.getIntExtra(
-                    SearchActivity.KEY_LINE_END, 0);
-            String name_e = data.getStringExtra(
-                    SearchActivity.KEY_NAME_END);
+            String obj_str_e = data.getStringExtra(
+                    SearchActivity.KEY_END);
+            String obj_str_s = data.getStringExtra(
+                    SearchActivity.KEY_START);
+            endStation = new Gson().fromJson(obj_str_e, Station.class);
+            startStation = new Gson().fromJson(obj_str_s, Station.class);
 
-            editText_start.setText(SubwayLineUtil.ConnectLineNameStr(line_s, name_s));
-            editText_end.setText(SubwayLineUtil.ConnectLineNameStr(line_e, name_e));
+            editText_start.setText(
+                    SubwayLineUtil.ConnectLineNameStr(
+                            startStation.getLine(),
+                            startStation.getName()
+                    )
+            );
+            editText_end.setText(
+                    SubwayLineUtil.ConnectLineNameStr(
+                            endStation.getLine(),
+                            endStation.getName()
+                    )
+            );
 
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
             // None of edit_text will be rewrite
@@ -453,16 +467,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         if (id == SideNavBtn.GET_QR) {
             Bundle bundle = new Bundle();
             bundle.putInt("TYPE", position + 1);
-            Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.BILLS) {
             Bundle bundle = new Bundle();
             bundle.putInt("TYPE", position + 1);
-            Log.e("Bundle in Main", "" + position);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.CITYS) {
+        } else if (id == SideNavBtn.CITES) {
             showCitysDialog();
             drawer.closeDrawer();
         } else if (id == SideNavBtn.PROFILE) {
@@ -508,8 +520,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             case R.id.action_search:
                 List<String> route = new ArrayList<>();
                 Bundle b = new Bundle();
-                b.putString("route_start", editText_start.getText().toString().trim());
-                b.putString("route_end", editText_end.getText().toString().trim());
+                b.putString("route_start", new Gson().toJson(startStation));
+                b.putString("route_end", new Gson().toJson(endStation));
                 jumpToActivity(PayActivity.class, b);
         }
 
@@ -519,7 +531,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private class SideNavBtn {
         public final static int GET_QR = 0;
         public final static int BILLS = 1;
-        public final static int CITYS = 2;
+        public final static int CITES = 2;
         public final static int PROFILE = 3;
         public final static int SETTINGS = 4;
         public final static int EXIT = 9;

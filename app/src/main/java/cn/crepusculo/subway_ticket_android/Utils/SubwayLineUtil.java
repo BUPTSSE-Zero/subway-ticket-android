@@ -89,13 +89,6 @@ public class SubwayLineUtil {
         }
     }
 
-    public static Station CutLineNameStr(String str) {
-        String strs[] = str.split(" ");
-        Log.e("strs", strs[0]);
-        Log.e("strs", strs[1]);
-        return new Station(strs[1], Integer.parseInt(strs[0]));
-    }
-
     public static String ConnectLineNameStr(int line, String str) {
         return line + " " + str;
     }
