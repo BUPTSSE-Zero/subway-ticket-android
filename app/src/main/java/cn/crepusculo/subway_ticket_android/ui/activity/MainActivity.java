@@ -36,6 +36,7 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
+import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
@@ -522,7 +523,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 Bundle b = new Bundle();
                 b.putString("route_start", new Gson().toJson(startStation));
                 b.putString("route_end", new Gson().toJson(endStation));
-                jumpToActivity(PayActivity.class, b);
+                Intent intent = new Intent(MainActivity.this,PayActivity.class);
+                intent.putExtras(b);
+                CircularAnimUtil.startActivity(
+                        MainActivity.this,
+                        intent,
+                        findViewById(R.id.action_search),
+                        getResources().getColor(R.color.primary),
+                        300);
         }
 
     }
