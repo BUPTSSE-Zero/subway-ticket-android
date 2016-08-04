@@ -53,7 +53,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             txtName.setText(name);
             txtLine.setText(line);
 //            imageView.setColorFilter(SubwayLineUtil.getColor(station.getLine()));
-            imageView.setColorFilter(R.color.primary);
+            imageView.getDrawable().setColorFilter(
+                    mContext.getResources().getColor(SubwayLineUtil.getColor(station.getLine())),
+                    PorterDuff.Mode.SRC_ATOP);
         }
     }
 
