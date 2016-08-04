@@ -31,6 +31,8 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
+    /*hint*/
+    compile 'com.github.wooplr:Spotlight:1.1'
     /* Util */
     compile 'com.jaeger.statusbaruitl:library:1.2.0'
     /* Marquee */

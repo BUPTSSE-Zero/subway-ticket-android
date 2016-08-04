@@ -1,13 +1,10 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.login;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +25,6 @@ import com.subwayticket.model.request.ResetPasswordRequest;
 import com.subwayticket.model.result.MobileLoginResult;
 import com.subwayticket.model.result.Result;
 
-import org.w3c.dom.Text;
-
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
@@ -39,31 +34,16 @@ import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 public class LoginActivity<T> extends BaseActivity implements View.OnClickListener {
-    private static class Mode {
-        public static String REGISTER = "register";
-        public static String LOGIN = "login";
-        public static String UPDATE = "update";
-        public static String CAPTCHA = "captcha";
-
-        private Mode() {
-        }
-    }
-
     ViewGroup.LayoutParams buttonSize;
-
     // Default method login
     private String mode = Mode.LOGIN;
-
     private LinearLayout card;
     private MaterialEditText editTextUserName;
     private MaterialEditText editTextPassword;
-
     private MaterialEditText editTextCaptcha;
-
     private ActionProcessButton loginBtn;
     private Button signBtn;
     private Button forgetBtn;
-
     private TextSwitcher textSwitcher;
     private TextSwitcher textSwitcher2;
 
@@ -81,39 +61,41 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                 forgetBtn.getLayoutParams().width,
                 forgetBtn.getLayoutParams().height);
     }
-    private void initHint(){
-        textSwitcher = (TextSwitcher)findViewById(R.id.hint);
+
+    private void initHint() {
+        textSwitcher = (TextSwitcher) findViewById(R.id.hint);
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
 //                TextView textView = new TextView(LoginActivity.this);
                 LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
-                TextView textView = (TextView) inflater.inflate(R.layout.item_hint , null);
-                textView.setPadding(40,70,0,0);
+                TextView textView = (TextView) inflater.inflate(R.layout.item_hint, null);
+                textView.setPadding(40, 70, 0, 0);
 
                 return textView;
             }
         });
-        textSwitcher.setInAnimation(this,R.anim.fade_in_center);
-        textSwitcher.setOutAnimation(this,R.anim.fade_out_center);
+        textSwitcher.setInAnimation(this, R.anim.fade_in_center);
+        textSwitcher.setOutAnimation(this, R.anim.fade_out_center);
 
-        textSwitcher2 = (TextSwitcher)findViewById(R.id.hint_bigger);
+        textSwitcher2 = (TextSwitcher) findViewById(R.id.hint_bigger);
         textSwitcher2.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
 //                TextView textView = new TextView(LoginActivity.this);
                 LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
-                TextView textView = (TextView) inflater.inflate(R.layout.item_hint_bigger , null);
-                textView.setPadding(40,100,0,0);
+                TextView textView = (TextView) inflater.inflate(R.layout.item_hint_bigger, null);
+                textView.setPadding(40, 100, 0, 0);
                 return textView;
             }
         });
-        textSwitcher2.setInAnimation(this,R.anim.fade_in_center);
-        textSwitcher2.setOutAnimation(this,R.anim.fade_out_center);
+        textSwitcher2.setInAnimation(this, R.anim.fade_in_center);
+        textSwitcher2.setOutAnimation(this, R.anim.fade_out_center);
 
         textSwitcher.setText(getResources().getString(R.string.login_backup));
         textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
     }
+
     private void initCard() {
         card = (LinearLayout) findViewById(R.id.card);
 
@@ -354,20 +336,25 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     loginBtn.setProgress(100);
 //                                    jumpToActivity(MainActivity.class);
 //                                    finish();
-                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     CircularAnimUtil.startActivityThenFinish(
                                             LoginActivity.this,
                                             intent,
                                             false,
-                                            loginBtn,R.color.green_complete,329);
+                                            loginBtn, R.color.green_complete, 329);
                                 }
                             },
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                                    Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
-                                    loginBtn.setProgress(-1);
+                                    try {
+                                        GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                        Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                                    } catch (NullPointerException e) {
+                                        Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                    } finally {
+                                        loginBtn.setProgress(-1);
+                                    }
                                 }
                             }
                     );
@@ -417,19 +404,24 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Update mode
-                                    loginBtn.setProgress(-1);
-                                }
-                            }, 1500);
+                            try {
+                                GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Update mode
+                                        loginBtn.setProgress(-1);
+                                    }
+                                }, 1500);
+                            } catch (NullPointerException e) {
+                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            } finally {
+                                loginBtn.setProgress(-1);
+                            }
                         }
                     });
         } else if (mode.equals(Mode.REGISTER)) {
-
             NetworkUtils.accountRegister(new RegisterRequest(
                             editTextUserName.getText().toString().trim(),
                             editTextPassword.getText().toString().trim(),
@@ -459,20 +451,25 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Update mode
-                                    loginBtn.setProgress(-1);
-                                }
-                            }, 1500);
+                            try {
+                                GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Update mode
+                                        loginBtn.setProgress(-1);
+                                    }
+                                }, 1500);
+                            } catch (NullPointerException e) {
+                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            } finally {
+                                loginBtn.setProgress(-1);
+                            }
                         }
                     }
             );
-        }
-        else if(mode.equals(Mode.UPDATE)){
+        } else if (mode.equals(Mode.UPDATE)) {
             NetworkUtils.accountResetPassword(
                     new ResetPasswordRequest(
                             editTextUserName.getText().toString().trim(),
@@ -500,6 +497,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                             Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
                             new Handler().postDelayed(new Runnable() {
@@ -509,9 +507,24 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     loginBtn.setProgress(-1);
                                 }
                             }, 1500);
+                            } catch (NullPointerException e) {
+                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            } finally {
+                                loginBtn.setProgress(-1);
+                            }
                         }
                     });
 
+        }
+    }
+
+    private static class Mode {
+        public static String REGISTER = "register";
+        public static String LOGIN = "login";
+        public static String UPDATE = "update";
+        public static String CAPTCHA = "captcha";
+
+        private Mode() {
         }
     }
 
