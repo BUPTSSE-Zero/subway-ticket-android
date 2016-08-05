@@ -1,8 +1,10 @@
 package cn.crepusculo.subway_ticket_android.ui.fragment.settings;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,10 +19,11 @@ import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 
 public class TicketPayFragment extends BaseFragment {
+    final public ArrayList<TicketOrder> ticketOrderArrayList = new ArrayList<>();
 
     @Override
     protected int getFragmentLayout() {
@@ -29,8 +32,11 @@ public class TicketPayFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        RecyclerView recyclerView;
+        final RecyclerView recyclerView;
+        final TextView textView;
+
         recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        textView = (TextView) mRootView.findViewById(R.id.textView);
 
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getActivity());
@@ -41,19 +47,30 @@ public class TicketPayFragment extends BaseFragment {
         ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
                 ""+TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
-                ""+0,
+                "0",
                 ""+ System.currentTimeMillis(),
-                Info.getInstance().getToken(), // FIXME::ERROR AUTHTOKEN
+                Info.getInstance().getToken(),
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
-
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        for (TicketOrder order : response.getTicketOrderList()
+                                ) {
+                            ticketOrderArrayList.add(order);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        try {
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            textView.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
+                        } catch (NullPointerException e) {
+                            Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
+                        }
                     }
                 });
         for (int i = 0; i < 30; i++) {

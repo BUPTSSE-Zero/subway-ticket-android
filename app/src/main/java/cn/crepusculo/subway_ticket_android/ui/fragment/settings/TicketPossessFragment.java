@@ -4,6 +4,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +25,7 @@ import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 public class TicketPossessFragment extends BaseFragment {
+
     final public ArrayList<TicketOrder> ticketOrderArrayList = new ArrayList<>();
 
     @Override
@@ -32,8 +35,11 @@ public class TicketPossessFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        RecyclerView recyclerView;
+        final RecyclerView recyclerView;
+        final TextView textView;
+
         recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+        textView = (TextView) mRootView.findViewById(R.id.textView);
 
         RecyclerView.LayoutManager layoutManager;
         layoutManager = new LinearLayoutManager(getActivity());
@@ -50,6 +56,8 @@ public class TicketPossessFragment extends BaseFragment {
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
+                        textView.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
                         Log.e("Get Response!", "list");
                         for (TicketOrder order : response.getTicketOrderList()
                                 ) {
@@ -62,7 +70,8 @@ public class TicketPossessFragment extends BaseFragment {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-
+                            textView.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.GONE);
                         } catch (NullPointerException e) {
                             Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
                         }
