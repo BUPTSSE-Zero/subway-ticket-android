@@ -205,11 +205,15 @@ public class PayActivity extends BaseActivity {
         startText.setText(start.getName());
         endText.setText(end.getName());
         date.setText(CalendarUtils.format(c));
-        SubwayLineUtil.setColor(startPic,
-                getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
+        SubwayLineUtil.setColor(
+                this,
+                startPic,
+                start.getLine()
         );
-        SubwayLineUtil.setColor(destinationPic,
-                getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
+        SubwayLineUtil.setColor(
+                this,
+                destinationPic,
+                end.getLine()
         );
     }
 
@@ -238,10 +242,14 @@ public class PayActivity extends BaseActivity {
             startText.setText(start.getName());
             endText.setText(end.getName());
 
-            SubwayLineUtil.setColor(startPic,
+            SubwayLineUtil.setColor(
+                    PayActivity.this,
+                    startPic,
                     getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
             );
-            SubwayLineUtil.setColor(destinationPic,
+            SubwayLineUtil.setColor(
+                    PayActivity.this,
+                    destinationPic,
                     getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
             );
         }

@@ -81,16 +81,14 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
 
         SubwayLineUtil.setColor(
+                context,
                 holder.start_p,
-                SubwayLineUtil.getColor(
-                                dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
-                )
+                dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
         );
         SubwayLineUtil.setColor(
+                context,
                 holder.destination_p,
-                SubwayLineUtil.getColor(
-                                dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
-                )
+                dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
         );
 
     }

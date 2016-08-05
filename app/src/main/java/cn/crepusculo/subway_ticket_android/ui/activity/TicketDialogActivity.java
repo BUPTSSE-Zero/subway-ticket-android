@@ -52,6 +52,7 @@ public class TicketDialogActivity extends BaseActivity {
         ImageView v_d = (ImageView)findViewById(R.id.go_dialog);
 //        v_s.setColorFilter(R.color.accent);
         SubwayLineUtil.setColor(
+                TicketDialogActivity.this,
                 v_s,
                 SubwayLineUtil.getColor(
                         SubwayLineUtil.ToClientTypeId(bills.getStartStation().getSubwayLine().getSubwayLineId()
@@ -59,6 +60,7 @@ public class TicketDialogActivity extends BaseActivity {
                 )
         );
         SubwayLineUtil.setColor(
+                TicketDialogActivity.this,
                 v_d,
                 SubwayLineUtil.getColor(
                         SubwayLineUtil.ToClientTypeId(bills.getEndStation().getSubwayLine().getSubwayLineId()

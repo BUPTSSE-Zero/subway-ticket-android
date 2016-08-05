@@ -1,5 +1,6 @@
 package cn.crepusculo.subway_ticket_android.utils;
 
+import android.content.Context;
 import android.graphics.PorterDuff;
 import android.widget.ImageView;
 
@@ -89,8 +90,9 @@ public class SubwayLineUtil {
         }
     }
 
-    public static void setColor(ImageView view, int color) {
-        view.getDrawable().setColorFilter(getColor(color), PorterDuff.Mode.SRC_IN);
+    public static void setColor(Context context, ImageView view, int line) {
+        view.getDrawable().setColorFilter(context.getResources().getColor(SubwayLineUtil.getColor(line)), PorterDuff.Mode.SRC_ATOP);
+
     }
 
     public static String ConnectLineNameStr(int line, String str) {
