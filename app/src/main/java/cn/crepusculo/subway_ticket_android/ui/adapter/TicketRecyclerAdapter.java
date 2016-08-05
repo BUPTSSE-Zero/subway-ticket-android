@@ -92,7 +92,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         holder.start.setText(dataset.get(p).getStartStation().getSubwayStationName());
         holder.destination.setText(dataset.get(p).getStartStation().getSubwayStationName());
         // FIXME:: Need to Decode
-        holder.date.setText("" + dataset.get(p).getTicketOrderTime());
+        holder.date.setText("2016/8/6");
         holder.status.setText(dataset.get(p).getStatus());
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();

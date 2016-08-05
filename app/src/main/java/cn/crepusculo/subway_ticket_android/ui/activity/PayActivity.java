@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import com.google.gson.Gson;
 import com.subwayticket.model.request.SubmitOrderRequest;
 import com.subwayticket.model.result.SubmitOrderResult;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -29,7 +31,6 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
-import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 import cn.crepusculo.subway_ticket_android.utils.TestUtils;
@@ -130,11 +131,16 @@ public class PayActivity extends BaseActivity {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final int count = TextUtils.isEmpty(editCount.getText()) ?
+                        0 : Integer.parseInt(editCount.getText().toString().trim());
+
                 NetworkUtils.ticketOrderSubmit(
                         new SubmitOrderRequest(
-                                SubwayLineUtil.ToServerTypeId(startText.getId()),
-                                SubwayLineUtil.ToServerTypeId(end.getId()),
-                                1
+//                                SubwayLineUtil.ToServerTypeId(start.getId()),
+                                start.getId(),
+                                end.getId(),
+                                count
+//                                SubwayLineUtil.ToServerTypeId(end.getId()),
                         ),
                         Info.getInstance().getToken(),
                         new Response.Listener<SubmitOrderResult>() {
@@ -146,12 +152,26 @@ public class PayActivity extends BaseActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                Response r;
+                                Log.e("Request", start.getId() + " " + end.getId() + " " + count);
+                                // FIXME:: BUG WAITING FOR RESUBMIT
                                 try {
-                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                                    Snackbar.make(findViewById(R.id.pay_layout), r.result_description, Snackbar.LENGTH_LONG).show();
+                                    String json = new String(error.networkResponse.data, "utf-8");
+                                    Log.e("Pay", json + Info.getInstance().getToken());
+                                    Gson gson = new Gson();
+                                    r = gson.fromJson(json, Response.class);
+                                } catch (UnsupportedEncodingException e) {
+                                    Log.e("Pay", "Exception" + e);
+                                    r = null;
                                 } catch (NullPointerException e) {
-                                    Snackbar.make(findViewById(R.id.pay_layout), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.pay_layout), "Something happened", Snackbar.LENGTH_LONG).show();
                                 }
+//                                try {
+//                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+//                                    Snackbar.make(findViewById(R.id.pay_layout), r.result_description, Snackbar.LENGTH_LONG).show();
+//                                } catch (NullPointerException e) {
+//                                    Snackbar.make(findViewById(R.id.pay_layout), "网络访问超时", Snackbar.LENGTH_LONG).show();
+//                                }
                             }
                         });
 
@@ -185,8 +205,12 @@ public class PayActivity extends BaseActivity {
         startText.setText(start.getName());
         endText.setText(end.getName());
         date.setText(CalendarUtils.format(c));
-        SubwayLineUtil.setColor(startPic, SubwayLineUtil.getColor(start.getLine()));
-        SubwayLineUtil.setColor(destinationPic, SubwayLineUtil.getColor(end.getLine()));
+        SubwayLineUtil.setColor(startPic,
+                getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
+        );
+        SubwayLineUtil.setColor(destinationPic,
+                getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
+        );
     }
 
     @Override
@@ -214,8 +238,12 @@ public class PayActivity extends BaseActivity {
             startText.setText(start.getName());
             endText.setText(end.getName());
 
-            SubwayLineUtil.setColor(startPic, SubwayLineUtil.getColor(start.getLine()));
-            SubwayLineUtil.setColor(destinationPic, SubwayLineUtil.getColor(end.getLine()));
+            SubwayLineUtil.setColor(startPic,
+                    getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
+            );
+            SubwayLineUtil.setColor(destinationPic,
+                    getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
+            );
         }
     }
 }
