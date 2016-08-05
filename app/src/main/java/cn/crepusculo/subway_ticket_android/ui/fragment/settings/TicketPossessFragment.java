@@ -15,8 +15,6 @@ import com.subwayticket.model.result.OrderListResult;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
-import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
@@ -47,7 +45,7 @@ public class TicketPossessFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
+        ArrayList<cn.crepusculo.subway_ticket_android.content.TicketOrder> itemsData = new ArrayList<>();
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
                 "" + TicketOrder.ORDER_STATUS_NOT_PAY,
                 "0",
@@ -81,18 +79,14 @@ public class TicketPossessFragment extends BaseFragment {
 
         for (int i = 0; i < ticketOrderArrayList.size(); i++) {
             TicketOrder order = ticketOrderArrayList.get(i);
-            BillsCardViewContent content = new BillsCardViewContent();
-            content.start = Station.SubwayStationAdapter(order.getStartStation());
-            content.end = Station.SubwayStationAdapter(order.getEndStation());
-            content.date = order.getTicketOrderTime().toString();
-            content.status = order.getStatus();
-            content.price = order.getTicketPrice();
+            cn.crepusculo.subway_ticket_android.content.TicketOrder content =
+                    new cn.crepusculo.subway_ticket_android.content.TicketOrder(order);
             itemsData.add(content);
         }
         TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BillsCardViewContent item, TicketRecyclerAdapter.Holder holde) {
+                    public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holder) {
                         TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
                     }
                 });

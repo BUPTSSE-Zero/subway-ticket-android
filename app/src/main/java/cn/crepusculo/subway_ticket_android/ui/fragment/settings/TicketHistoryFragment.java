@@ -8,10 +8,11 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
+import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
+import cn.crepusculo.subway_ticket_android.utils.TestUtils;
 
 
 public class TicketHistoryFragment extends BaseFragment {
@@ -35,19 +36,18 @@ public class TicketHistoryFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            BillsCardViewContent b = new BillsCardViewContent();
-            b.ForTest(i);
-            b.start.setLine(i + 1);
-            b.end.setLine(i + 1);
+        ArrayList<TicketOrder> itemsData = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            char c;
+            c = (i > 18 ? TicketOrder.ORDER_STATUS_FINISHED : TicketOrder.ORDER_STATUS_REFUNDED);
+            TicketOrder b = TestUtils.BuildTicketOrder(i, 30 - i, c);
             itemsData.add(b);
         }
 
         TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BillsCardViewContent item, TicketRecyclerAdapter.Holder holder) {
+                    public void onItemClick(TicketOrder item, TicketRecyclerAdapter.Holder holder) {
                         Log.e("Fragment/onItemClick", "" + item);
 
                         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {

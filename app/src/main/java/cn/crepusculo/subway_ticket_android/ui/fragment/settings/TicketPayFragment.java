@@ -14,7 +14,6 @@ import com.subwayticket.model.result.OrderListResult;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
@@ -44,7 +43,7 @@ public class TicketPayFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList<BillsCardViewContent> itemsData = new ArrayList<>();
+        ArrayList<cn.crepusculo.subway_ticket_android.content.TicketOrder> itemsData = new ArrayList<>();
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
                 ""+TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
                 "0",
@@ -74,13 +73,13 @@ public class TicketPayFragment extends BaseFragment {
                     }
                 });
         for (int i = 0; i < 30; i++) {
-            itemsData.add(new BillsCardViewContent());
+            itemsData.add(new cn.crepusculo.subway_ticket_android.content.TicketOrder());
         }
 
         TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BillsCardViewContent item, TicketRecyclerAdapter.Holder holde) {
+                    public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
                         TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
                     }
                 });

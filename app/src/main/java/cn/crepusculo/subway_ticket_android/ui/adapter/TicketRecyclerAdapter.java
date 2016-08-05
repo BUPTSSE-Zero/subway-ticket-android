@@ -19,17 +19,17 @@ import com.daimajia.androidviewhover.BlurLayout;
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
+import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 
 public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAdapter.Holder> {
     private Context context;
-    private ArrayList<BillsCardViewContent> dataset = new ArrayList<>();
+    private ArrayList<TicketOrder> dataset = new ArrayList<>();
     private Resources res;
     private OnItemClickListener listener;
 
-    public TicketRecyclerAdapter(Context context, ArrayList<BillsCardViewContent> dataset
+    public TicketRecyclerAdapter(Context context, ArrayList<TicketOrder> dataset
             , OnItemClickListener listener) {
         this.context = context;
         this.dataset.clear();
@@ -89,23 +89,36 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
     protected void updateText(Holder holder, int p) {
         ArrayList<TextView> a = new ArrayList<>();
-        holder.start.setText(dataset.get(p).start.getName());
-        holder.destination.setText(dataset.get(p).end.getName());
-        holder.date.setText(dataset.get(p).date);
+        holder.start.setText(dataset.get(p).getStartStation().getSubwayStationName());
+        holder.destination.setText(dataset.get(p).getStartStation().getSubwayStationName());
+        // FIXME:: Need to Decode
+        holder.date.setText("" + dataset.get(p).getTicketOrderTime());
         holder.status.setText(dataset.get(p).getStatus());
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
         GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
 
-//        SubwayLineUtil.getColor(dataset.get(p).start_line);
-//        SubwayLineUtil.getColor(dataset.get(p).destination_line);
+        SubwayLineUtil.setColor(
+                holder.start_p,
+                SubwayLineUtil.getColor(
+                        SubwayLineUtil.ToClientTypeId(
+                                dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
+                        )
+                )
+        );
+        SubwayLineUtil.setColor(
+                holder.destination_p,
+                SubwayLineUtil.getColor(
+                        SubwayLineUtil.ToClientTypeId(
+                                dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
+                        )
+                )
+        );
 
-        BillsCardViewContent.setTagColor(context, holder.start_p, SubwayLineUtil.getColor(dataset.get(p).start.getLine()),
-                holder.destination_p, SubwayLineUtil.getColor(dataset.get(p).end.getLine()));
     }
 
     public interface OnItemClickListener {
-        void onItemClick(BillsCardViewContent item, Holder holder);
+        void onItemClick(TicketOrder item, Holder holder);
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
@@ -141,7 +154,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
             blurLayout = (BlurLayout) v.findViewById(R.id.hover);
         }
 
-        public void bind(final BillsCardViewContent item, final OnItemClickListener listener) {
+        public void bind(final TicketOrder item, final OnItemClickListener listener) {
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

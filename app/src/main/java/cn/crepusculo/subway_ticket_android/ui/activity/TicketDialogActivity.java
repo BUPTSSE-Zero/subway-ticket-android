@@ -6,24 +6,21 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.util.Calendar;
-
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
-import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
+import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class TicketDialogActivity extends BaseActivity {
-    @Override
-    protected int getLayoutResource() {
-        return R.layout.layout_dialog_bills;
-    }
-
     private TextView start;
     private TextView destination;
     private TextView status;
     private TextView date;
-    private BillsCardViewContent bills;
+    private TicketOrder bills;
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.layout_dialog_bills;
+    }
 
     @Override
     protected void initView() {
@@ -36,7 +33,7 @@ public class TicketDialogActivity extends BaseActivity {
         Bundle bundle = getBundle();
         if (bundle != null){
             myBills = bundle.getString("BILLS");
-            bills = new Gson().fromJson(myBills, BillsCardViewContent.class);
+            bills = new Gson().fromJson(myBills, TicketOrder.class);
         }
     }
 
@@ -47,14 +44,26 @@ public class TicketDialogActivity extends BaseActivity {
         date = (TextView)findViewById(R.id.date);
     }
     private void initTextView(){
-        start.setText(bills.start.getName());
-        destination.setText(bills.end.getName());
-        date.setText(CalendarUtils.format_limit(Calendar.getInstance()));
+        start.setText(bills.getStartStation().getSubwayStationName());
+        destination.setText(bills.getEndStation().getSubwayStationName());
+        date.setText("" + bills.getTicketOrderTime());
         status.setText(bills.getStatus());
         ImageView v_s = (ImageView)findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView)findViewById(R.id.go_dialog);
 //        v_s.setColorFilter(R.color.accent);
-        BillsCardViewContent.setTagColor(getBaseContext(), v_s, SubwayLineUtil.getColor(bills.start.getLine()),
-                v_d,SubwayLineUtil.getColor(bills.end.getLine()));
+        SubwayLineUtil.setColor(
+                v_s,
+                SubwayLineUtil.getColor(
+                        SubwayLineUtil.ToClientTypeId(bills.getStartStation().getSubwayLine().getSubwayLineId()
+                        )
+                )
+        );
+        SubwayLineUtil.setColor(
+                v_d,
+                SubwayLineUtil.getColor(
+                        SubwayLineUtil.ToClientTypeId(bills.getEndStation().getSubwayLine().getSubwayLineId()
+                        )
+                )
+        );
     }
 }

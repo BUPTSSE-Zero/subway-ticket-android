@@ -2,6 +2,7 @@ package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,34 +14,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.subwayticket.database.model.City;
-import com.subwayticket.model.result.CityListResult;
+import com.subwayticket.model.request.SubmitOrderRequest;
+import com.subwayticket.model.result.SubmitOrderResult;
 
 import java.util.Calendar;
-import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.BillsCardViewContent;
 import cn.crepusculo.subway_ticket_android.content.Station;
+import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.utils.TestUtils;
 
 public class PayActivity extends BaseActivity {
     private ImageButton startPic;
     private ImageButton destinationPic;
 
     private TextView startTitle;
-    private TextView start;
+    private TextView startText;
     private TextView destinaionTitle;
-    private TextView destination;
+    private TextView endText;
 
     private TextView date;
     private TextView dateLimit;
@@ -49,11 +50,14 @@ public class PayActivity extends BaseActivity {
     private EditText editBills;
     private EditText editPrice;
 
-    private BillsCardViewContent payRequest;
+    private TicketOrder payRequest;
 
     private Activity activity;
 
     private Button checkButton;
+
+    private Station start;
+    private Station end;
 
     @Override
     protected int getLayoutResource() {
@@ -63,7 +67,7 @@ public class PayActivity extends BaseActivity {
     @Override
     protected void initView() {
         activity = this;
-        payRequest = new BillsCardViewContent();
+        payRequest = TestUtils.BuildTicketOrder(0, 0, TicketOrder.ORDER_STATUS_NOT_PAY);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,9 +85,9 @@ public class PayActivity extends BaseActivity {
         startPic = (ImageButton) findViewById(R.id.start_pic);
         destinationPic = (ImageButton) findViewById(R.id.destination_pic);
         startTitle = (TextView) findViewById(R.id.start_title);
-        start = (TextView) findViewById(R.id.start);
+        startText = (TextView) findViewById(R.id.start);
         destinaionTitle = (TextView) findViewById(R.id.destination_title);
-        destination = (TextView) findViewById(R.id.destination);
+        endText = (TextView) findViewById(R.id.destination);
         date = (TextView) findViewById(R.id.date);
         dateLimit = (TextView) findViewById(R.id.date_limit);
 
@@ -94,7 +98,7 @@ public class PayActivity extends BaseActivity {
         editPrice = (EditText) findViewById(R.id.price);
         editBills = (EditText) findViewById(R.id.show_money);
 
-        editPrice.setText(String.valueOf(payRequest.price));
+        editPrice.setText(String.valueOf(payRequest.getTicketPrice()));
 
         editCount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,7 +116,7 @@ public class PayActivity extends BaseActivity {
                 String result = "";
                 if (editCount.getText().toString().trim().length() != 0) {
                     Log.e("233", "num" + editCount.getText().toString().trim());
-                    double count = payRequest.price * Integer.parseInt(editCount.getText().toString().trim());
+                    double count = payRequest.getTicketPrice() * Integer.parseInt(editCount.getText().toString().trim());
                     result += count;
                 } else {
                     result = "0.0";
@@ -126,29 +130,31 @@ public class PayActivity extends BaseActivity {
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Info info  = Info.getInstance();
-                String id = info.user.getId();
-                String psw = info.user.getPassword();
-                Toast.makeText(PayActivity.this, id+psw, Toast.LENGTH_LONG).show();
-                NetworkUtils.subwayGetCityList(
-                        new Response.Listener<CityListResult>() {
+                NetworkUtils.ticketOrderSubmit(
+                        new SubmitOrderRequest(
+                                SubwayLineUtil.ToServerTypeId(startText.getId()),
+                                SubwayLineUtil.ToServerTypeId(end.getId()),
+                                1
+                        ),
+                        Info.getInstance().getToken(),
+                        new Response.Listener<SubmitOrderResult>() {
                             @Override
-                            public void onResponse(CityListResult response) {
-                                List<City> list = response.getCityList();
-                                String result = "" + list.size() + "  ";
-                                for (City c : list
-                                        ) {
-                                    result += c.getCityName();
-                                }
-                                Toast.makeText(PayActivity.this, result, Toast.LENGTH_LONG).show();
+                            public void onResponse(SubmitOrderResult response) {
+                                payRequest = new TicketOrder(response.getTicketOrder());
                             }
-                        }
-                        , new Response.ErrorListener() {
+                        },
+                        new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                try {
+                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                    Snackbar.make(findViewById(R.id.pay_layout), r.result_description, Snackbar.LENGTH_LONG).show();
+                                } catch (NullPointerException e) {
+                                    Snackbar.make(findViewById(R.id.pay_layout), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                }
                             }
-                        }
-                );
+                        });
+
             }
         });
     }
@@ -160,17 +166,8 @@ public class PayActivity extends BaseActivity {
             String start_str = b.getString("route_start");
             String end_str = b.getString("route_end");
             Log.e("PayActivity", start_str + end_str);
-            Station start = new Gson().fromJson(start_str, Station.class);
-            Station end = new Gson().fromJson(end_str, Station.class);
-            payRequest.start.setName(start.getName());
-            payRequest.start.setLine(start.getLine());
-            payRequest.end.setName(end.getName());
-            payRequest.end.setLine(end.getLine());
-            /* default set date with system date */
-            Calendar c = Calendar.getInstance();
-            payRequest.date = CalendarUtils.format(c);
-            payRequest.status = BillsCardViewContent.TICKET_UNPAID;
-            payRequest.price = 3.0f;
+            start = new Gson().fromJson(start_str, Station.class);
+            end = new Gson().fromJson(end_str, Station.class);
         } else {
             /* Failure to get tickle info */
             new MaterialDialog.Builder(this)
@@ -183,15 +180,13 @@ public class PayActivity extends BaseActivity {
 
     }
 
-    private void setCardInfo(BillsCardViewContent info) {
+    private void setCardInfo(TicketOrder info) {
         Calendar c = Calendar.getInstance();
-        start.setText(info.start.getName());
-        destination.setText(info.end.getName());
+        startText.setText(start.getName());
+        endText.setText(end.getName());
         date.setText(CalendarUtils.format(c));
-        BillsCardViewContent.setTagColor(this,
-                startPic, SubwayLineUtil.getColor(info.start.getLine()),
-                destinationPic, SubwayLineUtil.getColor(info.end.getLine()));
-        dateLimit.setText(CalendarUtils.format_limit(c));
+        SubwayLineUtil.setColor(startPic, SubwayLineUtil.getColor(start.getLine()));
+        SubwayLineUtil.setColor(destinationPic, SubwayLineUtil.getColor(end.getLine()));
     }
 
     @Override
@@ -213,15 +208,14 @@ public class PayActivity extends BaseActivity {
     private class ImageButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Station swap = payRequest.start;
-            payRequest.start = payRequest.end;
-            payRequest.end = swap;
-            start.setText(payRequest.start.getName());
-            destination.setText(payRequest.end.getName());
+            Station swap = start;
+            start = end;
+            end = swap;
+            startText.setText(start.getName());
+            endText.setText(end.getName());
 
-            BillsCardViewContent.setTagColor(activity,
-                    startPic, SubwayLineUtil.getColor(payRequest.start.getLine()),
-                    destinationPic, SubwayLineUtil.getColor(payRequest.end.getLine()));
+            SubwayLineUtil.setColor(startPic, SubwayLineUtil.getColor(start.getLine()));
+            SubwayLineUtil.setColor(destinationPic, SubwayLineUtil.getColor(end.getLine()));
         }
     }
 }
