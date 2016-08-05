@@ -1,7 +1,6 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -32,7 +31,6 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class PayActivity extends BaseActivity {
@@ -172,7 +170,7 @@ public class PayActivity extends BaseActivity {
             Calendar c = Calendar.getInstance();
             payRequest.date = CalendarUtils.format(c);
             payRequest.status = BillsCardViewContent.TICKET_UNPAID;
-            payRequest.price = 3.0;
+            payRequest.price = 3.0f;
         } else {
             /* Failure to get tickle info */
             new MaterialDialog.Builder(this)

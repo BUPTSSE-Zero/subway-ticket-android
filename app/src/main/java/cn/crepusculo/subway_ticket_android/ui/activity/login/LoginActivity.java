@@ -331,7 +331,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
 
                                     Info.getInstance().user.setId(loginId);
                                     Info.getInstance().user.setPassword(loginPwd);
-                                    Info.getInstance().setToken("" + code);
+                                    Info.getInstance().setToken(response.getToken());
 
                                     loginBtn.setProgress(100);
 //                                    jumpToActivity(MainActivity.class);

@@ -2,8 +2,6 @@ package cn.crepusculo.subway_ticket_android.utils;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.subwayticket.database.model.PreferRoute;
-import com.subwayticket.database.model.SubwayStation;
 import com.subwayticket.model.request.AddPreferStationRequest;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.ModifyPasswordRequest;
@@ -208,9 +206,7 @@ public class NetworkUtils {
     ) {
         String url = Url.getUrl(TicketOrder.getApiFullName(TicketOrder.GET_ORDER_LIST),
                 status, startTimeStamp, endTimeStamp);
-
         Map<String, String> header = generateHeaderByAuthToken(authToken);
-
         return NetworkMethodWrapper.getObject(url, OrderListResult.class, header, listener, errorListener);
     }
 
@@ -243,7 +239,8 @@ public class NetworkUtils {
             Response.Listener<HistoryRouteListResult> listener,
             Response.ErrorListener errorListener) {
         String url = Url.getUrl(Preference.getApiFullName(Preference.HISTORY_ROUTE));
-        return NetworkMethodWrapper.getObject(url, HistoryRouteListResult.class, listener, errorListener);
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, HistoryRouteListResult.class, header, listener, errorListener);
     }
 
     public static Request preferencePreferStation(
@@ -251,24 +248,28 @@ public class NetworkUtils {
             Response.Listener<PreferStationListResult> listener,
             Response.ErrorListener errorListener) {
         String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION));
-        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, listener, errorListener);
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, header, listener, errorListener);
     }
 
     public static Request preferenceAddPreferStation(
             AddPreferStationRequest addPreferStationRequest,
             String authToken,
             Response.Listener<PreferStationListResult> listener,
-            Response.ErrorListener errorListener){
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION),Preference.getApiFullName(Preference.ADD));
-        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, listener, errorListener);
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.getApiFullName(Preference.ADD));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, header, listener, errorListener);
     }
 
     public static Request preferenceRemovePreferStation(
             int stationID,
+            String authToken,
             Response.Listener<Result> listener,
-            Response.ErrorListener errorListener){
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION),Preference.getApiFullName(Preference.REMOVE));
-        return NetworkMethodWrapper.getObject(url, Result.class, listener, errorListener);
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.getApiFullName(Preference.REMOVE));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, Result.class, header, listener, errorListener);
     }
 
     public static Request preferencePrefeRoute(
@@ -276,23 +277,27 @@ public class NetworkUtils {
             Response.Listener<PreferRouteListResult> listener,
             Response.ErrorListener errorListener) {
         String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE));
-        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, listener, errorListener);
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, header, listener, errorListener);
     }
 
     public static Request preferenceAddPreferRoute(
             AddPreferStationRequest addPreferRouteRequest,
             String authToken,
             Response.Listener<PreferRouteListResult> listener,
-            Response.ErrorListener errorListener){
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE),Preference.getApiFullName(Preference.ADD));
-        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, listener, errorListener);
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.getApiFullName(Preference.ADD));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, header, listener, errorListener);
     }
 
     public static Request preferenceRemovePreferRoute(
             int stationID,
+            String authToken,
             Response.Listener<Result> listener,
-            Response.ErrorListener errorListener){
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE),Preference.getApiFullName(Preference.REMOVE));
-        return NetworkMethodWrapper.getObject(url, Result.class, listener, errorListener);
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.getApiFullName(Preference.REMOVE));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, Result.class, header, listener, errorListener);
     }
 }

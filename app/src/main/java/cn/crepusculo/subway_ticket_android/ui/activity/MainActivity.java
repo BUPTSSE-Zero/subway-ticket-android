@@ -20,15 +20,18 @@ import android.widget.ImageView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bm.library.PhotoView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.github.jorgecastilloprz.FABProgressCircle;
 import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.subwayticket.database.model.TicketOrder;
+import com.subwayticket.model.result.OrderListResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
@@ -115,9 +119,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         fab_unfoucs = (FloatingActionButton)
                 findViewById(R.id.action_unfoucs);
-
-        fabProgressCircle = (FABProgressCircle)
-                findViewById(R.id.fab_progress_circle);
 
         fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_settings);
@@ -278,23 +279,32 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     private void updateHint() {
         int ticketCount = 0;
-        // net request here
+        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
+                "" + TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
+                "" + 0,
+                "" + System.currentTimeMillis(),
+                info.getToken(),
+                new Response.Listener<OrderListResult>() {
+                    @Override
+                    public void onResponse(OrderListResult response) {
+                        int ticketCount = response.getTicketOrderList().size();
+                        if (ticketCount > 0) {
+                            if (fab_menu.getChildCount() == 2)
+                                fab_menu.addButton(fab_bills);
+                        } else {
+                            if (fab_menu.getChildCount() == 3)
+                                fab_menu.removeButton(fab_bills);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
 
-        if (ticketCount > 0) {
-            if (fab_menu.getChildCount() == 2)
-                fab_menu.addButton(fab_bills);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    fabProgressCircle.show();
+                    }
                 }
-            }, 3000);
-        } else {
-            if (fabProgressCircle.isActivated())
-                fabProgressCircle.hide();
-            if (fab_menu.getChildCount() == 3)
-                fab_menu.removeButton(fab_bills);
-        }
+        );
+
     }
 
     private void showCitysDialog() {
@@ -523,7 +533,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 Bundle b = new Bundle();
                 b.putString("route_start", new Gson().toJson(startStation));
                 b.putString("route_end", new Gson().toJson(endStation));
-                Intent intent = new Intent(MainActivity.this,PayActivity.class);
+                Intent intent = new Intent(MainActivity.this, PayActivity.class);
                 intent.putExtras(b);
                 CircularAnimUtil.startActivity(
                         MainActivity.this,
