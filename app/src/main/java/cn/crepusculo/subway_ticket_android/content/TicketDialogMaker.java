@@ -72,23 +72,21 @@ public class TicketDialogMaker implements View.OnClickListener {
         start.setText(item.getStartStation().getSubwayStationName());
         destination.setText(item.getEndStation().getSubwayStationName());
         date.setText(item.getEndStation().getSubwayStationName());
-        status.setText(item.getStatus());
+        status.setText(TicketOrder.translationCode(mContext, item.getStatus()));
         ImageView v_s = (ImageView) dialog.findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView) dialog.findViewById(R.id.go_dialog);
 
         SubwayLineUtil.setColor(
                 v_s,
                 SubwayLineUtil.getColor(
-                        SubwayLineUtil.ToClientTypeId(item.getStartStation().getSubwayLine().getSubwayLineId()
-                        )
+                        item.getStartStation().getSubwayLine().getSubwayLineId()
                 )
         );
         SubwayLineUtil.setColor(
                 v_d,
                 SubwayLineUtil.getColor(
-                        SubwayLineUtil.ToClientTypeId(item.getEndStation().getSubwayLine().getSubwayLineId()
+                        item.getEndStation().getSubwayLine().getSubwayLineId()
                         )
-                )
         );
 
         buttons = new ArrayList<>();

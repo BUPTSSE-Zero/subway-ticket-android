@@ -12,10 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.daimajia.androidviewhover.BlurLayout;
-
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -61,22 +57,9 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     public void onBindViewHolder(Holder holder, int position) {
         holder.mCardView.animate();
         initCardView(holder.mCardView);
+        holder.bind(dataset.get(position), listener);
         updateText(holder, position);
 
-        holder.hover = LayoutInflater.from(context).inflate(R.layout.item_ticket_hover, null);
-
-        holder.blurLayout.setHoverView(holder.hover);
-        holder.blurLayout.addChildAppearAnimator(holder.hover, R.id.button, Techniques.Bounce);
-        holder.blurLayout.addChildDisappearAnimator(holder.hover, R.id.button, Techniques.Bounce);
-        holder.hover.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                YoYo.with(Techniques.Tada)
-                        .duration(550)
-                        .playOn(view);
-            }
-        });
-        holder.bind(dataset.get(position), listener);
     }
 
     @Override
@@ -88,12 +71,11 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     protected void updateText(Holder holder, int p) {
-        ArrayList<TextView> a = new ArrayList<>();
         holder.start.setText(dataset.get(p).getStartStation().getSubwayStationName());
-        holder.destination.setText(dataset.get(p).getStartStation().getSubwayStationName());
+        holder.destination.setText(dataset.get(p).getEndStation().getSubwayStationName());
         // FIXME:: Need to Decode
         holder.date.setText("2016/8/6");
-        holder.status.setText(dataset.get(p).getStatus());
+        holder.status.setText(TicketOrder.translationCode(context, dataset.get(p).getStatus()));
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
         GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
@@ -101,17 +83,13 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         SubwayLineUtil.setColor(
                 holder.start_p,
                 SubwayLineUtil.getColor(
-                        SubwayLineUtil.ToClientTypeId(
                                 dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
-                        )
                 )
         );
         SubwayLineUtil.setColor(
                 holder.destination_p,
                 SubwayLineUtil.getColor(
-                        SubwayLineUtil.ToClientTypeId(
                                 dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
-                        )
                 )
         );
 
@@ -134,9 +112,6 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         public TextView status;
         public View v;
 
-        public BlurLayout blurLayout;
-        public View hover;
-
         public Holder(View v) {
             super(v);
             this.v = v;
@@ -150,8 +125,6 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
             start_p = (ImageView) v.findViewById(R.id.come);
             destination_p = (ImageView) v.findViewById(R.id.go);
-
-            blurLayout = (BlurLayout) v.findViewById(R.id.hover);
         }
 
         public void bind(final TicketOrder item, final OnItemClickListener listener) {

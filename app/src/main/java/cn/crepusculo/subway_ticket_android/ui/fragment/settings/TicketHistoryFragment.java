@@ -1,6 +1,5 @@
 package cn.crepusculo.subway_ticket_android.ui.fragment.settings;
 
-import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -48,16 +47,8 @@ public class TicketHistoryFragment extends BaseFragment {
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(TicketOrder item, TicketRecyclerAdapter.Holder holder) {
-                        Log.e("Fragment/onItemClick", "" + item);
-
-                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-//                    final Scene scene = Scene.getSceneForLayout(mContainer, R.layout.item_dialog_bills, mActivity);
-//                    TransitionManager.go(scene);
-                        }
-                        TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
-                        holder.blurLayout.showHover();
-                        holder.hover.bringToFront();
-                        Log.e("Fragment/onItemClick", "" + holder.hover.isShown());
+                        new TicketDialogMaker(mActivity, mContext, item);
+                        Log.e("Fragment/onClick", "" + item);
                     }
                 });
         recyclerView.setAdapter(adapter);

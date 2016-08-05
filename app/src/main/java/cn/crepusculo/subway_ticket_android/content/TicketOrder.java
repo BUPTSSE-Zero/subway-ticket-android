@@ -1,10 +1,14 @@
 package cn.crepusculo.subway_ticket_android.content;
 
+import android.content.Context;
+
 import com.subwayticket.database.model.Account;
 import com.subwayticket.database.model.SubwayStation;
 import com.subwayticket.database.model.TicketPrice;
 
 import java.util.Date;
+
+import cn.crepusculo.subway_ticket_android.R;
 
 public class TicketOrder {
     public static final char ORDER_STATUS_NOT_PAY = 'A';
@@ -52,6 +56,23 @@ public class TicketOrder {
         this.amount = amount;
         this.status = 65;
         this.extractAmount = 0;
+    }
+
+    public static String translationCode(Context c, char mode) {
+        switch (mode) {
+            case ORDER_STATUS_NOT_PAY:
+                return c.getResources().getString(R.string.ticket_mode_not_pay);
+            case ORDER_STATUS_NOT_EXTRACT_TICKET:
+                return c.getResources().getString(R.string.ticket_mode_not_extract_ticket);
+            case ORDER_STATUS_FINISHED:
+                return c.getResources().getString(R.string.ticket_mode_finished);
+            case ORDER_STATUS_REFUNDED:
+                return c.getResources().getString(R.string.ticket_mode_refunded);
+            default:
+                return "Unknown";
+        }
+
+
     }
 
     public String getTicketOrderId() {
