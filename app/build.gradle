@@ -10,6 +10,9 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -33,20 +36,32 @@ dependencies {
     }
     /*hint*/
     compile 'com.github.wooplr:Spotlight:1.1'
+
     /* Util */
     compile 'com.jaeger.statusbaruitl:library:1.2.0'
+
     /* Marquee */
     compile 'com.sunfusheng:marqueeview:1.1.0'
+
     /* SubmitButton */
     compile 'me.spark:submitbutton:1.0.1'
+
     /* Pic scale*/
     compile 'com.bm.photoview:library:1.4.0'
+
     /* Progress Button */
     compile 'com.github.dmytrodanylyk:android-morphing-button:98a4986e56' // commit hash
     compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+
     /* DragSheet */
     compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     compile 'com.github.javiersantos:BottomDialogs:1.1'
+
+    /* Hover */
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.easing:library:1.0.0@aar'
+    compile 'com.daimajia.androidanimations:library:1.1.2@aar'
+    compile 'com.daimajia.androidviewhover:library:1.0.4@aar'
 
     /* Gson*/
     compile 'com.google.code.gson:gson:2.6.2'

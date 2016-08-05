@@ -71,7 +71,7 @@
         <item name="android:textColor">@color/light_primary_text</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
-        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingStart">8dp</item>
         <item name="android:paddingEnd">0dp</item>
         <item name="android:paddingTop">4dp</item>
         <item name="android:paddingBottom">4dp</item>

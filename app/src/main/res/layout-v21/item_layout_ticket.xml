@@ -1,105 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/card_view"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    style="@style/AppTheme.CardView.Card"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="match_parent"
     android:layout_margin="4dp"
     android:clickable="true"
-    android:stateListAnimator="@animator/raise_z"
-    android:transitionName="@string/cardview_dialog_transition"
-    style="@style/AppTheme.CardView.Card"
-    android:theme="@style/AppTheme.CardView.Card"
     android:foreground="?attr/selectableItemBackground"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:stateListAnimator="@animator/raise_z"
+    android:theme="@style/AppTheme.CardView.Card"
+    android:transitionName="@string/cardview_dialog_transition">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.daimajia.androidviewhover.BlurLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/hover"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.CardView.NoPadding"
-        android:theme="@style/AppTheme.CardView.NoPadding"
-        android:paddingTop="8dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:layout_height="120dp">
+
 
         <LinearLayout
-            android:orientation="vertical"
+            style="@style/AppTheme.CardView.NoPadding"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/AppTheme.CardView.NoPadding"
+            android:orientation="vertical"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
             android:theme="@style/AppTheme.CardView.NoPadding">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/AppTheme.CardView.NoPadding"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:theme="@style/AppTheme.CardView.NoPadding">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/come"
-                    android:src="@drawable/ic_fiber_manual_record_black_16dp"
-                    android:theme="@style/AppTheme.CardView.Title"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/start"
-                    style="@style/AppTheme.CardView.Title"
-                    android:theme="@style/AppTheme.CardView.Title"/>
-            </LinearLayout>
 
+                <LinearLayout
+                    style="@style/AppTheme.CardView.NoPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:theme="@style/AppTheme.CardView.NoPadding">
+
+                    <ImageView
+                        android:id="@+id/come"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_hexagon_outline" />
+
+                    <TextView
+                        android:id="@+id/start"
+                        style="@style/AppTheme.CardView.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/light_primary_text"
+                        android:theme="@style/AppTheme.CardView.Title" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    style="@style/AppTheme.CardView.NoPadding"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:theme="@style/AppTheme.CardView.NoPadding">
+
+                    <ImageView
+                        android:id="@+id/go"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_hexagon_outline" />
+
+                    <TextView
+                        android:id="@+id/destination"
+                        style="@style/AppTheme.CardView.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/light_primary_text"
+                        android:theme="@style/AppTheme.CardView.Title" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/AppTheme.CardView.NoPadding"
-                android:theme="@style/AppTheme.CardView.NoPadding"
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/go"
-                    android:src="@drawable/ic_fiber_manual_record_black_16dp"
-                    android:theme="@style/AppTheme.CardView.Title"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/AppTheme.CardView.NoPadding">
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/status"
+                    style="@style/AppTheme.CardView.Text"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/destination"
-                    style="@style/AppTheme.CardView.Title"
-                    android:theme="@style/AppTheme.CardView.Title"
-                    />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="4"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_information_outline"
+                    android:textColor="@color/light_secondary_text"
+                    android:theme="@style/AppTheme.CardView.Text" />
+
+
+                <TextView
+                    android:id="@+id/date"
+                    style="@style/AppTheme.CardView.Text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="6"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@drawable/ic_time_black_24dp"
+                    android:textColor="@color/light_secondary_text"
+                    android:theme="@style/AppTheme.CardView.Text" />
             </LinearLayout>
-
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/AppTheme.CardView.NoPadding"
-            android:theme="@style/AppTheme.CardView.NoPadding"
-            android:orientation="horizontal">
-            <TextView
-                android:drawableStart="@drawable/ic_information_outline"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/status"
-                style="@style/AppTheme.CardView.Text"
-                android:theme="@style/AppTheme.CardView.Text"/>
-
-
-
-            <TextView
-                android:drawableStart="@drawable/ic_time_black_24dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:id="@+id/date"
-                style="@style/AppTheme.CardView.Text"
-                android:theme="@style/AppTheme.CardView.Text" />
-        </LinearLayout>
-    </LinearLayout>
-
+    </com.daimajia.androidviewhover.BlurLayout>
 </android.support.v7.widget.CardView>

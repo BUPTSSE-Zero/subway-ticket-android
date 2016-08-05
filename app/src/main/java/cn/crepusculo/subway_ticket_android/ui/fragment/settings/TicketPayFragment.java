@@ -80,7 +80,7 @@ public class TicketPayFragment extends BaseFragment {
         TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
                 new TicketRecyclerAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(BillsCardViewContent item) {
+                    public void onItemClick(BillsCardViewContent item, TicketRecyclerAdapter.Holder holde) {
                         TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
                     }
                 });

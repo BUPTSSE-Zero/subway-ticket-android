@@ -2,7 +2,6 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.androidviewhover.BlurLayout;
 
 import java.util.ArrayList;
 
@@ -26,10 +29,6 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     private Resources res;
     private OnItemClickListener listener;
 
-    public interface OnItemClickListener {
-        void onItemClick(BillsCardViewContent item);
-    }
-
     public TicketRecyclerAdapter(Context context, ArrayList<BillsCardViewContent> dataset
             , OnItemClickListener listener) {
         this.context = context;
@@ -40,8 +39,8 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
     }
 
     /**
-     * @param  position: position in list
-     * @return  viewType: int viewType
+     * @param position: position in list
+     * @return viewType: int viewType
      */
     @Override
     public int getItemViewType(int position) {
@@ -58,6 +57,57 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         return new Holder(v);
     }
 
+    @Override
+    public void onBindViewHolder(Holder holder, int position) {
+        holder.mCardView.animate();
+        initCardView(holder.mCardView);
+        updateText(holder, position);
+
+        holder.hover = LayoutInflater.from(context).inflate(R.layout.item_ticket_hover, null);
+
+        holder.blurLayout.setHoverView(holder.hover);
+        holder.blurLayout.addChildAppearAnimator(holder.hover, R.id.button, Techniques.Bounce);
+        holder.blurLayout.addChildDisappearAnimator(holder.hover, R.id.button, Techniques.Bounce);
+        holder.hover.findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Tada)
+                        .duration(550)
+                        .playOn(view);
+            }
+        });
+        holder.bind(dataset.get(position), listener);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataset.size();
+    }
+
+    protected void initCardView(CardView cardView) {
+    }
+
+    protected void updateText(Holder holder, int p) {
+        ArrayList<TextView> a = new ArrayList<>();
+        holder.start.setText(dataset.get(p).start.getName());
+        holder.destination.setText(dataset.get(p).end.getName());
+        holder.date.setText(dataset.get(p).date);
+        holder.status.setText(dataset.get(p).getStatus());
+
+        GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
+        GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
+
+//        SubwayLineUtil.getColor(dataset.get(p).start_line);
+//        SubwayLineUtil.getColor(dataset.get(p).destination_line);
+
+        BillsCardViewContent.setTagColor(context, holder.start_p, SubwayLineUtil.getColor(dataset.get(p).start.getLine()),
+                holder.destination_p, SubwayLineUtil.getColor(dataset.get(p).end.getLine()));
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(BillsCardViewContent item, Holder holder);
+    }
+
     public static class Holder extends RecyclerView.ViewHolder {
         public CardView mCardView;
 
@@ -71,67 +121,37 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         public TextView status;
         public View v;
 
+        public BlurLayout blurLayout;
+        public View hover;
+
         public Holder(View v) {
             super(v);
             this.v = v;
             mCardView = (CardView) v.findViewById(R.id.card_view);
 
-            start= (TextView) v.findViewById(R.id.start);
+            start = (TextView) v.findViewById(R.id.start);
             destination = (TextView) v.findViewById(R.id.destination);
 
             date = (TextView) v.findViewById(R.id.date);
-            status= (TextView) v.findViewById(R.id.status);
+            status = (TextView) v.findViewById(R.id.status);
 
             start_p = (ImageView) v.findViewById(R.id.come);
             destination_p = (ImageView) v.findViewById(R.id.go);
+
+            blurLayout = (BlurLayout) v.findViewById(R.id.hover);
         }
 
-        public void bind(final BillsCardViewContent item, final OnItemClickListener listener){
+        public void bind(final BillsCardViewContent item, final OnItemClickListener listener) {
             mCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /* its not work */
-                    listener.onItemClick(item);
-                    Log.e("Adapter/onClick",""+item);
-
-                    }
+                    listener.onItemClick(item, Holder.this);
+                    Log.e("Adapter/onClick", "" + item);
+                }
 
 
             });
         }
-    }
-
-    @Override
-    public void onBindViewHolder(Holder holder, int position) {
-        holder.mCardView.animate();
-        initCardView(holder.mCardView);
-        updateText(holder,position);
-        holder.bind(dataset.get(position), listener);
-    }
-
-    @Override
-    public int getItemCount() {
-        return dataset.size();
-    }
-
-    protected void initCardView(CardView cardView){
-    }
-
-    protected void updateText(Holder holder,int p){
-        ArrayList<TextView> a = new ArrayList<>();
-        holder.start.setText(dataset.get(p).start.getName());
-        holder.destination.setText(dataset.get(p).end.getName());
-        holder.date.setText(dataset.get(p).date);
-        holder.status.setText(dataset.get(p).getStatus());
-
-        GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
-        GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
-
-//        SubwayLineUtil.getColor(dataset.get(p).start_line);
-//        SubwayLineUtil.getColor(dataset.get(p).destination_line);
-
-        BillsCardViewContent.setTagColor(context, holder.start_p,SubwayLineUtil.getColor(dataset.get(p).start.getLine()),
-                holder.destination_p,SubwayLineUtil.getColor(dataset.get(p).end.getLine()));
     }
 
 }
