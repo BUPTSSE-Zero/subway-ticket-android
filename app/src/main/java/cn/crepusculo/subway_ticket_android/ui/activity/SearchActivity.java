@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -54,11 +53,11 @@ public class SearchActivity extends BaseActivity implements
 
     public static String KEY_START = "start";
     public static String KEY_END = "end";
-
+    /* search list */
+    ArrayList<Object> objects;
     /* var */
     private int SEARCH_STATUS;
     private Bundle result;
-    /* search list */
     private ArrayList<Station> stationArrayList;
     private SearchAdapter searchAdapter;
 
@@ -116,7 +115,9 @@ public class SearchActivity extends BaseActivity implements
                 new SearchAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(Station data) {
-                        Toast.makeText(SearchActivity.this, "Test for Item Cilck Listener", Toast.LENGTH_SHORT).show();
+                        SEARCH_STATUS = getBundle().getInt("requestCode");
+                        setSearchResult(data);
+                        finish();
                     }
                 });
         listView.setAdapter(searchAdapter);
@@ -124,12 +125,12 @@ public class SearchActivity extends BaseActivity implements
         searchAdapter.animateTo(stationArrayList);
         listView.setVisibility(View.GONE);
 
-        /* TEST DATA */
+        /* ----------------TEST DATA------------------------- */
         Station station1 = new Station("安贞门", 4, 1101);
         Station station2 = new Station("安定门", 5, 121);
 
         final PreferRoute preferRoute1 = new PreferRoute("99999999999", 111, 181);
-        SubwayLine line1 =new SubwayLine(13);
+        SubwayLine line1 = new SubwayLine(13);
         SubwayLine line2 = new SubwayLine(8);
 
         SubwayStation ss1 = new SubwayStation(111);
@@ -142,8 +143,9 @@ public class SearchActivity extends BaseActivity implements
 
         preferRoute1.setStartStation(ss1);
         preferRoute1.setEndStation(ss2);
-        // -----------------Test date end----------------------
-        ArrayList<Object> objects = new ArrayList<>();
+        // -----------------TEST DATA end----------------------
+
+        objects = new ArrayList<>();
 
         NetworkUtils.preferenceHistory(
                 Info.getInstance().getToken(),
@@ -151,7 +153,9 @@ public class SearchActivity extends BaseActivity implements
                     @Override
                     public void onResponse(HistoryRouteListResult response) {
                         ArrayList<HistoryRoute> historyRoutes =
-                                new ArrayList<HistoryRoute>(response.getHistoryRouteList());
+                                new ArrayList<>(response.getHistoryRouteList());
+                        if (!historyRoutes.isEmpty())
+                            objects.add(historyRoutes);
                     }
                 },
                 new Response.ErrorListener() {
@@ -163,7 +167,6 @@ public class SearchActivity extends BaseActivity implements
         objects.add(station1);
         objects.add(station2);
         objects.add(preferRoute1);
-//        NetworkUtils.subwayGetTicketPriceByStartStationAndEndStation()
 
         SearchHistoryAdapter searchHistoryAdapter;
         searchHistoryAdapter = new SearchHistoryAdapter(
@@ -175,17 +178,17 @@ public class SearchActivity extends BaseActivity implements
                         switch (mode) {
                             case SearchHistoryAdapter.STATUS_COME:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_START;
-                                setSearchResult((Station)data);
+                                setSearchResult((Station) data);
                                 break;
                             case SearchHistoryAdapter.STATUS_GO:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_END;
-                                setSearchResult((Station)data);
+                                setSearchResult((Station) data);
                                 break;
                             case SearchHistoryAdapter.STATUS_ROUTE:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_BOTH;
-                                PreferRoute preferRoute = (PreferRoute)data;
+                                PreferRoute preferRoute = (PreferRoute) data;
                                 ArrayList<Station> stations = new ArrayList<>(Station.PreferRouteAdapter(preferRoute));
-                                setSearchResult(stations.get(0),stations.get(1));
+                                setSearchResult(stations.get(0), stations.get(1));
                                 break;
                         }
                         finish();
@@ -273,7 +276,7 @@ public class SearchActivity extends BaseActivity implements
     private void setSearchResult(Station s) {
         Gson gson = new Gson();
         result.putString(
-                SEARCH_STATUS == EDIT_TEXT_REQUEST_CODE_START? KEY_START:KEY_END,
+                SEARCH_STATUS == EDIT_TEXT_REQUEST_CODE_START ? KEY_START : KEY_END,
                 gson.toJson(s));
         putIntent(result);
     }

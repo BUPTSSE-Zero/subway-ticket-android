@@ -258,17 +258,27 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         editText_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String c = editText_end.getText().toString().trim();
-                String g = editText_start.getText().toString().trim();
-                editText_end.setText(g);
-                editText_start.setText(c);
+                if (endStation != null && startStation != null) {
+                    Station swap = startStation;
+                    startStation = endStation;
+                    endStation = swap;
+                    editText_end.setText(startStation.getName());
+                    editText_start.setText(endStation.getName());
+                } else if (endStation == null && startStation != null) {
+                    endStation = startStation;
+                    editText_end.setText(startStation.getName());
+                } else if (endStation != null) {
+                    startStation = endStation;
+                    editText_start.setText(endStation.getName());
+                }
+
             }
         });
     }
 
     private void showSearch(int type) {
         Bundle bundle = new Bundle();
-        bundle.putInt("TYPE", type);
+        bundle.putInt("requestCode", type);
         if (type == SearchActivity.ET_END) {
             jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
         } else {
