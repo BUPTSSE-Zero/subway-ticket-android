@@ -21,7 +21,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.subwayticket.database.model.HistoryRoute;
 import com.subwayticket.database.model.PreferRoute;
 import com.subwayticket.database.model.SubwayLine;
@@ -39,9 +38,7 @@ import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.RecycleViewDivider;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
-import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class SearchActivity extends BaseActivity implements
@@ -155,7 +152,6 @@ public class SearchActivity extends BaseActivity implements
                     public void onResponse(HistoryRouteListResult response) {
                         ArrayList<HistoryRoute> historyRoutes =
                                 new ArrayList<HistoryRoute>(response.getHistoryRouteList());
-
                     }
                 },
                 new Response.ErrorListener() {
