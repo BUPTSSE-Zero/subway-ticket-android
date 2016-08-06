@@ -22,7 +22,11 @@ import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 public class TicketPayFragment extends BaseFragment {
-    final public ArrayList<TicketOrder> ticketOrderArrayList = new ArrayList<>();
+    ArrayList<TicketOrder> serverResult = new ArrayList<>();
+    ArrayList<cn.crepusculo.subway_ticket_android.content.TicketOrder> itemsData = new ArrayList<>();
+
+    TextView textView;
+    RecyclerView recyclerView;
 
     @Override
     protected int getFragmentLayout() {
@@ -31,32 +35,71 @@ public class TicketPayFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        final RecyclerView recyclerView;
-        final TextView textView;
-
         recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
         textView = (TextView) mRootView.findViewById(R.id.textView);
 
-        RecyclerView.LayoutManager layoutManager;
-        layoutManager = new LinearLayoutManager(getActivity());
+        // init serverResult here
+        initArrayFromServer();
 
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
+        if (!serverResult.isEmpty()) {
+            recyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+            /**
+             * Get Data from Sever Successful
+             */
+            for (TicketOrder result : serverResult
+                    ) {
+                /**
+                 * Get server result and load them to @params itemData
+                 */
+                cn.crepusculo.subway_ticket_android.content.TicketOrder data =
+                        new cn.crepusculo.subway_ticket_android.content.TicketOrder(result);
+                itemsData.add(data);
 
-        ArrayList<cn.crepusculo.subway_ticket_android.content.TicketOrder> itemsData = new ArrayList<>();
+                /**
+                 * Build recyclerView manager
+                 */
+                RecyclerView.LayoutManager layoutManager;
+                layoutManager = new LinearLayoutManager(getActivity());
+
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setHasFixedSize(true);
+
+                /**
+                 * Build recyclerView adapter
+                 */
+                TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
+                        new TicketRecyclerAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
+                                TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
+                            }
+                        });
+                recyclerView.setAdapter(adapter);
+            }
+        } else {
+            /**
+             * Else load cache text view
+             */
+            recyclerView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+    protected void initArrayFromServer() {
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
-                ""+TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
+                "" + TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
                 "0",
-                ""+ System.currentTimeMillis(),
+                "" + System.currentTimeMillis(),
                 Info.getInstance().getToken(),
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
-                        textView.setVisibility(View.INVISIBLE);
-                        recyclerView.setVisibility(View.VISIBLE);
                         for (TicketOrder order : response.getTicketOrderList()
                                 ) {
-                            ticketOrderArrayList.add(order);
+                            serverResult.add(order);
                         }
                     }
                 },
@@ -65,26 +108,11 @@ public class TicketPayFragment extends BaseFragment {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            textView.setVisibility(View.VISIBLE);
-                            recyclerView.setVisibility(View.GONE);
+                            textView.setText(r.result_description);
                         } catch (NullPointerException e) {
                             Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
                         }
                     }
                 });
-        for (int i = 0; i < 30; i++) {
-            itemsData.add(new cn.crepusculo.subway_ticket_android.content.TicketOrder());
-        }
-
-        TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
-                new TicketRecyclerAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
-                        TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
-                    }
-                });
-        recyclerView.setAdapter(adapter);
     }
-
-
 }

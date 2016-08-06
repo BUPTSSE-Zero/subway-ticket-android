@@ -66,7 +66,7 @@
     <string name="exit_dialog_content">您未完成的订单将不会被保存</string>
 
     <string name="error_failure_to_get_ticket_info">未能正确得到所查询的路线票务</string>
-    <string name="error_none_ticket_info">未查询到任何有效票务</string>
+    <string name="error_none_ticket_info">读取列表中．．．</string>
     <string name="error_failure_to_get_subway_list">获取站点列表失败</string>
     <string name="post_bill">提交订单</string>
 
