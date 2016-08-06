@@ -346,6 +346,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                              */
                             showView(editTextCaptcha);
                             showView(editTextPassword);
+                            editTextPassword.setText(null);
+                            editTextPassword.setHint(R.string.login_user_password_update);
                             hideView(signBtn);
                             hideView(forgetBtn);
                         }
@@ -533,7 +535,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
              * Register - pwdEditText
              */
             showView(editTextPassword);
-            editTextPassword.setHint(getString(R.string.login_user_password));
+            editTextPassword.setText(null);
+            editTextPassword.setHint(getString(R.string.login_user_password_update));
             /**
              * Register - captchaEditText
              */
