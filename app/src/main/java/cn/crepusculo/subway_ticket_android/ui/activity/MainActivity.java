@@ -262,16 +262,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                     Station swap = startStation;
                     startStation = endStation;
                     endStation = swap;
-                    editText_end.setText(startStation.getName());
-                    editText_start.setText(endStation.getName());
+
                 } else if (endStation == null && startStation != null) {
                     endStation = startStation;
-                    editText_end.setText(startStation.getName());
                 } else if (endStation != null) {
                     startStation = endStation;
-                    editText_start.setText(endStation.getName());
                 }
-
+                SetEditText(editText_start, startStation);
+                SetEditText(editText_end, endStation);
             }
         });
     }
@@ -411,24 +409,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_START);
             startStation = new Gson().fromJson(obj_str, Station.class);
-            editText_start.setText(
-                    SubwayLineUtil.ConnectLineNameStr(
-                            startStation.getLine(),
-                            startStation.getName()
-                    )
-            );
-
+            SetEditText(editText_start, startStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_END);
             endStation = new Gson().fromJson(obj_str, Station.class);
-            editText_end.setText(
-                    SubwayLineUtil.ConnectLineNameStr(
-                            endStation.getLine(),
-                            endStation.getName()
-                    )
-            );
+            SetEditText(editText_end, endStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
             String obj_str_e = data.getStringExtra(
@@ -438,18 +425,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             endStation = new Gson().fromJson(obj_str_e, Station.class);
             startStation = new Gson().fromJson(obj_str_s, Station.class);
 
-            editText_start.setText(
-                    SubwayLineUtil.ConnectLineNameStr(
-                            startStation.getLine(),
-                            startStation.getName()
-                    )
-            );
-            editText_end.setText(
-                    SubwayLineUtil.ConnectLineNameStr(
-                            endStation.getLine(),
-                            endStation.getName()
-                    )
-            );
+            SetEditText(editText_start, startStation);
+            SetEditText(editText_end, endStation);
 
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
             // None of edit_text will be rewrite
@@ -555,6 +532,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
+    private void SetEditText(EditText e, Station s) {
+        if (s != null) {
+            e.setText(
+                    SubwayLineUtil.ConnectLineNameStr(
+                            s.getLine(),
+                            s.getName()
+                    ));
+        } else {
+            e.setText(null);
+        }
+    }
 
     private class SideNavBtn {
         public final static int GET_QR = 0;
