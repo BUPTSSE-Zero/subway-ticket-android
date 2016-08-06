@@ -42,8 +42,6 @@ import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class SearchActivity extends BaseActivity implements
         SearchView.OnQueryTextListener {
-    public static int ET_START = 1;
-    public static int ET_END = -1;
 
     /* ID back to main*/
     public static int EDIT_TEXT_REQUEST_CODE_START = 1000;

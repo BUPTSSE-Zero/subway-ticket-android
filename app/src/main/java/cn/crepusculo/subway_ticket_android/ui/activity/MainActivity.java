@@ -229,13 +229,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         editText_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SearchActivity.ET_START);
+                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
             }
         });
         editText_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearch(SearchActivity.ET_END);
+                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
             }
         });
 
@@ -279,10 +279,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private void showSearch(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt("requestCode", type);
-        if (type == SearchActivity.ET_END) {
-            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
-        } else {
+        if (type == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
             jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
+        } else {
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
         }
     }
 
@@ -317,7 +317,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
-    private void showCitysDialog() {
+    private void showCityDialog() {
         new MaterialDialog.Builder(this)
                 .titleColor(getResources().getColor(R.color.primary))
                 .positiveColor(getResources().getColor(R.color.primary))
@@ -496,7 +496,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         } else if (id == SideNavBtn.CITES) {
-            showCitysDialog();
+            showCityDialog();
             drawer.closeDrawer();
         } else if (id == SideNavBtn.PROFILE) {
 

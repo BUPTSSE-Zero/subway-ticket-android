@@ -2,12 +2,9 @@ package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
-
-import android.view.Menu;
 import android.view.View;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -96,11 +93,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         return this.getIntent().getExtras();
     }
 
-    public void jumpToActivityWithResult(Class<?> c, Bundle extras, int REQUESET_CODE) {
+    public void jumpToActivityWithResult(Class<?> c, Bundle extras, int REQUEST_CODE) {
         Intent intent = new Intent();
         intent.setClass(this, c);
         intent.putExtras(extras);
-        this.startActivityForResult(intent,REQUESET_CODE);
+        this.startActivityForResult(intent, REQUEST_CODE);
         overridePendingTransition(R.anim.in_anim, R.anim.fade_out_center);
     }
 }
