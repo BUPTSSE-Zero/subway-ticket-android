@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_activity"
     android:orientation="vertical">
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_account"
+            android:drawableStart="@drawable/ic_account_primary_24dp"
             android:hint="@string/login_user_name"
             android:inputType="phone"
             android:maxLength="11"
@@ -78,21 +78,21 @@
             android:id="@+id/login_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:shadowColor="@color/colorPrimaryDark"
             android:text="@string/login_submit"
             android:textColor="@color/md_white_1000"
             app:pb_colorComplete="@color/green_complete"
+            app:pb_colorError="@color/red_error"
             app:pb_colorNormal="@color/primary"
-            app:pb_cornerRadius="0dp"
-            android:shadowColor="@color/colorPrimaryDark"
             app:pb_colorPressed="@color/blue_pressed"
             app:pb_colorProgress="@color/purple_progress"
+            app:pb_cornerRadius="0dp"
             app:pb_textComplete="Success"
-            app:pb_textProgress="Loading"
             app:pb_textError="Error"
-            app:pb_colorError="@color/red_error"  />
+            app:pb_textProgress="Loading" />
 
 
         <LinearLayout
@@ -113,12 +113,12 @@
             <Button
                 android:id="@+id/login_signup"
                 style="@style/AppTheme.Dialog.Button"
-                android:background="@drawable/ripple_effect"
-                android:theme="@style/AppTheme.Dialog.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/ripple_effect"
                 android:gravity="center"
                 android:text="@string/login_signup"
+                android:theme="@style/AppTheme.Dialog.Button"
                 />
 
 
@@ -143,11 +143,11 @@
                 android:layout_gravity="center_vertical|top"
                 android:textSize="48sp" />
             <TextSwitcher
-                android:textSize="48sp"
-                android:layout_gravity="center_vertical|top"
                 android:id="@+id/hint_bigger"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|top"
+                android:textSize="48sp" />
         </LinearLayout>
 
         <LinearLayout

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_ticket_white_24dp"
+        android:drawableStart="@drawable/ic_ticket_black_24dp"
         android:gravity="start|center_vertical"
         android:text="@string/ticket_pay" />
 

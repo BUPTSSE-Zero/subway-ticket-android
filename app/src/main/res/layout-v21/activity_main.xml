@@ -163,7 +163,7 @@
             android:id="@+id/action_bills"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_ticket_white_24dp"
+            android:src="@drawable/ic_ticket_black_24dp"
             app:fab_colorNormal="@color/md_white_1000"
             app:fab_colorPressed="@color/primary"
             />

@@ -23,7 +23,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bm.library.PhotoView;
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
@@ -117,9 +116,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         fab_search = (android.support.design.widget.FloatingActionButton)
                 findViewById(R.id.action_search);
 
-        fab_unfoucs = (FloatingActionButton)
-                findViewById(R.id.action_unfoucs);
-
         fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_settings);
 
@@ -151,12 +147,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /* get side menu resource */
         String[] drawerItemsNames = getResources().getStringArray(R.array.drawer_items);
         int[] drawerItemIcons = {
-                R.drawable.ic_find_in_page_black_24dp,
-                R.drawable.ic_find_in_page_black_24dp,
-                R.drawable.ic_find_in_page_black_24dp,
-                R.drawable.ic_find_in_page_black_24dp,
-                R.drawable.ic_find_in_page_black_24dp,
-                R.drawable.ic_find_in_page_black_24dp
+                R.drawable.ic_qr_24dp,
+                R.drawable.ic_ticket_light_24dp,
+                R.drawable.ic_find_in_page_light_24dp,
+                R.drawable.ic_settings_light_24dp,
+                R.drawable.ic_account_light_24dp,
+                R.drawable.ic_settings_light_24dp
         };
 
         /* init side menu concept */
@@ -164,29 +160,43 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.GET_QR])
                         .withIcon(drawerItemIcons[SideNavBtn.GET_QR])
+                        .withTextColorRes(R.color.light_primary_text)
+                        .withIconColorRes(R.color.light_primary_text)
                         .withIdentifier(SideNavBtn.GET_QR),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.BILLS])
+                        .withTextColorRes(R.color.light_primary_text)
+                        .withIconColorRes(R.color.light_primary_text)
                         .withIcon(drawerItemIcons[SideNavBtn.BILLS])
                         .withIdentifier(SideNavBtn.BILLS),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.CITES])
+                        .withIconColorRes(R.color.light_primary_text)
+                        .withTextColorRes(R.color.light_primary_text)
                         .withIcon(drawerItemIcons[SideNavBtn.CITES])
                         .withIdentifier(SideNavBtn.CITES),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.PROFILE])
+                        .withTextColorRes(R.color.light_primary_text)
+                        .withIconColorRes(R.color.light_primary_text)
                         .withIcon(drawerItemIcons[SideNavBtn.PROFILE])
                         .withIdentifier(SideNavBtn.PROFILE),
 
                 new PrimaryDrawerItem()
                         .withName(drawerItemsNames[SideNavBtn.SETTINGS])
+                        .withTextColorRes(R.color.light_primary_text)
+                        .withIconColorRes(R.color.light_primary_text)
                         .withIcon(drawerItemIcons[SideNavBtn.SETTINGS])
                         .withIdentifier(SideNavBtn.SETTINGS)
         };
 
+        for (PrimaryDrawerItem item : primaryDrawerItems
+                ) {
+            item.withTextColor(getResources().getColor(R.color.light_primary_text));
+        }
 
         /* build side Menu */
         drawer = new DrawerBuilder()
@@ -195,6 +205,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .withTranslucentNavigationBar(true)
                 .withDisplayBelowStatusBar(false)
                 .withCloseOnClick(true)
+                .withTranslucentNavigationBar(true)
                 .withActionBarDrawerToggle(false)
                 .withSelectedItem(-1)
                 .withDrawerGravity(Gravity.START)
