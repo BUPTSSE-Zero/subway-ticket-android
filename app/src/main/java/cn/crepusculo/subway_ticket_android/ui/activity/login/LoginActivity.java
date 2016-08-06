@@ -112,14 +112,14 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         signBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setSubmitTitle(Mode.CAPTCHA);
+                setSubmitTitle(Mode.REGISTER_CAPTCHA);
 
             }
         });
         forgetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setSubmitTitle(Mode.UPDATE);
+                setSubmitTitle(Mode.UPDATE_CAPTCHA);
             }
         });
 
@@ -146,164 +146,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void setSubmitTitle() {
-        Log.e("Set", "submitTitle");
-        if (mode.equals(Mode.LOGIN)) {
-            loginBtn.setText(R.string.login_submit);
-        } else if (mode.equals(Mode.CAPTCHA)) {
-            loginBtn.setText(R.string.login_captcha);
-        } else if (mode.equals(Mode.UPDATE)) {
-            loginBtn.setText(R.string.login_update);
-        } else {
-            loginBtn.setText(R.string.login_signup);
-        }
-    }
 
-    private void setSubmitTitle(String mode) {
-
-        this.mode = mode;
-        loginBtn.setProgress(0);
-        setSubmitTitle();
-
-        if (mode.equals(Mode.CAPTCHA)) {
-            textSwitcher.setText(getResources().getString(R.string.login_signup));
-            textSwitcher2.setText(getResources().getString(R.string.login_signup_e));
-            /**
-             * Captcha - pwdEditText
-             */
-            editTextPassword.setHint(getString(R.string.login_user_password));
-            /**
-             * Captcha - captchaEditText
-             */
-            hideView(editTextCaptcha);
-            /**
-             * Captcha - signUpBtn
-             */
-            changeBtn(signBtn);
-            resetBtn(forgetBtn);
-        }
-
-        // == END IF == captcha
-        else if (mode.equals(Mode.REGISTER)) {
-            /**
-             * Register - pwdEditText
-             */
-            editTextPassword.setHint(getString(R.string.login_user_password));
-            /**
-             * Register - captchaEditText
-             */
-            showView(editTextCaptcha);
-        }
-
-        // == END IF == register
-        else if (mode.equals(Mode.LOGIN)) {
-            textSwitcher.setText(getResources().getString(R.string.login_backup));
-            textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
-            /**
-             * Login - pwdEditText
-             */
-            editTextPassword.setHint(getString(R.string.login_user_password));
-            /**
-             * Login - captchaEditText
-             */
-            hideView(editTextCaptcha);
-            /**
-             * Login - forgetBtn
-             */
-            resetBtn(forgetBtn);
-            /**
-             * Login - signUpBtn
-             */
-            resetBtn(signBtn);
-        }
-
-        // == END IF == login
-        else if (mode.equals(Mode.UPDATE)) {
-            textSwitcher.setText(getResources().getString(R.string.login_update));
-            textSwitcher2.setText(getResources().getString(R.string.login_update_e));
-            /**
-             * Update - pwdEditText
-             */
-            editTextPassword.setHint(getString(R.string.login_user_password_update));
-            /**
-             * Update - captchaEditText
-             */
-            showView(editTextCaptcha);
-            /**
-             * Update - forgetBtn
-             */
-            /**
-             * Update - signUpBtn
-             */
-            changeBtn(forgetBtn);
-            resetBtn(signBtn);
-        } // == END IF == update
-        else {
-        } // == END ELSE == else
-
-    }
-
-    protected void showView(View v) {
-        if (v.getClass().toString().equals(forgetBtn.getClass().toString())) {
-            // if is btn
-            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(buttonSize.width, buttonSize.height);
-            v.setLayoutParams(lp);
-        } else {
-            // if is edit text
-            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(
-                    editTextUserName.getLayoutParams().width,
-                    editTextUserName.getLayoutParams().height);
-            v.setLayoutParams(lp);
-        }
-        v.setVisibility(View.VISIBLE);
-    }
-
-    protected void hideView(View v) {
-        ViewGroup.LayoutParams lp = v.getLayoutParams();
-        lp.height = 0;
-        v.setLayoutParams(lp);
-        v.setVisibility(View.INVISIBLE);
-    }
-
-    protected void changeBtn(View v) {
-        Button btn = (Button) v;
-        if (btn.getText().toString().trim().equals(getResources().getString(R.string.login_signup))
-                || btn.getText().toString().trim().equals(getResources().getString(R.string.login_forget))
-                || btn.getText().toString().trim().equals(getResources().getString(R.string.login_captcha))) {
-            btn.setText(R.string.login_backup);
-            btn.setTextColor(getResources().getColor(R.color.accent));
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    setSubmitTitle(Mode.LOGIN);
-                }
-            });
-        }
-    }
-
-    protected void resetBtn(View v) {
-        Button btn = (Button) v;
-        btn.setTextColor(getResources().getColor(R.color.primary));
-        if (btn.getId() == R.id.login_forget) {
-            btn.setText(R.string.login_forget);
-            btn.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View view) {
-                                           setSubmitTitle(Mode.UPDATE);
-                                       }
-                                   }
-            );
-        } else if (btn.getId() == R.id.login_signup) {
-            btn.setText(R.string.login_signup);
-            btn.setOnClickListener(new View.OnClickListener() {
-                                       @Override
-                                       public void onClick(View view) {
-                                           setSubmitTitle(Mode.CAPTCHA);
-                                       }
-                                   }
-            );
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -334,8 +177,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     Info.getInstance().setToken(response.getToken());
 
                                     loginBtn.setProgress(100);
-//                                    jumpToActivity(MainActivity.class);
-//                                    finish();
+
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     CircularAnimUtil.startActivityThenFinish(
                                             LoginActivity.this,
@@ -369,8 +211,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
          * Step 2. register
          *
          */
-        else if (mode.equals(Mode.CAPTCHA)) {
-            //TODO:: check phomeNumber invalid
+        else if (mode.equals(Mode.REGISTER_CAPTCHA)) {
             NetworkUtils.accountGetCaptcha(
                     new PhoneCaptchaRequest(editTextUserName.getText().toString().trim()),
                     new Response.Listener<Result>() {
@@ -469,6 +310,66 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                         }
                     }
             );
+        }
+        /**
+         * Mode.Update
+         * Use to update password by captcha
+         * Step 1. get Captcha
+         * Step 2. update new password
+         *
+         */
+        else if (mode.equals(Mode.UPDATE_CAPTCHA)) {
+            NetworkUtils.accountGetCaptcha(
+                    new PhoneCaptchaRequest(editTextUserName.getText().toString().trim()),
+                    new Response.Listener<Result>() {
+                        @Override
+                        public void onResponse(Result response) {
+                            Log.e("Update GetCaptcha", "Success!" + response.getResultCode());
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loginBtn.setProgress(100);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // Update mode
+                                            loginBtn.setProgress(0);
+                                            mode = Mode.UPDATE;
+                                            setSubmitTitle();
+                                        }
+                                    }, 1500);
+                                }
+                            }, 1500);
+                            /**
+                             * IF AND ONLY IF getCaptcha successful
+                             *
+                             */
+                            showView(editTextCaptcha);
+                            showView(editTextPassword);
+                            hideView(signBtn);
+                            hideView(forgetBtn);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            try {
+                                GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Update mode
+                                        loginBtn.setProgress(-1);
+                                    }
+                                }, 1500);
+                            } catch (NullPointerException e) {
+                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            } finally {
+                                loginBtn.setProgress(-1);
+                            }
+                        }
+                    });
         } else if (mode.equals(Mode.UPDATE)) {
             NetworkUtils.accountResetPassword(
                     new ResetPasswordRequest(
@@ -498,15 +399,15 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             try {
-                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Update mode
-                                    loginBtn.setProgress(-1);
-                                }
-                            }, 1500);
+                                GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                                Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Update mode
+                                        loginBtn.setProgress(-1);
+                                    }
+                                }, 1500);
                             } catch (NullPointerException e) {
                                 Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
                             } finally {
@@ -516,13 +417,212 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     });
 
         }
+
+    }
+
+    private void setSubmitTitle() {
+        Log.e("Set", "submitTitle");
+        if (mode.equals(Mode.LOGIN)) {
+            loginBtn.setText(R.string.login_submit);
+        } else if (mode.equals(Mode.REGISTER_CAPTCHA)) {
+            loginBtn.setText(R.string.login_captcha);
+        } else if (mode.equals(Mode.UPDATE)) {
+            loginBtn.setText(R.string.login_update);
+        } else if (mode.equals(Mode.UPDATE_CAPTCHA)) {
+            loginBtn.setText(R.string.login_captcha);
+        } else {
+            loginBtn.setText(R.string.login_signup);
+        }
+    }
+
+    private void setSubmitTitle(String mode) {
+        this.mode = mode;
+        loginBtn.setProgress(0);
+        setSubmitTitle();
+
+        /**
+         * == START IF == register_captcha ==
+         */
+        if (mode.equals(Mode.REGISTER_CAPTCHA)) {
+            textSwitcher.setText(getResources().getString(R.string.login_signup));
+            textSwitcher2.setText(getResources().getString(R.string.login_signup_e));
+            /**
+             * Captcha - pwdEditText
+             */
+            showView(editTextPassword);
+            editTextPassword.setHint(getString(R.string.login_user_password));
+            /**
+             * Captcha - captchaEditText
+             */
+            hideView(editTextCaptcha);
+            /**
+             * Captcha - signUpBtn
+             */
+            changeBtn(signBtn);
+            resetBtn(forgetBtn);
+        }
+        /**
+         * == END IF == captcha _ register ==
+         *
+         * == START IF == register ==
+         */
+        else if (mode.equals(Mode.REGISTER)) {
+            /**
+             * Register - pwdEditText
+             */
+            showView(editTextPassword);
+            editTextPassword.setHint(getString(R.string.login_user_password));
+            /**
+             * Register - captchaEditText
+             */
+            showView(editTextCaptcha);
+        }
+
+        /**
+         * == END IF == register ==
+         *
+         * == START IF == login ==
+         */
+        else if (mode.equals(Mode.LOGIN)) {
+            textSwitcher.setText(getResources().getString(R.string.login_backup));
+            textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
+            /**
+             * Login - pwdEditText
+             */
+            showView(editTextPassword);
+            editTextPassword.setHint(getString(R.string.login_user_password));
+            /**
+             * Login - captchaEditText
+             */
+            hideView(editTextCaptcha);
+            /**
+             * Login - forgetBtn
+             */
+            showView(forgetBtn);
+            resetBtn(forgetBtn);
+            /**
+             * Login - signUpBtn
+             */
+            showView(signBtn);
+            resetBtn(signBtn);
+        }
+
+        /**
+         * == END IF == login ==
+         *
+         * == START IF == captcha _ update ==
+         */
+        else if (mode.equals(Mode.UPDATE_CAPTCHA)) {
+            textSwitcher.setText(getResources().getString(R.string.login_update));
+            textSwitcher2.setText(getResources().getString(R.string.login_update_e));
+            /**
+             * Captcha - pwdEditText
+             */
+            hideView(editTextPassword);
+            /**
+             * Captcha - captchaEditText
+             */
+            hideView(editTextCaptcha);
+            /**
+             * Captcha - signUpBtn
+             */
+            resetBtn(signBtn);
+            changeBtn(forgetBtn);
+        } else if (mode.equals(Mode.UPDATE)) {
+            /**
+             * Register - pwdEditText
+             */
+            showView(editTextPassword);
+            editTextPassword.setHint(getString(R.string.login_user_password));
+            /**
+             * Register - captchaEditText
+             */
+            showView(editTextCaptcha);
+        }
+        /**
+         *  == END IF == update ==
+         *
+
+         * == START IF == update ==
+         */
+
+        /**
+         * == END ELSE == else ==
+         */
+    }
+
+    protected void changeBtn(View v) {
+        Button btn = (Button) v;
+        if (btn.getText().toString().trim().equals(getResources().getString(R.string.login_signup))
+                || btn.getText().toString().trim().equals(getResources().getString(R.string.login_forget))
+                || btn.getText().toString().trim().equals(getResources().getString(R.string.login_captcha))) {
+            btn.setText(R.string.login_backup);
+            btn.setTextColor(getResources().getColor(R.color.md_amber_400));
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setSubmitTitle(Mode.LOGIN);
+                }
+            });
+        }
+    }
+
+    protected void resetBtn(View v) {
+        v.setVisibility(View.VISIBLE);
+        Button btn = (Button) v;
+        btn.setTextColor(getResources().getColor(R.color.primary));
+        if (btn.getId() == R.id.login_forget) {
+            btn.setText(R.string.login_forget);
+            btn.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View view) {
+                                           setSubmitTitle(Mode.UPDATE_CAPTCHA);
+                                       }
+                                   }
+            );
+        } else if (btn.getId() == R.id.login_signup) {
+            btn.setText(R.string.login_signup);
+            btn.setOnClickListener(new View.OnClickListener() {
+                                       @Override
+                                       public void onClick(View view) {
+                                           setSubmitTitle(Mode.REGISTER_CAPTCHA);
+                                       }
+                                   }
+            );
+        }
+    }
+
+    protected void showView(View v) {
+        if (v.getId() == R.id.login_forget || v.getId() == R.id.login_signup) {
+            /* showButton*/
+            Log.e("showView", "It's a Button");
+            // if is btn
+            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(buttonSize.width, buttonSize.height);
+            v.setLayoutParams(lp);
+        } else {
+            // if is edit text
+            Log.e("showView", "It's a EditView");
+            ViewGroup.LayoutParams lp = new AppBarLayout.LayoutParams(
+                    editTextUserName.getLayoutParams().width,
+                    editTextUserName.getLayoutParams().height);
+            v.setLayoutParams(lp);
+        }
+        v.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideView(View v) {
+        ViewGroup.LayoutParams lp = v.getLayoutParams();
+        lp.height = 0;
+        v.setLayoutParams(lp);
+        v.setVisibility(View.INVISIBLE);
     }
 
     private static class Mode {
         public static String REGISTER = "register";
         public static String LOGIN = "login";
         public static String UPDATE = "update";
-        public static String CAPTCHA = "captcha";
+        public static String REGISTER_CAPTCHA = "register_captcha";
+        public static String UPDATE_CAPTCHA = "update_captcha";
 
         private Mode() {
         }
