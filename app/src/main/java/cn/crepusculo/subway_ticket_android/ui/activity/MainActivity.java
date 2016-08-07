@@ -36,6 +36,7 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
+import cn.crepusculo.subway_ticket_android.ui.activity.settings.ApplicationSettings;
 import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
@@ -436,14 +437,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          * Show profile
          */
         else if (id == SideNavBtn.PROFILE) {
-
+            showProfileView();
             drawer.closeDrawer();
         }
         /**
          * Show profile
          */
         else if (id == SideNavBtn.SETTINGS) {
-
+            showSettingsView();
             drawer.closeDrawer();
         }
         /**
@@ -633,6 +634,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             e.setText(null);
         }
+    }
+
+    protected void showProfileView() {
+
+    }
+
+    protected void showSettingsView() {
+        jumpToActivity(ApplicationSettings.class);
     }
 
     private class SideNavBtn {
