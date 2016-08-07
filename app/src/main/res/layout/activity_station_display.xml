@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     xmlns:pickerui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -33,13 +34,8 @@
         android:layout_height="wrap_content"
         pickerui:autoDismiss="true"
         pickerui:backgroundColor="@color/white"
-        pickerui:blur="true"
-        pickerui:blur_FilterColor="@color/md_grey_400"
-        pickerui:blur_downScaleFactor="@integer/blur_downscale_min"
-        pickerui:blur_radius="@integer/blur_radius_min"
-        pickerui:blur_use_renderscript="true"
         pickerui:entries="@array/line_names"
-        pickerui:itemsClickables="true"
+        pickerui:itemsClickables="false"
         pickerui:linesCenterColor="@color/primary"
         pickerui:textCenterColor="@color/white"
         pickerui:textNoCenterColor="@color/light_secondary_text" />
@@ -47,5 +43,14 @@
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:elevation="12dp"
+        android:src="@drawable/ic_up_24dp"
+        app:fabSize="normal"
+        app:layout_behavior="cn.crepusculo.subway_ticket_android.ui.behavior" />
 </RelativeLayout>

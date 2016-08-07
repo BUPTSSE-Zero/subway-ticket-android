@@ -490,9 +490,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 jumpToActivity(TicketManagerActivity.class, bundle);
                 return;
             case R.id.action_subway:
-////                Date date = new Date(2016, 7, 27);
-//                Toast.makeText(this, "" + System.currentTimeMillis()
-//                        , Toast.LENGTH_LONG).show();
+                jumpToActivity(StationDisplayActivity.class);
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:
