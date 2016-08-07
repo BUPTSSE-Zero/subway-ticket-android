@@ -34,6 +34,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
+import com.subwayticket.database.model.StationMessage;
 import com.subwayticket.database.model.TicketOrder;
 import com.subwayticket.model.result.OrderListResult;
 
@@ -681,7 +682,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          */
 //        Station s = LocateUtil.getInstance().getMeMyPosition()
         Station s = new Station(3);
-
+        s.setAvailable(false);
+        StationMessage message = new StationMessage();
+        message.setContent("因捕鱼行动进行," + s.getName() + "站关闭");
+        s.setStationMessage(message);
 
         TextView textName = (TextView) view.findViewById(R.id.txtName);
         textName.setText(s.getName());
@@ -694,7 +698,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             String strClose = getString(R.string.close);
             String strMessage = s.getStationMessage().getContent();
-            String content = strClose + strMessage;
+            String content = strClose + '\n' + strMessage;
             textMessage.setText(content);
         }
 
