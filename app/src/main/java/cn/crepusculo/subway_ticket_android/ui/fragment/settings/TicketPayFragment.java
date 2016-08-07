@@ -111,6 +111,7 @@ public class TicketPayFragment extends BaseFragment {
                             textView.setText(r.result_description);
                         } catch (NullPointerException e) {
                             Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            textView.setText("网络访问超时");
                         }
                     }
                 });
