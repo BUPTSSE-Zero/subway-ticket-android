@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.android.volley.Response;
@@ -50,7 +51,7 @@ public class PersonalSettings extends AppCompatActivity {
     Element getUpdater() {
         Element element = new Element();
         element.setTitle("更改密码");
-        element.setIcon(R.drawable.ic_lock_black_24dp);
+        element.setIcon(R.drawable.ic_lock_primary_24dp);
         element.setColor(ContextCompat.getColor(this, mehdi.sakout.aboutpage.R.color.about_item_icon_color));
         element.setGravity(Gravity.START);
         element.setOnClickListener(new View.OnClickListener() {
@@ -95,5 +96,15 @@ public class PersonalSettings extends AppCompatActivity {
             }
         });
         return element;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

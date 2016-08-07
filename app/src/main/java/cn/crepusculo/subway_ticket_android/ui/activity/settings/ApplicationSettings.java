@@ -3,8 +3,10 @@ package cn.crepusculo.subway_ticket_android.ui.activity.settings;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,6 +36,14 @@ public class ApplicationSettings extends AppCompatActivity {
                 .addItem(getCopyRightsElement())
                 .create();
         setContentView(settingsView);
+        /**
+         * Get action bar and set display HomeAsUp button
+         */
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+        }
     }
 
     Element getCopyRightsElement() {
@@ -50,5 +60,15 @@ public class ApplicationSettings extends AppCompatActivity {
             }
         });
         return copyRightsElement;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }

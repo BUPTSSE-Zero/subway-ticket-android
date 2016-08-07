@@ -109,6 +109,14 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         loginBtn = (ActionProcessButton) findViewById(R.id.login_login);
 
         loginBtn.setOnClickListener(this);
+        loginBtn.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                jumpToActivity(MainActivity.class);
+                return false;
+            }
+        });
+
         signBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

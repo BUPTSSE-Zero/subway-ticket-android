@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_lock_black_24dp"
+            android:drawableStart="@drawable/ic_lock_primary_24dp"
             android:hint="@string/login_user_password"
             android:inputType="textPassword"
             android:maxLength="15"
