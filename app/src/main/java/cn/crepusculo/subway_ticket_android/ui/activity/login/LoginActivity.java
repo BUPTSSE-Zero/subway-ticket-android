@@ -135,15 +135,15 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
         loginBtn.setProgress(0);
-        if (forgetBtn.getVisibility() == View.INVISIBLE) {
+        if (!mode.equals(Mode.LOGIN)) {
             mode = Mode.LOGIN;
             showView(forgetBtn);
             showView(signBtn);
             if (editTextCaptcha.getVisibility() == View.VISIBLE) {
                 hideView(editTextCaptcha);
             }
-            setSubmitTitle();
         }
+        setSubmitTitle(mode);
     }
 
 
@@ -151,16 +151,17 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         loginBtn.setMode(ActionProcessButton.Mode.ENDLESS);
+        // to progress mode
         loginBtn.setProgress(32);
 
         final String loginId = editTextUserName.getText().toString().trim();
         final String loginPwd = editTextPassword.getText().toString().trim();
-
         /**
          * Mode.LOGIN
          * Use to login
          */
         if (mode.equals(Mode.LOGIN)) {
+            editTextPassword.setHint(R.string.login_user_password);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -169,6 +170,9 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                             new Response.Listener<MobileLoginResult>() {
                                 @Override
                                 public void onResponse(MobileLoginResult response) {
+                                    /**
+                                     * Only save preference when success
+                                     */
                                     int code = response.getResultCode();
                                     Log.e("Login", "Success!" + response.getResultCode() + response.getResultDescription());
 
@@ -183,7 +187,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                             LoginActivity.this,
                                             intent,
                                             false,
-                                            loginBtn, R.color.green_complete, 329);
+                                            loginBtn, R.color.primary, 329);
                                 }
                             },
                             new Response.ErrorListener() {
@@ -212,6 +216,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
          *
          */
         else if (mode.equals(Mode.REGISTER_CAPTCHA)) {
+            editTextPassword.setHint(R.string.login_user_password);
+
             NetworkUtils.accountGetCaptcha(
                     new PhoneCaptchaRequest(editTextUserName.getText().toString().trim()),
                     new Response.Listener<Result>() {
@@ -228,7 +234,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                             // Update mode
                                             loginBtn.setProgress(0);
                                             mode = Mode.REGISTER;
-                                            setSubmitTitle();
+                                            setSubmitTitle(mode);
                                         }
                                     }, 1500);
                                 }
@@ -319,6 +325,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
          *
          */
         else if (mode.equals(Mode.UPDATE_CAPTCHA)) {
+            editTextPassword.setText(null);
+            editTextPassword.setHint(R.string.login_user_password_update);
             NetworkUtils.accountGetCaptcha(
                     new PhoneCaptchaRequest(editTextUserName.getText().toString().trim()),
                     new Response.Listener<Result>() {
@@ -335,7 +343,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                             // Update mode
                                             loginBtn.setProgress(0);
                                             mode = Mode.UPDATE;
-                                            setSubmitTitle();
+                                            setSubmitTitle(mode);
                                         }
                                     }, 1500);
                                 }
@@ -346,8 +354,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                              */
                             showView(editTextCaptcha);
                             showView(editTextPassword);
-                            editTextPassword.setText(null);
-                            editTextPassword.setHint(R.string.login_user_password_update);
                             hideView(signBtn);
                             hideView(forgetBtn);
                         }
@@ -373,6 +379,8 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                         }
                     });
         } else if (mode.equals(Mode.UPDATE)) {
+            editTextPassword.setText(null);
+            editTextPassword.setHint(R.string.login_user_password_update);
             NetworkUtils.accountResetPassword(
                     new ResetPasswordRequest(
                             editTextUserName.getText().toString().trim(),
@@ -419,7 +427,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     });
 
         }
-
     }
 
     private void setSubmitTitle() {
@@ -530,24 +537,21 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
              */
             resetBtn(signBtn);
             changeBtn(forgetBtn);
-        } else if (mode.equals(Mode.UPDATE)) {
+        }   /**
+         *  == END IF == update _ captcha ==
+         *
+         * == START IF == update ==
+         */
+        else if (mode.equals(Mode.UPDATE)) {
             /**
              * Register - pwdEditText
              */
             showView(editTextPassword);
-            editTextPassword.setText(null);
-            editTextPassword.setHint(getString(R.string.login_user_password_update));
             /**
              * Register - captchaEditText
              */
             showView(editTextCaptcha);
         }
-        /**
-         *  == END IF == update ==
-         *
-
-         * == START IF == update ==
-         */
 
         /**
          * == END ELSE == else ==
