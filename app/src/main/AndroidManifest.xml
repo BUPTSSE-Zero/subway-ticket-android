@@ -42,9 +42,6 @@
             android:name=".ui.activity.SearchActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".ui.activity.PayActivity"
