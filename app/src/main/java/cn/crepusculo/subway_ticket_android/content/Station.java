@@ -18,8 +18,10 @@ public class Station {
     private String name;
     private boolean available;
     private StationMessage stationMessage;
+
     public Station() {
     }
+
     public Station(String name, int line, int id) {
         this.available = true;
         this.name = name;
@@ -28,7 +30,7 @@ public class Station {
     }
 
     public Station(int i) {
-        String[] ss = {"111五棵松", "121安定门", "181什刹海", "1131五道口", "1101安贞门"};
+        String[] ss = {"五棵松", "安定门", "什刹海", "五道口", "安贞门"};
         String[] sid = {"111", "121", "181", "1131", "1101"};
         clientLine = i % 23;
         serverLine = SubwayLineUtil.ToServerTypeId(clientLine);
@@ -66,6 +68,33 @@ public class Station {
         result.add(start);
         result.add(end);
         return result;
+    }
+
+    public StationMessage getStationMessage() {
+        return stationMessage;
+    }
+
+    public Station setStationMessage(StationMessage stationMessage) {
+        this.stationMessage = stationMessage;
+        return this;
+    }
+
+    public int getServerLine() {
+        return serverLine;
+    }
+
+    public Station setServerLine(int serverLine) {
+        this.serverLine = serverLine;
+        return this;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public Station setAvailable(boolean available) {
+        this.available = available;
+        return this;
     }
 
     public int getId() {

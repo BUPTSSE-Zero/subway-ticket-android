@@ -78,4 +78,7 @@
     <string name="search_hint">搜索您的目的地</string>
 
     <string name="copy_right">Copyrights Crepusculo © %1$d</string>
+
+    <string name="normal">状态: 正常</string>
+    <string name="close">状态: 关闭</string>
 </resources>

@@ -10,11 +10,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -27,6 +31,9 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mingle.sweetpick.CustomDelegate;
+import com.mingle.sweetpick.DimEffect;
+import com.mingle.sweetpick.SweetSheet;
 import com.subwayticket.database.model.TicketOrder;
 import com.subwayticket.model.result.OrderListResult;
 
@@ -46,12 +53,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         implements Drawer.OnDrawerItemClickListener,
         com.getbase.floatingactionbutton.FloatingActionButton.OnClickListener, TextWatcher {
     /* Static constant */
-
+    /* Sheet */
+    private SweetSheet sheet;
     /* Storage */
     private Station startStation;
     private Station endStation;
     /* view */
     private View view;
+    private ViewGroup viewGroup;
     /* Info */
     private Info info;
     /* nav */
@@ -84,6 +93,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          * If android version > 4.4 set statusBarColor programmatically
          */
         view = this.findViewById(R.id.main_activity);
+
         Window window = getWindow();
         if (Build.VERSION.SDK_INT > 21) {
             window.setStatusBarColor(getResources().getColor(R.color.primary));
@@ -97,6 +107,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         initFab();
         initDrawer();
         initSearchEditTextView();
+        initSheet();
     }
 
     private void initBackGround() {
@@ -483,6 +494,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:
+                getLocation();
                 fab_menu.collapse();
                 return;
             case R.id.action_settings:
@@ -643,6 +655,66 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     protected void showSettingsView() {
         jumpToActivity(ApplicationSettings.class);
+    }
+
+    private void initSheet() {
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.main_activity);
+        sheet = new SweetSheet(rl);
+        sheet.setBackgroundEffect(new DimEffect(12f));
+    }
+
+    protected void getLocation() {
+        /**
+         * Inflater view
+         */
+        RelativeLayout rl = (RelativeLayout) findViewById(R.id.main_activity);
+        View view = LayoutInflater.from(this).inflate(R.layout.item_locate_station, rl, false);
+        /**
+         * Bind view with delegate animation
+         */
+        CustomDelegate customDelegate = new CustomDelegate(true, CustomDelegate.AnimationType.DuangAnimation);
+
+        /**
+         * For beta version, Using fake data here
+         *
+         * Pretend to we try our best to locate our position by science power
+         */
+//        Station s = LocateUtil.getInstance().getMeMyPosition()
+        Station s = new Station(3);
+
+
+        TextView textName = (TextView) view.findViewById(R.id.txtName);
+        textName.setText(s.getName());
+        TextView textLine = (TextView) view.findViewById(R.id.txtLine);
+        textLine.setText(s.getLine() + " 号线");
+
+        TextView textMessage = (TextView) view.findViewById(R.id.message);
+        if (s.isAvailable()) {
+            textMessage.setText(R.string.normal);
+        } else {
+            String strClose = getString(R.string.close);
+            String strMessage = s.getStationMessage().getContent();
+            String content = strClose + strMessage;
+            textMessage.setText(content);
+        }
+
+        view.findViewById(R.id.comeFromThere).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sheet.dismiss();
+            }
+        });
+        view.findViewById(R.id.goToThere).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sheet.dismiss();
+            }
+        });
+
+        customDelegate.setCustomView(view);
+        sheet.setDelegate(customDelegate);
+
+        sheet.show();
     }
 
     private class SideNavBtn {
