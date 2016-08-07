@@ -146,6 +146,7 @@ public class PayActivity extends BaseActivity {
                         new Response.Listener<SubmitOrderResult>() {
                             @Override
                             public void onResponse(SubmitOrderResult response) {
+                                Log.e("Request", "Success!!");
                                 payRequest = new TicketOrder(response.getTicketOrder());
                             }
                         },
