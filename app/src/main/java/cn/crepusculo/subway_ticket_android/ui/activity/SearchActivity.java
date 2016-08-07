@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -256,12 +256,18 @@ public class SearchActivity extends BaseActivity implements
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        /**
+                         * Avoid using dialog due to unload context
+                         * Avoid using snackbar for the same reason and skb will hover it
+                         */
 //                        showErrorDialog();
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Snackbar.make(findViewById(R.id.activity_search), r.result_description, Snackbar.LENGTH_LONG).show();
+//                            Snackbar.make(findViewById(R.id.activity_search), r.result_description, Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), r.result_description, Toast.LENGTH_LONG).show();
                         } catch (NullPointerException e) {
-                            Snackbar.make(findViewById(R.id.activity_search), "网络访问超时", Snackbar.LENGTH_LONG).show();
+//                            Snackbar.make(findViewById(R.id.activity_search), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "网络访问超时", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
