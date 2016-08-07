@@ -37,6 +37,7 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.ApplicationSettings;
+import cn.crepusculo.subway_ticket_android.ui.activity.settings.PersonalSettings;
 import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
@@ -170,8 +171,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 R.drawable.ic_qr_24dp,
                 R.drawable.ic_ticket_light_24dp,
                 R.drawable.ic_find_in_page_light_24dp,
-                R.drawable.ic_settings_light_24dp,
                 R.drawable.ic_account_light_24dp,
+                R.drawable.ic_settings_light_24dp,
                 R.drawable.ic_settings_light_24dp
         };
 
@@ -637,7 +638,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     protected void showProfileView() {
-
+        jumpToActivity(PersonalSettings.class);
     }
 
     protected void showSettingsView() {

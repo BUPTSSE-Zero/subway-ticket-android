@@ -2,7 +2,7 @@
     <string name="agree">同意</string>
     <string name="cancel">取消</string>
     <string name="error">错误</string>
-    <string name="warning">浸膏</string>
+    <string name="warning">警告</string>
     <string name="app_name">地铁2033</string>
     <string name="action_settings">设置</string>
     <string name="action_search">查找</string>
@@ -76,4 +76,6 @@
     <string name="ticket_pay">单价　　</string>
 
     <string name="search_hint">搜索您的目的地</string>
+
+    <string name="copy_right">Copyrights Crepusculo © %1$d</string>
 </resources>

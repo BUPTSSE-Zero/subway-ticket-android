@@ -5,7 +5,7 @@
         <item>我的订单</item>
         <item>选择城市</item>
         <item>账户设置</item>
-        <item>应用设置</item>
+        <item>应用信息</item>
     </string-array>
     <string-array name="supported_citys">
         <item>北京</item>
