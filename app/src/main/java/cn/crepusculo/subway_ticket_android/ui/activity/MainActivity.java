@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -620,12 +621,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
      * If both EditText are not null, show search FAB, else dismiss it
      */
     private void updateEditTextDrawable() {
-        if (editText_start.getText().toString().trim().length() < 1) {
+        if (TextUtils.isEmpty(editText_start.getText())) {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
             i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
-        if (editText_end.getText().toString().trim().length() < 1) {
+        if (TextUtils.isEmpty(editText_end.getText())) {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
             i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
@@ -648,6 +649,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             e.setText(null);
         }
+        updateEditTextDrawable();
     }
 
     protected void showProfileView() {
@@ -702,15 +704,20 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             textMessage.setText(content);
         }
 
+        final Station station = s;
         view.findViewById(R.id.comeFromThere).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startStation = station;
+                SetEditText(editText_start, startStation);
                 sheet.dismiss();
             }
         });
         view.findViewById(R.id.goToThere).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                endStation = station;
+                SetEditText(editText_end, endStation);
                 sheet.dismiss();
             }
         });
