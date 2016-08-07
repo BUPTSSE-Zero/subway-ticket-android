@@ -307,6 +307,11 @@ public class SearchActivity extends BaseActivity implements
         return false;
     }
 
+    /**
+     * @param list  Station Data (All list)
+     * @param query Filter key word
+     * @return List after filter
+     */
     private List<Station> filter(List<Station> list, String query) {
         if (TextUtils.isEmpty(query)) {
             return stationArrayList;

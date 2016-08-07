@@ -60,6 +60,9 @@
         <activity
             android:name=".ui.activity.StationDisplayActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.activity.settings.ResetPassword"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

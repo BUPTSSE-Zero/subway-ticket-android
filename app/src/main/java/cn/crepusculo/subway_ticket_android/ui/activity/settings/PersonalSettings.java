@@ -3,6 +3,7 @@ package cn.crepusculo.subway_ticket_android.ui.activity.settings;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
@@ -27,11 +28,23 @@ public class PersonalSettings extends AppCompatActivity {
 
         View settingsView = new AboutPage(this)
                 .isRTL(false)
-                .setDescription("")
+                .setDescription(" ")
+                .setImage(R.mipmap.side_menu_bk)
                 .addItem(getUpdater())
                 .addItem(getLogout())
                 .create();
+        /**
+         * Build View Here
+         */
         setContentView(settingsView);
+        /**
+         * Get action bar and set display HomeAsUp button
+         */
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+        }
     }
 
     Element getUpdater() {
@@ -43,7 +56,9 @@ public class PersonalSettings extends AppCompatActivity {
         element.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(PersonalSettings.this, ResetPassword.class);
+                startActivity(intent);
+                finish();
             }
         });
         return element;
