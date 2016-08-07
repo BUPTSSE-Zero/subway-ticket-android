@@ -10,8 +10,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -80,17 +78,23 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     @Override
     protected void initView() {
+        /**
+         * If android version > 4.4 set statusBarColor programmatically
+         */
         view = this.findViewById(R.id.main_activity);
         Window window = getWindow();
         if (Build.VERSION.SDK_INT > 21) {
             window.setStatusBarColor(getResources().getColor(R.color.primary));
         }
+        /**
+         * Init compacts
+         */
         initBackGround();
         initInfo();
         initToolbar();
         initFab();
         initDrawer();
-        initSelectButton();
+        initSearchEditTextView();
     }
 
     private void initBackGround() {
@@ -112,13 +116,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         setSupportActionBar(toolbar);
     }
 
+    /**
+     * Init all fab here including fab menu
+     */
     private void initFab() {
-        fab_search = (android.support.design.widget.FloatingActionButton)
-                findViewById(R.id.action_search);
-
-        fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.action_settings);
-
+        /**
+         * Bind compacts
+         */
         fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu)
                 findViewById(R.id.multiple_actions);
 
@@ -131,20 +135,35 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_bills);
 
+
+        fab_search = (android.support.design.widget.FloatingActionButton)
+                findViewById(R.id.action_search);
+
+        fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
+                findViewById(R.id.action_settings);
+
+
         updateHint();
 
-        /* fab menu listener register */
+        /**
+         *  fab menu listener register
+         *
+         */
         fab_bills.setOnClickListener(this);
         fab_subway.setOnClickListener(this);
         fab_locate.setOnClickListener(this);
-        /* fab listener register */
+        /**
+         * fab listener register
+         *
+         */
         fab_settings.setOnClickListener(this);
-
         fab_search.setOnClickListener(this);
     }
 
     private void initDrawer() {
-        /* get side menu resource */
+        /**
+         *  get side menu resource
+         **/
         String[] drawerItemsNames = getResources().getStringArray(R.array.drawer_items);
         int[] drawerItemIcons = {
                 R.drawable.ic_qr_24dp,
@@ -227,28 +246,23 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .build();
     }
 
-    protected void initSelectButton() {
+    protected void initSearchEditTextView() {
+        /**
+         * Bind compacts
+         */
         i_come = (ImageView) findViewById(R.id.edittext_drawable_come);
         i_go = (ImageView) findViewById(R.id.edittext_drawable_go);
         editText_start = (EditText) findViewById(R.id.edittext_come);
         editText_end = (EditText) findViewById(R.id.edittext_go);
         editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
-        editText_start.addTextChangedListener(this);
+
         editText_start.setLongClickable(false);
         editText_end.setLongClickable(false);
+        editText_btn.setBackgroundColor(getResources().getColor(R.color.transparent));
 
-        editText_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
-            }
-        });
-        editText_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
-            }
-        });
+        /**
+         * Set listener
+         */
 
         i_come.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +279,22 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 updateEditTextDrawable();
             }
         });
-        editText_btn.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+        editText_start.addTextChangedListener(this);
+
+        editText_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
+            }
+        });
+        editText_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
+            }
+        });
+
         editText_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -285,86 +314,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         });
     }
 
-    private void showSearch(int type) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("requestCode", type);
-        if (type == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
-            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
-        } else {
-            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
-        }
-    }
 
-
-    private void updateHint() {
-        int ticketCount = 0;
-        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
-                "" + TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
-                "" + 0,
-                "" + System.currentTimeMillis(),
-                info.getToken(),
-                new Response.Listener<OrderListResult>() {
-                    @Override
-                    public void onResponse(OrderListResult response) {
-                        int ticketCount = response.getTicketOrderList().size();
-                        if (ticketCount > 0) {
-                            if (fab_menu.getChildCount() == 2)
-                                fab_menu.addButton(fab_bills);
-                        } else {
-                            if (fab_menu.getChildCount() == 3)
-                                fab_menu.removeButton(fab_bills);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        );
-
-    }
-
-    private void showCityDialog() {
-        new MaterialDialog.Builder(this)
-                .titleColor(getResources().getColor(R.color.primary))
-                .positiveColor(getResources().getColor(R.color.primary))
-                .title(R.string.choice_city)
-                .items(R.array.supported_citys)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        Log.e("Main/Choice", "Dialog Chioce" + which);
-                        //TODO:持久化
-                        return true;
-                    }
-                })
-                .positiveText(R.string.choose)
-                .show();
-    }
-
-    private void finishApp() {
-        int type = 0;
-        new MaterialDialog.Builder(this)
-                .titleColor(getResources().getColor(R.color.primary))
-                .positiveColor(getResources().getColor(R.color.primary))
-                .negativeColor(getResources().getColor(R.color.primary))
-                .title(R.string.exit_dialog)
-                .content(R.string.exit_dialog_content)
-                .positiveText(R.string.agree)
-                .autoDismiss(true)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MainActivity.this.finish();
-                    }
-                })
-                .negativeText(R.string.cancel)
-                .show();
-    }
     // --------------------------------- listener --------------------------------------------------
-
 
     @Override
     public void onBackPressed() {
@@ -372,26 +323,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             drawer.closeDrawer();
         } else {
             this.finishApp();
-//            super.onBackPressed();
-        }
-    }
-
-    private void updateEditTextDrawable() {
-        if (editText_start.getText().toString().trim().length() < 1) {
-            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
-        } else {
-            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
-        }
-        if (editText_end.getText().toString().trim().length() < 1) {
-            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
-        } else {
-            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
-        }
-
-        if (editText_start.getText().toString().trim().length() >= 1 && editText_end.getText().toString().trim().length() >= 1) {
-            fab_search.setVisibility(View.VISIBLE);
-        } else {
-            fab_search.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -412,6 +343,26 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
     /* ---- Text Change Listener End ---- */
 
+    /**
+     * @param requestCode requestCode send by MainActivity
+     *                    has 2 status:
+     *                    EDIT_TEXT_REQUEST_CODE_START
+     *                    EDIT_TEXT_REQUEST_CODE_END
+     * @param resultCode  resultCode return by searchActivity
+     *                    has 4 status:
+     *                    EDIT_TEXT_REQUEST_CODE_START
+     *                    data   KEY_Start : √         KEY_end: ×
+     *                    <p/>
+     *                    EDIT_TEXT_REQUEST_CODE_END
+     *                    data   KEY_Start : ×         KEY_end: √
+     *                    <p/>
+     *                    EDIT_TEXT_REQUEST_CODE_BOTH
+     *                    data   KEY_Start : √         KEY_end: √
+     *                    <p/>
+     *                    EDIT_TEXT_REQUEST_CODE_EMPTY
+     *                    data   KEY_Start : ×         KEY_end: ×
+     * @param data        Intent data back from SearchActivity
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -447,58 +398,67 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         updateEditTextDrawable();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id) {
-            case R.id.action_locate:
-                return true;
-            case R.id.action_search:
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * @param view       View
+     * @param position   Count from 0 , position in side menu
+     * @param drawerItem DrawerItem
+     * @return Keep true
+     */
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         long id = drawerItem.getIdentifier();
-
+        /**
+         * Jump to Ticket Message Manager 'Pay'
+         */
         if (id == SideNavBtn.GET_QR) {
             Bundle bundle = new Bundle();
             bundle.putInt("TYPE", position + 1);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.BILLS) {
+        }
+        /**
+         * Jump to Ticket Message Manager 'History'
+         */
+        else if (id == SideNavBtn.BILLS) {
             Bundle bundle = new Bundle();
             bundle.putInt("TYPE", position + 1);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.CITES) {
+        }
+        /**
+         * Show Cites choose dialog
+         */
+        else if (id == SideNavBtn.CITES) {
             showCityDialog();
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.PROFILE) {
+        }
+        /**
+         * Show profile
+         */
+        else if (id == SideNavBtn.PROFILE) {
 
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.SETTINGS) {
+        }
+        /**
+         * Show profile
+         */
+        else if (id == SideNavBtn.SETTINGS) {
 
             drawer.closeDrawer();
-        } else if (id == SideNavBtn.EXIT) {
+        }
+        /**
+         * Show finish app dialog
+         */
+        else if (id == SideNavBtn.EXIT) {
             finishApp();
             drawer.closeDrawer();
         }
         return true;
     }
 
+    /**
+     * @param view Float Action Button and Float Action Button in Float Action Menu
+     */
     @Override
     public void onClick(View view) {
         fab_bills.setVisibility(View.VISIBLE);
@@ -543,6 +503,126 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
     }
 
+    // -------------------------------- listener end -----------------------------
+
+    /**
+     * @param type start/end decide request code using to launch searchActivity
+     */
+    private void showSearch(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("requestCode", type);
+        if (type == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
+        } else {
+            jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
+        }
+    }
+
+    /**
+     * Request server to check is any NOT_EXTRACT_TICKET here
+     * if any, show fab button fab_bills
+     */
+    private void updateHint() {
+        int ticketCount = 0;
+        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
+                "" + TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
+                "" + 0,
+                "" + System.currentTimeMillis(),
+                info.getToken(),
+                new Response.Listener<OrderListResult>() {
+                    @Override
+                    public void onResponse(OrderListResult response) {
+                        int ticketCount = response.getTicketOrderList().size();
+                        if (ticketCount > 0) {
+                            if (fab_menu.getChildCount() == 2)
+                                fab_menu.addButton(fab_bills);
+                        } else {
+                            if (fab_menu.getChildCount() == 3)
+                                fab_menu.removeButton(fab_bills);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        if (fab_menu.getChildCount() == 3)
+                            fab_menu.removeButton(fab_bills);
+                    }
+                }
+        );
+
+    }
+
+    /**
+     * Show city choose menu dialog
+     * <br />
+     * with no preference in beta version
+     */
+    private void showCityDialog() {
+        new MaterialDialog.Builder(this)
+                .titleColor(getResources().getColor(R.color.primary))
+                .positiveColor(getResources().getColor(R.color.primary))
+                .title(R.string.choice_city)
+                .items(R.array.supported_citys)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        Log.e("Main/Choice", "Dialog choice" + which);
+                        //TODO:持久化
+                        return true;
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
+    }
+
+    private void finishApp() {
+        int type = 0;
+        new MaterialDialog.Builder(this)
+                .titleColor(getResources().getColor(R.color.primary))
+                .positiveColor(getResources().getColor(R.color.primary))
+                .negativeColor(getResources().getColor(R.color.primary))
+                .title(R.string.exit_dialog)
+                .content(R.string.exit_dialog_content)
+                .positiveText(R.string.agree)
+                .autoDismiss(true)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        MainActivity.this.finish();
+                    }
+                })
+                .negativeText(R.string.cancel)
+                .show();
+    }
+
+    /**
+     * UpdateEditTextDrawable
+     * Bind with callback listener `onTextChanged`
+     * <p/>
+     * Set drawable fill-in when EditText not null
+     * <p/>
+     * If both EditText are not null, show search FAB, else dismiss it
+     */
+    private void updateEditTextDrawable() {
+        if (editText_start.getText().toString().trim().length() < 1) {
+            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        } else {
+            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+        }
+        if (editText_end.getText().toString().trim().length() < 1) {
+            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        } else {
+            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+        }
+
+        if (editText_start.getText().toString().trim().length() >= 1 && editText_end.getText().toString().trim().length() >= 1) {
+            fab_search.setVisibility(View.VISIBLE);
+        } else {
+            fab_search.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void SetEditText(EditText e, Station s) {
         if (s != null) {
             e.setText(
@@ -561,6 +641,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         public final static int CITES = 2;
         public final static int PROFILE = 3;
         public final static int SETTINGS = 4;
+        public final static int ABOUT_ME = 5;
         public final static int EXIT = 9;
 
     }
