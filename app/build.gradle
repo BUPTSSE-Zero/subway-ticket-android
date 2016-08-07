@@ -34,7 +34,8 @@ dependencies {
     compile('com.mikepenz:materialdrawer:5.1.9@aar') {
         transitive = true
     }
-
+    /* Sheet */
+    compile 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     /* About-Page */
     compile 'com.github.medyo:android-about-page:1.1.0'
 
