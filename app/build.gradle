@@ -95,5 +95,6 @@ dependencies {
     /* Dialog */
     compile 'com.orhanobut:dialogplus:1.11@aar'
     compile 'com.afollestad.material-dialogs:core:0.8.6.1'
-
+    /* Picker */
+    compile 'com.github.davidpizarro:pickerui:1.0.1'
 }

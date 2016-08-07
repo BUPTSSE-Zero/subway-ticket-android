@@ -17,5 +17,28 @@
         <item>西安</item>
         <item>天津</item>
     </string-array>
-
+    <string-array name="line_names">
+        <item>1号线</item>
+        <item>2号线</item>
+        <item>4号线</item>
+        <item>5号线</item>
+        <item>6号线</item>
+        <item>7号线</item>
+        <item>8号线</item>
+        <item>9号线</item>
+        <item>10号线</item>
+        <item>13号线</item>
+        <item>14号线</item>
+        <item>15号线</item>
+        <item>16号线</item>
+        <item>八通线</item>
+        <item>昌平线</item>
+        <item>大兴线</item>
+        <item>房山线</item>
+        <item>门头沟县</item>
+        <item>燕房线</item>
+        <item>亦庄线</item>
+        <item>西郊线</item>
+        <item>机场线</item>
+    </string-array>
 </resources>

@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pickerui="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/progress_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawablePadding="16dp"
+        android:drawableTop="@drawable/ic_alert"
+        android:gravity="center"
+        android:text="@string/error_none_ticket_info"
+        android:textColor="@color/light_secondary_text" />
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <com.dpizarro.uipicker.library.picker.PickerUI
+        android:id="@+id/picker_ui_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        pickerui:autoDismiss="true"
+        pickerui:backgroundColor="@color/white"
+        pickerui:blur="true"
+        pickerui:blur_FilterColor="@color/md_grey_400"
+        pickerui:blur_downScaleFactor="@integer/blur_downscale_min"
+        pickerui:blur_radius="@integer/blur_radius_min"
+        pickerui:blur_use_renderscript="true"
+        pickerui:entries="@array/line_names"
+        pickerui:itemsClickables="true"
+        pickerui:linesCenterColor="@color/primary"
+        pickerui:textCenterColor="@color/white"
+        pickerui:textNoCenterColor="@color/light_secondary_text" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
