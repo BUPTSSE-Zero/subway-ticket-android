@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 /**
@@ -81,7 +82,7 @@ public class TicketDialogMaker implements View.OnClickListener {
          */
         start.setText(item.getStartStation().getSubwayStationName());
         destination.setText(item.getEndStation().getSubwayStationName());
-        date.setText(item.getEndStation().getSubwayStationName());
+        date.setText(CalendarUtils.formatCurrentTimeMills(item.getTicketOrderTime().getTime()));
         status.setText(TicketOrder.translationCode(context, item.getStatus()));
 
 

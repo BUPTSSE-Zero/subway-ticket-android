@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
+import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 
@@ -74,7 +75,9 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         holder.start.setText(dataset.get(p).getStartStation().getSubwayStationName());
         holder.destination.setText(dataset.get(p).getEndStation().getSubwayStationName());
         // FIXME:: Need to Decode
-        holder.date.setText("2016/8/6");
+        holder.date.setText(CalendarUtils.formatCurrentTimeMills(
+                dataset.get(p).getTicketOrderTime().getTime()
+        ));
         holder.status.setText(TicketOrder.translationCode(context, dataset.get(p).getStatus()));
 
         GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
