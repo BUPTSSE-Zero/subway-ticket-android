@@ -655,11 +655,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                     )
             );
         } else {
-            fab_search.startAnimation(
-                    AnimationUtils.loadAnimation(
-                            MainActivity.this, R.anim.fade_out_center
-                    )
-            );
+            if (fab_search.isShown()) {
+                fab_search.startAnimation(
+                        AnimationUtils.loadAnimation(
+                                MainActivity.this, R.anim.fade_out_center
+                        )
+                );
+            }
             fab_search.setVisibility(View.INVISIBLE);
         }
     }
