@@ -11,9 +11,18 @@ import android.content.res.Resources;
  * @author wafer
  * @since 16/4/15 08:16
  */
+
 public class MyApplication extends Application {
     private static Context context;
     private static Resources resources;
+
+    public static Context getAppContext() {
+        return MyApplication.context;
+    }
+
+    public static Resources getResource() {
+        return MyApplication.resources;
+    }
 
     @Override
     public void onCreate() {
@@ -22,17 +31,6 @@ public class MyApplication extends Application {
         MyApplication.resources = getResources();
 
     }
-
-
-    public static Context getAppContext() {
-        return MyApplication.context;
-    }
-
-
-    public static Resources getResource() {
-        return MyApplication.resources;
-    }
-
 
     @Override
     public void onTerminate() {
