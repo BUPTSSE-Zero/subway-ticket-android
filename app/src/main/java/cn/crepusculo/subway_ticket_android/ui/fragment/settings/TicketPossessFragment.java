@@ -52,29 +52,27 @@ public class TicketPossessFragment extends BaseFragment {
                 cn.crepusculo.subway_ticket_android.content.TicketOrder data =
                         new cn.crepusculo.subway_ticket_android.content.TicketOrder(result);
                 itemsData.add(data);
-
-
-                RecyclerView.LayoutManager layoutManager;
-                layoutManager = new LinearLayoutManager(getActivity());
-
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setHasFixedSize(true);
-
-                TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
-                        new TicketRecyclerAdapter.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
-                                TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
-                            }
-                        });
-                recyclerView.setAdapter(adapter);
             }
+
+            RecyclerView.LayoutManager layoutManager;
+            layoutManager = new LinearLayoutManager(getActivity());
+
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setHasFixedSize(true);
+
+            TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
+                    new TicketRecyclerAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
+                            TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
+                        }
+                    });
+            recyclerView.setAdapter(adapter);
         } else {
             /**
              * Else load cache text view
              */
-            recyclerView.setVisibility(View.GONE);
-            textView.setVisibility(View.VISIBLE);
+            showDisplayView(Mode.PROGRESS);
         }
 
 
@@ -111,5 +109,20 @@ public class TicketPossessFragment extends BaseFragment {
                         }
                     }
                 });
+    }
+
+    private void showDisplayView(int mode) {
+        if (mode == Mode.PROGRESS) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        } else if (mode == Mode.RECYCLE) {
+            recyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private class Mode {
+        public static final int PROGRESS = 1;
+        public static final int RECYCLE = 2;
     }
 }
