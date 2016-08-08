@@ -9,7 +9,13 @@ import android.view.View;
 
 import cn.crepusculo.subway_ticket_android.R;
 
-
+/**
+ * The BaseActivity
+ *
+ * @see AppCompatActivity
+ * <p/>
+ * Package jumpMethod
+ */
 public abstract class BaseActivity extends AppCompatActivity {
     abstract protected int getLayoutResource();
 
