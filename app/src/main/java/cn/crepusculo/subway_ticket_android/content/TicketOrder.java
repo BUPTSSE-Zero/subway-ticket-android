@@ -10,6 +10,10 @@ import java.util.Date;
 
 import cn.crepusculo.subway_ticket_android.R;
 
+/**
+ * The TicketOrder class
+ * It is client class match to TickerOrder in server
+ */
 public class TicketOrder {
     public static final char ORDER_STATUS_NOT_PAY = 'A';
     public static final char ORDER_STATUS_NOT_EXTRACT_TICKET = 'B';
@@ -39,13 +43,33 @@ public class TicketOrder {
         this.extractAmount = server.getExtractAmount();
     }
 
+    /**
+     * Avoid Use It !
+     * Just use it when you get server date and need to convert it to host
+     */
     public TicketOrder() {
     }
 
+    /**
+     * Avoid Use It !
+     * Just use it when you get server date and need to convert it to host
+     */
     public TicketOrder(String ticketOrderId, Date ticketOrderTime, Account user, TicketPrice ticketPrice, int amount) {
         this(ticketOrderId, ticketOrderTime, user, ticketPrice.getSubwayStationA(), ticketPrice.getSubwayStationB(), ticketPrice.getPrice(), amount);
     }
 
+    /**
+     * Avoid Use It !
+     * Just use it when you get server date and need to convert it to host
+     *
+     * @param ticketOrderId   id
+     * @param ticketOrderTime order time
+     * @param user            user-id
+     * @param startStation    start station
+     * @param endStation      end station
+     * @param ticketPrice     price
+     * @param amount          amount
+     */
     public TicketOrder(String ticketOrderId, Date ticketOrderTime, Account user, SubwayStation startStation, SubwayStation endStation, float ticketPrice, int amount) {
         this.ticketOrderId = ticketOrderId;
         this.ticketOrderTime = ticketOrderTime;
@@ -58,6 +82,12 @@ public class TicketOrder {
         this.extractAmount = 0;
     }
 
+    /**
+     *
+     * @param c         context using to get resource
+     * @param mode      TicketOrder mode
+     * @return Mode string readable
+     */
     public static String translationCode(Context c, char mode) {
         switch (mode) {
             case ORDER_STATUS_NOT_PAY:
@@ -74,7 +104,9 @@ public class TicketOrder {
 
 
     }
-
+    /*
+    ================ accessor ================
+     */
     public String getTicketOrderId() {
         return this.ticketOrderId;
     }
