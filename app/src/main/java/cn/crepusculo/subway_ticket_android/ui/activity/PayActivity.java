@@ -207,6 +207,9 @@ public class PayActivity extends BaseActivity {
 
     }
 
+    /**
+     * @param info TickOrder never used
+     */
     private void setCardInfo(TicketOrder info) {
         Calendar c = Calendar.getInstance();
         startText.setText(start.getName());
@@ -241,6 +244,9 @@ public class PayActivity extends BaseActivity {
         return true;
     }
 
+    /**
+     * Swap start and end when click image
+     */
     private class ImageButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
