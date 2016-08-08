@@ -35,6 +35,7 @@ public class TicketHistoryFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        // Fake date here to display
         ArrayList<TicketOrder> itemsData = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             char c;

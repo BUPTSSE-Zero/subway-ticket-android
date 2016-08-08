@@ -26,12 +26,9 @@ public class StationAdapter extends BaseAdapter implements Filterable {
         this.stationArrayList = stationArrayList;
     }
 
-
-    public class StationHolder {
-        TextView name;
-        TextView line;
-    }
-
+    /**
+     * @return query after filter
+     */
     public Filter getFilter() {
         return new Filter() {
             @Override
@@ -67,7 +64,6 @@ public class StationAdapter extends BaseAdapter implements Filterable {
         super.notifyDataSetChanged();
     }
 
-
     @Override
     public int getCount() {
         return stationArrayList.size();
@@ -101,6 +97,11 @@ public class StationAdapter extends BaseAdapter implements Filterable {
 
         return convertView;
 
+    }
+
+    public class StationHolder {
+        TextView name;
+        TextView line;
     }
 
 }
