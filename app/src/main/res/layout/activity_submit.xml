@@ -261,7 +261,7 @@
             android:theme="@style/AppTheme.CardView.Title" />
 
         <EditText
-            android:id="@+id/show_money"
+            android:id="@+id/amount"
             style="AppTheme.Clear.EditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -275,22 +275,60 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/check_button"
-        style="@style/AppTheme.Button"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_bold_hexagon_outline"
-        android:minWidth="150dp"
-        android:padding="8dp"
-        android:paddingEnd="32dp"
-        android:paddingStart="32dp"
-        android:text="@string/post_bill"
-        android:textSize="20sp"
-        android:theme="@style/AppTheme.Button"
-        />
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/cancel_btn"
+            style="@style/AppTheme.Dialog.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="start|center_vertical"
+            android:background="@drawable/ripple_effect"
+            android:gravity="center"
+            android:text="@string/cancel_bill"
+            android:theme="@style/AppTheme.Dialog.Button"
+            android:visibility="invisible" />
+
+        <com.dd.processbutton.iml.ActionProcessButton
+            android:id="@+id/check_button"
+            style="@style/AppTheme.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:minWidth="150dp"
+            android:padding="4dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="@string/post_bill"
+            android:textColor="@color/md_white_1000"
+            android:textSize="18sp"
+            android:theme="@style/AppTheme.Button"
+            app:pb_colorComplete="@color/green_complete"
+            app:pb_colorNormal="@color/primary"
+            app:pb_colorPressed="@color/blue_pressed"
+            app:pb_colorProgress="@color/purple_progress"
+            app:pb_cornerRadius="0dp"
+            app:pb_textComplete="Success"
+            app:pb_textError="Error"
+            app:pb_textProgress="Loading" />
+
+        <Button
+            android:id="@+id/back_btn"
+            style="@style/AppTheme.Dialog.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end|center_vertical"
+            android:background="@drawable/ripple_effect"
+            android:gravity="center"
+            android:text="@string/pay_bill_not_now"
+            android:theme="@style/AppTheme.Dialog.Button"
+            android:visibility="invisible" />
+    </RelativeLayout>
 </LinearLayout>

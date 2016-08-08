@@ -2,6 +2,8 @@ package cn.crepusculo.subway_ticket_android.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +21,7 @@ import com.subwayticket.model.result.PayOrderResult;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
-import cn.crepusculo.subway_ticket_android.ui.activity.settings.ResetPassword;
+import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
@@ -35,7 +37,7 @@ public class PayActivity extends AppCompatActivity {
         View settingsView = new AboutPage(this)
                 .isRTL(false)
                 .setDescription(" ")
-                .setImage(R.color.primary)
+                .setImage(R.mipmap.subway_map_beijing)
                 .addItem(getAlipay())
                 .addItem(getWechat())
                 .create();
@@ -62,13 +64,13 @@ public class PayActivity extends AppCompatActivity {
     Element getAlipay() {
         Element element = new Element();
         element.setTitle("支付宝");
-        element.setIcon(R.mipmap.images);
+        element.setIcon(R.drawable.met_ic_clear);
         element.setColor(ContextCompat.getColor(this, mehdi.sakout.aboutpage.R.color.about_item_icon_color));
         element.setGravity(Gravity.START);
         element.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                payTicket();
             }
         });
         return element;
@@ -83,9 +85,7 @@ public class PayActivity extends AppCompatActivity {
         element.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PayActivity.this, ResetPassword.class);
-                startActivity(intent);
-                finish();
+                payTicket();
             }
         });
         return element;
@@ -101,9 +101,12 @@ public class PayActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Post ticket request
+     * <p/>
+     * If success, jump to display activity
+     */
     private void payTicket() {
-
-
         NetworkUtils.ticketOrderPay(
                 new PayOrderRequest(order.getTicketOrderId()),
                 Info.getInstance().getToken(),
@@ -113,18 +116,34 @@ public class PayActivity extends AppCompatActivity {
                         order.setExtractCode(response.getExtractCode());
                         Toast.makeText(getBaseContext(), response.getResultDescription(), Toast.LENGTH_SHORT).show();
 
-                        Bundle b = new Bundle();
-                        b.putString(KEY_WORD, new Gson().toJson(order));
-                        Intent intent = new Intent(PayActivity.this, DisplayActivity.class);
-                        intent.putExtras(b);
-                        startActivity(intent);
-                        finish();
+                        // Delay 1s to launch new activity
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bundle b = new Bundle();
+                                b.putString(KEY_WORD, new Gson().toJson(order));
+                                Intent intent = new Intent(PayActivity.this, DisplayActivity.class);
+                                intent.putExtras(b);
+                                startActivity(intent);
+                                finish();
+                                overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+                            }
+                        }, 1000);
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        try {
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            Snackbar.make(findViewById(R.id.pay_layout), "ERROR!" + r.result_description, Snackbar.LENGTH_LONG);
+                        } catch (NullPointerException e) {
+                            if (error != null)
+                                Snackbar.make(findViewById(R.id.view), error.getMessage(), Snackbar.LENGTH_LONG).show();
+                            else
+                                Snackbar.make(findViewById(R.id.view), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                        }
                     }
                 });
     }

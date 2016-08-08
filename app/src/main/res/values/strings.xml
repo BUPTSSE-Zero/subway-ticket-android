@@ -68,7 +68,11 @@
     <string name="error_failure_to_get_ticket_info">未能正确得到所查询的路线票务</string>
     <string name="error_none_ticket_info">读取列表中．．．</string>
     <string name="error_failure_to_get_subway_list">获取站点列表失败</string>
+
     <string name="post_bill">提交订单</string>
+    <string name="cancel_bill">撤销订单</string>
+    <string name="pay_bill_now">现在支付</string>
+    <string name="pay_bill_not_now">暂不支付</string>
 
     <string name="ticket_count">购票张数</string>
     <!-- the space is necessary -->

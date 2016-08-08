@@ -1,13 +1,11 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,12 +13,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.gson.Gson;
 import com.subwayticket.model.request.SubmitOrderRequest;
+import com.subwayticket.model.result.Result;
 import com.subwayticket.model.result.SubmitOrderResult;
 
 import java.util.Calendar;
@@ -36,38 +37,35 @@ import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
 public class SubmitActivity extends BaseActivity {
+    private String mode;
+    /**
+     * Compat
+     */
     private ImageButton startPic;
     private ImageButton endPic;
-
     private TextView startTitle;
     private TextView startText;
     private TextView endTitle;
     private TextView endText;
-
     private TextView date;
     private TextView dateLimit;
-
     private EditText editCount;
-    private EditText editBills;
+    private EditText editAmount;
     private EditText editPrice;
-
     private TicketOrder payRequest;
-
-    private Activity activity;
-
-    private Button checkButton;
-
+    private ActionProcessButton checkButton;
+    private Button backBtn;
+    private Button cancelBtn;
     private Station start;
     private Station end;
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_pay;
+        return R.layout.activity_submit;
     }
 
     @Override
     protected void initView() {
-        activity = this;
         /**
          * Create payRequest with default value
          * Waiting for NetWork Response
@@ -87,6 +85,9 @@ public class SubmitActivity extends BaseActivity {
         buildBills();
         loadCompacts();
         setCardInfo(payRequest);
+
+        // init mode
+        mode = Mode.SUBMIT;
     }
 
     private void loadCompacts() {
@@ -104,84 +105,129 @@ public class SubmitActivity extends BaseActivity {
         // edit text
         editCount = (EditText) findViewById(R.id.count);
         editPrice = (EditText) findViewById(R.id.price);
-        editBills = (EditText) findViewById(R.id.show_money);
+        editAmount = (EditText) findViewById(R.id.amount);
         // check button
-        checkButton = (Button) findViewById(R.id.check_button);
-
+        checkButton = (ActionProcessButton) findViewById(R.id.check_button);
+        checkButton.setMode(ActionProcessButton.Mode.ENDLESS);
+        backBtn = (Button) findViewById(R.id.back_btn);
+        cancelBtn = (Button) findViewById(R.id.cancel_btn);
         // bind listener
         endPic.setOnClickListener(new ImageButtonOnClickListener());
         startPic.setOnClickListener(new ImageButtonOnClickListener());
-        editPrice.setText(String.valueOf(payRequest.getTicketPrice()));
-        editCount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String result = "";
-                if (editCount.getText().toString().trim().length() != 0) {
-                    Log.e("233", "num" + editCount.getText().toString().trim());
-                    double count = payRequest.getTicketPrice() * Integer.parseInt(editCount.getText().toString().trim());
-                    result += count;
-                } else {
-                    result = "0.0";
-                }
-                editBills.setText(result);
-            }
-        });
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final int count = TextUtils.isEmpty(editCount.getText()) ?
-                        0 : Integer.parseInt(editCount.getText().toString().trim());
+                /**
+                 * set checkButton Animation on
+                 */
+                checkButton.setProgress(32);
+                /**
+                 * Mode.Submit
+                 */
+                if (mode.equals(Mode.SUBMIT)) {
+                    final int count = TextUtils.isEmpty(editCount.getText()) ?
+                            0 : Integer.parseInt(editCount.getText().toString().trim());
 
-                NetworkUtils.ticketOrderSubmit(
-                        new SubmitOrderRequest(
-                                start.getId(),
-                                end.getId(),
-                                count
-                        ),
+                    NetworkUtils.ticketOrderSubmit(
+                            new SubmitOrderRequest(
+                                    start.getId(),
+                                    end.getId(),
+                                    count
+                            ),
+                            Info.getInstance().getToken(),
+                            new Response.Listener<SubmitOrderResult>() {
+                                @Override
+                                public void onResponse(SubmitOrderResult response) {
+                                    Log.e("Request", "Success!!");
+                                    payRequest = new TicketOrder(response.getTicketOrder());
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            checkButton.setProgress(100);
+                                            setSubmitTitle(Mode.SUCCESS);
+                                        }
+                                    }, 2000);
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    checkButton.setProgress(-1);
+                                    GsonUtils.Response r;
+                                    Log.e("Request", start.getId() + " " + end.getId() + " " + count);
+                                    try {
+                                        r = GsonUtils.resolveErrorResponse(error);
+                                        Snackbar.make(
+                                                findViewById(R.id.pay_layout),
+                                                r.result_description,
+                                                Snackbar.LENGTH_LONG).show();
+                                        Log.e("ERROR", error.getMessage() + "\n" + error.getLocalizedMessage());
+                                    } catch (NullPointerException e) {
+                                        Snackbar.make(
+                                                findViewById(R.id.pay_layout),
+                                                error.getMessage(),
+                                                Snackbar.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                } // if
+                /**
+                 * Mode.SUCCESS
+                 * jump to PayActivity
+                 */
+                else {
+                    if (payRequest != null) {
+                        Bundle b = new Bundle();
+                        b.putString(PayActivity.KEY_WORD, new Gson().toJson(payRequest));
+                        jumpToActivity(PayActivity.class, b);
+                        finish();
+                    }
+                }
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jumpToActivity(MainActivity.class);
+                finish();
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NetworkUtils.ticketOrderCancelById(
+                        payRequest.getTicketOrderId(),
                         Info.getInstance().getToken(),
-                        new Response.Listener<SubmitOrderResult>() {
+                        new Response.Listener<Result>() {
                             @Override
-                            public void onResponse(SubmitOrderResult response) {
-                                Log.e("Request", "Success!!");
-                                payRequest = new TicketOrder(response.getTicketOrder());
+                            public void onResponse(Result response) {
+                                Toast.makeText(getBaseContext(), response.getResultDescription(), Toast.LENGTH_SHORT).show();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
                                 GsonUtils.Response r;
-                                Log.e("Request", start.getId() + " " + end.getId() + " " + count);
-                                // FIXME:: BUG WAITING FOR RESUBMIT
                                 try {
-                                    r = GsonUtils.resolveErrorResponse(error);
-                                    Snackbar.make(
-                                            findViewById(R.id.pay_layout),
-                                            r.result_description,
-                                            Snackbar.LENGTH_LONG).show();
-                                    Log.e("ERROR", error.getMessage() + "\n" + error.getLocalizedMessage());
-                                }
-                                catch (NullPointerException e) {
+//                                    r = GsonUtils.resolveErrorResponse(error);
                                     Snackbar.make(
                                             findViewById(R.id.pay_layout),
                                             error.getMessage(),
                                             Snackbar.LENGTH_LONG).show();
-                                }
+                                    Log.e("ERROR", error.getMessage() + "\n" + error.getLocalizedMessage());
+                                } catch (NullPointerException e) {
+                                    Snackbar.make(
+                                            findViewById(R.id.pay_layout),
+                                            error.getMessage(),
+                                            Snackbar.LENGTH_LONG).show();
+                                } // try end
                             }
-                        });
-
+                        }
+                ); // network end
             }
-        });
+        }); // listener end
     }
 
     /**
@@ -242,6 +288,40 @@ public class SubmitActivity extends BaseActivity {
                 break;
         }
         return true;
+    }
+
+    /**
+     * Change UI here after mode switch
+     *
+     * @param m Mode will be
+     */
+    private void setSubmitTitle(String m) {
+        mode = m;
+        Log.e("Set", "submitTitle");
+        if (mode.equals(Mode.SUBMIT)) {
+            checkButton.setText(R.string.post_bill);
+        } else {
+
+            editPrice.setText(String.valueOf(payRequest.getTicketPrice()));
+            double count = payRequest.getTicketPrice() * Integer.parseInt(editCount.getText().toString().trim());
+            editAmount.setText(String.valueOf(count));
+
+            backBtn.setVisibility(View.VISIBLE);
+            cancelBtn.setVisibility(View.VISIBLE);
+            checkButton.setText(R.string.pay_bill_now);
+        }
+    }
+
+    /**
+     * Submit.Mode
+     * using with submit button
+     */
+    private static class Mode {
+        public static String SUBMIT = "submit";
+        public static String SUCCESS = "success";
+
+        private Mode() {
+        }
     }
 
     /**
