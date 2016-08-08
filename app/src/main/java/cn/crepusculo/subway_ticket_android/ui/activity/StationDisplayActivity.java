@@ -119,7 +119,7 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         id = 0;
         PickerUISettings pickerUISettings = new PickerUISettings.Builder()
                 .withUseBlur(false)
-                .withItemsClickables(true)
+                .withItemsClickables(false)
                 .withAutoDismiss(false)
                 .withColorTextCenter(R.color.primary)
                 .withLinesColor(R.color.primary_light)
