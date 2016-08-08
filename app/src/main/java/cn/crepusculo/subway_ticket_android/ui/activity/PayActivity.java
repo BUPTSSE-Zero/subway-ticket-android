@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.subwayticket.model.request.SubmitOrderRequest;
 import com.subwayticket.model.result.SubmitOrderResult;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 
 import cn.crepusculo.subway_ticket_android.R;
@@ -37,11 +36,11 @@ import cn.crepusculo.subway_ticket_android.utils.TestUtils;
 
 public class PayActivity extends BaseActivity {
     private ImageButton startPic;
-    private ImageButton destinationPic;
+    private ImageButton endPic;
 
     private TextView startTitle;
     private TextView startText;
-    private TextView destinaionTitle;
+    private TextView endTitle;
     private TextView endText;
 
     private TextView date;
@@ -68,8 +67,13 @@ public class PayActivity extends BaseActivity {
     @Override
     protected void initView() {
         activity = this;
+        /**
+         * Create payRequest with default value
+         * Waiting for NetWork Response
+         */
         payRequest = TestUtils.BuildTicketOrder(0, 0, TicketOrder.ORDER_STATUS_NOT_PAY);
 
+        // init toolbar with homeAsUp button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -77,30 +81,36 @@ public class PayActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        // init functions
         buildBills();
         loadCompacts();
         setCardInfo(payRequest);
     }
 
     private void loadCompacts() {
+        // start part
         startPic = (ImageButton) findViewById(R.id.start_pic);
-        destinationPic = (ImageButton) findViewById(R.id.destination_pic);
         startTitle = (TextView) findViewById(R.id.start_title);
         startText = (TextView) findViewById(R.id.start);
-        destinaionTitle = (TextView) findViewById(R.id.destination_title);
+        // end part
+        endTitle = (TextView) findViewById(R.id.destination_title);
         endText = (TextView) findViewById(R.id.destination);
+        endPic = (ImageButton) findViewById(R.id.destination_pic);
+        // date part
         date = (TextView) findViewById(R.id.date);
         dateLimit = (TextView) findViewById(R.id.date_limit);
-
-        destinationPic.setOnClickListener(new ImageButtonOnClickListener());
-        startPic.setOnClickListener(new ImageButtonOnClickListener());
-
+        // edit text
         editCount = (EditText) findViewById(R.id.count);
         editPrice = (EditText) findViewById(R.id.price);
         editBills = (EditText) findViewById(R.id.show_money);
+        // check button
+        checkButton = (Button) findViewById(R.id.check_button);
 
+        // bind listener
+        endPic.setOnClickListener(new ImageButtonOnClickListener());
+        startPic.setOnClickListener(new ImageButtonOnClickListener());
         editPrice.setText(String.valueOf(payRequest.getTicketPrice()));
-
         editCount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -126,8 +136,6 @@ public class PayActivity extends BaseActivity {
             }
         });
 
-        checkButton = (Button) findViewById(R.id.check_button);
-//        checkButton.setBackgroundColor(getResources().getColor(R.color.primary));
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,11 +144,9 @@ public class PayActivity extends BaseActivity {
 
                 NetworkUtils.ticketOrderSubmit(
                         new SubmitOrderRequest(
-//                                SubwayLineUtil.ToServerTypeId(start.getId()),
                                 start.getId(),
                                 end.getId(),
                                 count
-//                                SubwayLineUtil.ToServerTypeId(end.getId()),
                         ),
                         Info.getInstance().getToken(),
                         new Response.Listener<SubmitOrderResult>() {
@@ -157,22 +163,19 @@ public class PayActivity extends BaseActivity {
                                 Log.e("Request", start.getId() + " " + end.getId() + " " + count);
                                 // FIXME:: BUG WAITING FOR RESUBMIT
                                 try {
-                                    String json = new String(error.networkResponse.data, "utf-8");
-                                    Log.e("Pay", json + Info.getInstance().getToken());
-                                    Gson gson = new Gson();
-                                    r = gson.fromJson(json, Response.class);
-                                } catch (UnsupportedEncodingException e) {
-                                    Log.e("Pay", "Exception" + e);
-                                    r = null;
-                                } catch (NullPointerException e) {
+//                                    String json = new String(error.networkResponse.data, "utf-8");
+//                                    Log.e("Pay", json + Info.getInstance().getToken());
+//                                    Gson gson = new Gson();
+//                                    r = gson.fromJson(json, Response.class);
+                                    Log.e("ERROR", error.getMessage() + "\n" + error.getLocalizedMessage());
+                                }
+//                                catch (UnsupportedEncodingException e) {
+//                                    Log.e("Pay", "Exception" + e);
+//                                    r = null;
+//                                }
+                                catch (NullPointerException e) {
                                     Snackbar.make(findViewById(R.id.pay_layout), "Something happened", Snackbar.LENGTH_LONG).show();
                                 }
-//                                try {
-//                                    GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-//                                    Snackbar.make(findViewById(R.id.pay_layout), r.result_description, Snackbar.LENGTH_LONG).show();
-//                                } catch (NullPointerException e) {
-//                                    Snackbar.make(findViewById(R.id.pay_layout), "网络访问超时", Snackbar.LENGTH_LONG).show();
-//                                }
                             }
                         });
 
@@ -180,7 +183,9 @@ public class PayActivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * Get Bundle
+     */
     private void buildBills() {
         Bundle b = getBundle();
         if (b != null) {
@@ -206,6 +211,7 @@ public class PayActivity extends BaseActivity {
         startText.setText(start.getName());
         endText.setText(end.getName());
         date.setText(CalendarUtils.format(c));
+        dateLimit.setText(CalendarUtils.format_limit(c));
         SubwayLineUtil.setColor(
                 this,
                 startPic,
@@ -213,7 +219,7 @@ public class PayActivity extends BaseActivity {
         );
         SubwayLineUtil.setColor(
                 this,
-                destinationPic,
+                endPic,
                 end.getLine()
         );
     }
@@ -250,7 +256,7 @@ public class PayActivity extends BaseActivity {
             );
             SubwayLineUtil.setColor(
                     PayActivity.this,
-                    destinationPic,
+                    endPic,
                     getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
             );
         }
