@@ -74,10 +74,11 @@ public class ResetPassword extends BaseActivity {
                  *
                  */
                 progressBar.setVisibility(View.VISIBLE);
+                final String newPassword = newEditText.getText().toString().trim();
                 NetworkUtils.accountModifyPassword(
                         new ModifyPasswordRequest(
                                 oriEditText.getText().toString().trim(),
-                                newEditText.getText().toString().trim()),
+                                newPassword),
                         Info.getInstance().getToken(),
                         new Response.Listener<Result>() {
                             @Override
@@ -90,6 +91,7 @@ public class ResetPassword extends BaseActivity {
                                     public void run() {
                                         progressBar.setVisibility(View.INVISIBLE);
                                         Snackbar.make(findViewById(R.id.action_reset_pwd), "Success!", Snackbar.LENGTH_LONG).show();
+                                        Info.getInstance().user.setPassword(newPassword);
                                         oriEditText.setText(null);
                                         newEditText.setText(null);
                                     }
