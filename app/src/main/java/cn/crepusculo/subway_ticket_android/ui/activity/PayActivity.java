@@ -30,6 +30,7 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 import cn.crepusculo.subway_ticket_android.utils.TestUtils;
@@ -159,22 +160,22 @@ public class PayActivity extends BaseActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Response r;
+                                GsonUtils.Response r;
                                 Log.e("Request", start.getId() + " " + end.getId() + " " + count);
                                 // FIXME:: BUG WAITING FOR RESUBMIT
                                 try {
-//                                    String json = new String(error.networkResponse.data, "utf-8");
-//                                    Log.e("Pay", json + Info.getInstance().getToken());
-//                                    Gson gson = new Gson();
-//                                    r = gson.fromJson(json, Response.class);
+                                    r = GsonUtils.resolveErrorResponse(error);
+                                    Snackbar.make(
+                                            findViewById(R.id.pay_layout),
+                                            r.result_description,
+                                            Snackbar.LENGTH_LONG).show();
                                     Log.e("ERROR", error.getMessage() + "\n" + error.getLocalizedMessage());
                                 }
-//                                catch (UnsupportedEncodingException e) {
-//                                    Log.e("Pay", "Exception" + e);
-//                                    r = null;
-//                                }
                                 catch (NullPointerException e) {
-                                    Snackbar.make(findViewById(R.id.pay_layout), "Something happened", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(
+                                            findViewById(R.id.pay_layout),
+                                            error.getMessage(),
+                                            Snackbar.LENGTH_LONG).show();
                                 }
                             }
                         });
