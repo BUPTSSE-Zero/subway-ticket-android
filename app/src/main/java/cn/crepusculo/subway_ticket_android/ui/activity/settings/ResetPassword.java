@@ -16,8 +16,8 @@ import com.subwayticket.model.result.Result;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
-import cn.crepusculo.subway_ticket_android.util.GsonUtils;
-import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 
 /**

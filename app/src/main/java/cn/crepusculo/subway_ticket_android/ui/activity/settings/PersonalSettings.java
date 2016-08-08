@@ -16,7 +16,7 @@ import com.subwayticket.model.result.Result;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.login.LoginActivity;
-import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 

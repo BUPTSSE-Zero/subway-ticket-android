@@ -14,7 +14,7 @@ import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
-import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {

@@ -11,7 +11,7 @@ import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
-import cn.crepusculo.subway_ticket_android.util.TestUtils;
+import cn.crepusculo.subway_ticket_android.utils.TestUtils;
 
 
 public class TicketHistoryFragment extends BaseFragment {

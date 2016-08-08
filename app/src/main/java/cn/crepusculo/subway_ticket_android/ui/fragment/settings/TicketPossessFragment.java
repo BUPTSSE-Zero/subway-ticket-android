@@ -18,8 +18,8 @@ import cn.crepusculo.subway_ticket_android.content.TicketDialogMaker;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.TicketRecyclerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
-import cn.crepusculo.subway_ticket_android.util.GsonUtils;
-import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
 public class TicketPossessFragment extends BaseFragment {
     ArrayList<TicketOrder> serverResult = new ArrayList<>();

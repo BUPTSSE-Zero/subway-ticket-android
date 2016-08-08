@@ -38,9 +38,9 @@ import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.RecycleViewDivider;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
-import cn.crepusculo.subway_ticket_android.util.GsonUtils;
-import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
+import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class SearchActivity extends BaseActivity implements
         SearchView.OnQueryTextListener {

@@ -8,7 +8,7 @@ import com.subwayticket.database.model.SubwayStation;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 /**
  * The Station class

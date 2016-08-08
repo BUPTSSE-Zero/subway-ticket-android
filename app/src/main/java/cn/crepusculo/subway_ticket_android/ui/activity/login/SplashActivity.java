@@ -6,7 +6,7 @@ import android.view.View;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
-import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
+import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
 
 public class SplashActivity extends BaseActivity {
     View view;
