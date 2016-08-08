@@ -1,4 +1,4 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 import android.util.Log;
 
@@ -13,13 +13,18 @@ public class GsonUtils {
     GsonUtils() {
     }
 
+    /**
+     * @param error Volley error
+     * @return String result_description if error.networkResponse.date exist
+     * OR there will be a NullPointerException
+     */
     static public Response resolveErrorResponse(VolleyError error) {
         Response response;
         try {
             String json = new String(error.networkResponse.data, PROTOCOL_CHARSET);
             Log.e("Register", json);
             Gson gson = new Gson();
-            response =  gson.fromJson(json,Response.class);
+            response = gson.fromJson(json, Response.class);
         } catch (UnsupportedEncodingException e) {
             Log.e("Register", "Exception" + e);
             response = null;
@@ -31,6 +36,7 @@ public class GsonUtils {
         public long result_code;
         public String result_description;
 
-        public Response(){}
+        public Response() {
+        }
     }
 }

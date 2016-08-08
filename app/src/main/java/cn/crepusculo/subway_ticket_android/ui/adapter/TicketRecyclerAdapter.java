@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
-import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 
 public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAdapter.Holder> {

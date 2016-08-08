@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
-import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 public class TicketDialogActivity extends BaseActivity {
     private TextView start;

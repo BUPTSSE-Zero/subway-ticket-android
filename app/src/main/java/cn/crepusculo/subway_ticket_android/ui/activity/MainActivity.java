@@ -47,9 +47,9 @@ import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.ApplicationSettings;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.PersonalSettings;
-import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
-import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
+import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,

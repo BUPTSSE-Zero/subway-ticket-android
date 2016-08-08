@@ -1,17 +1,17 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import  cn.crepusculo.subway_ticket_android.application.MyApplication;
-
 import java.util.Set;
+
+import cn.crepusculo.subway_ticket_android.application.MyApplication;
 
 /**
  * The SharedPreferencesUtils class
  * This is a util class.
- *
+ * <p/>
  * It is use to get the instance of
  * SharedPreferences more convenient.
  *

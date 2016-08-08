@@ -1,4 +1,4 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 import com.subwayticket.database.model.Account;
 import com.subwayticket.database.model.City;

@@ -29,8 +29,8 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.StationDisplayAdapter;
-import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
-import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.util.GsonUtils;
+import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
 /**
  * StationDisplayActivity class

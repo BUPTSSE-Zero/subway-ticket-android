@@ -1,4 +1,4 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 import com.android.volley.Request;
 import com.android.volley.Response;

@@ -1,4 +1,4 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -22,15 +22,15 @@ import android.widget.ImageView;
  */
 public class CircularAnimUtil {
 
-    public static long PERFECT_MILLS = 128; // default 618 too slowly
     public static final int MINI_RADIUS = 0;
     private static final int FINISH_NONE = 0, FINISH_SINGLE = 1, FINISH_ALL = 3;
+    public static long PERFECT_MILLS = 128; // default 618 too slowly
 
-    public static void resetMills(long m){
+    public static void resetMills(long m) {
         PERFECT_MILLS = m;
     }
 
-    public static void resetMills(){
+    public static void resetMills() {
         PERFECT_MILLS = 128;
     }
 

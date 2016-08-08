@@ -1,10 +1,10 @@
-package cn.crepusculo.subway_ticket_android.utils;
+package cn.crepusculo.subway_ticket_android.util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-
+//PLAN TO DO IN THE FUTURE
 public class RecordSQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static String name = "search_history.db";
