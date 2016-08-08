@@ -1,6 +1,9 @@
 package cn.crepusculo.subway_ticket_android.util;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class CalendarUtils {
     static public String format(Calendar c) {
@@ -27,6 +30,13 @@ public class CalendarUtils {
         result += "  前";
 
         return result;
+    }
+
+    static public String formatCurrentTimeMills(long mills) {
+        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);//将毫秒级long值转换成日期格式
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTimeInMillis(mills);
+        return dateformat.format(gc.getTime());
     }
 
 }

@@ -44,7 +44,7 @@
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity
-            android:name=".ui.activity.PayActivity"
+            android:name=".ui.activity.SubmitActivity"
             android:theme="@style/AppTheme.NoActionBar"
             />
 

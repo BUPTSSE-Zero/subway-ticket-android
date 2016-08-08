@@ -516,7 +516,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 Bundle b = new Bundle();
                 b.putString("route_start", new Gson().toJson(startStation));
                 b.putString("route_end", new Gson().toJson(endStation));
-                Intent intent = new Intent(MainActivity.this, PayActivity.class);
+                Intent intent = new Intent(MainActivity.this, SubmitActivity.class);
                 intent.putExtras(b);
                 CircularAnimUtil.startActivity(
                         MainActivity.this,

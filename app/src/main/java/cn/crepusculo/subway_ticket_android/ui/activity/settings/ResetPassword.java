@@ -45,7 +45,7 @@ public class ResetPassword extends BaseActivity {
         }
 
         progressBar = (SmoothProgressBar) findViewById(R.id.progress);
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.progressiveStop();
 
         bindEditText();
         bindButton();
@@ -69,7 +69,8 @@ public class ResetPassword extends BaseActivity {
                  * Read password from EditText
                  *
                  */
-                progressBar.setVisibility(View.VISIBLE);
+                progressBar.setProgress(1);
+                progressBar.progressiveStart();
                 NetworkUtils.accountModifyPassword(
                         new ModifyPasswordRequest(
                                 oriEditText.getText().toString().trim(),
@@ -84,7 +85,8 @@ public class ResetPassword extends BaseActivity {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        progressBar.setVisibility(View.INVISIBLE);
+                                        progressBar.setProgress(100);
+                                        progressBar.progressiveStop();
                                         Snackbar.make(findViewById(R.id.action_reset_pwd), "Success!", Snackbar.LENGTH_LONG).show();
                                         oriEditText.setText(null);
                                         newEditText.setText(null);
@@ -104,7 +106,8 @@ public class ResetPassword extends BaseActivity {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        progressBar.setVisibility(View.INVISIBLE);
+                                        progressBar.setProgress(-1);
+                                        progressBar.progressiveStop();
                                     }
                                 }, 2000);
                             }

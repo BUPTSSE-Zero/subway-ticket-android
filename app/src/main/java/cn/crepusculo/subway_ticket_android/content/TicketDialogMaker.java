@@ -106,9 +106,9 @@ public class TicketDialogMaker implements View.OnClickListener {
         buttons.add((Button) dialog.findViewById(R.id.dialog_btn_display_qr));
         buttons.add((Button) dialog.findViewById(R.id.dialog_btn_refund_ticket));
 
-        for (final Button button : buttons) {
-            button.setOnClickListener(this);
-        } // for
+        for (int i = 0; i < buttons.size(); i++) {
+            buttons.get(i).setOnClickListener(this);
+        }
 
     }
 

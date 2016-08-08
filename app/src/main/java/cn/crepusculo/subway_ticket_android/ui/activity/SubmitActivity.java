@@ -35,7 +35,7 @@ import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
-public class PayActivity extends BaseActivity {
+public class SubmitActivity extends BaseActivity {
     private ImageButton startPic;
     private ImageButton endPic;
 
@@ -192,7 +192,7 @@ public class PayActivity extends BaseActivity {
         if (b != null) {
             String start_str = b.getString("route_start");
             String end_str = b.getString("route_end");
-            Log.e("PayActivity", start_str + end_str);
+            Log.e("SubmitActivity", start_str + end_str);
             start = new Gson().fromJson(start_str, Station.class);
             end = new Gson().fromJson(end_str, Station.class);
         } else {
@@ -257,12 +257,12 @@ public class PayActivity extends BaseActivity {
             endText.setText(end.getName());
 
             SubwayLineUtil.setColor(
-                    PayActivity.this,
+                    SubmitActivity.this,
                     startPic,
                     getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
             );
             SubwayLineUtil.setColor(
-                    PayActivity.this,
+                    SubmitActivity.this,
                     endPic,
                     getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
             );

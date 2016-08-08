@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 
 public class StationDisplayAdapter extends RecyclerView.Adapter<StationDisplayAdapter.ViewHolder> {
     public static final int STATUS_START = 1;
@@ -67,7 +68,10 @@ public class StationDisplayAdapter extends RecyclerView.Adapter<StationDisplayAd
             holder.txtMessageTitle.setText(station.getStationMessage().getTitle());
             holder.txtMessageContent.setText(station.getStationMessage().getContent());
             String tail = station.getStationMessage().getPublisher() +
-                    '\n' + station.getStationMessage().getReleaseTime().getTime();
+                    '\n' +
+                    CalendarUtils.formatCurrentTimeMills(
+                            station.getStationMessage().getReleaseTime().getTime()
+                    );
             holder.txtMessageTail.setText(tail);
         }
         if (!station.isAvailable()) {
