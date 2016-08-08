@@ -37,7 +37,7 @@ public class PayActivity extends AppCompatActivity {
         View settingsView = new AboutPage(this)
                 .isRTL(false)
                 .setDescription(" ")
-                .setImage(R.mipmap.subway_map_beijing)
+                .setImage(R.mipmap.ic_launcher)
                 .addItem(getAlipay())
                 .addItem(getWechat())
                 .create();
@@ -114,6 +114,7 @@ public class PayActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(PayOrderResult response) {
                         order.setExtractCode(response.getExtractCode());
+                        order.setStatus(TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET);
                         Toast.makeText(getBaseContext(), response.getResultDescription(), Toast.LENGTH_SHORT).show();
 
                         // Delay 1s to launch new activity

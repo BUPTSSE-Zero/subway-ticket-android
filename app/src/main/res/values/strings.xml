@@ -87,4 +87,6 @@
     <string name="close">状态: 关闭</string>
 
     <string name="BEIJING_ID">1</string>
+
+    <string name="qr">二维码</string>
 </resources>
