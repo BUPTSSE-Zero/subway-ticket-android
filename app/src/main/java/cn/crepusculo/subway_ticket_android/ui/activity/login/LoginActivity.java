@@ -17,6 +17,7 @@ import android.widget.ViewSwitcher;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.PhoneCaptchaRequest;
@@ -46,6 +47,11 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     private Button forgetBtn;
     private TextSwitcher textSwitcher;
     private TextSwitcher textSwitcher2;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected int getLayoutResource() {
@@ -56,18 +62,23 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     protected void initView() {
         initCard();
         initHint();
-        initExpandableMode();
+
+        // record size of button
         buttonSize = new ViewGroup.LayoutParams(
                 forgetBtn.getLayoutParams().width,
                 forgetBtn.getLayoutParams().height);
     }
 
+    /**
+     * Hint Title
+     * <p/>
+     * Each time mode switch, the hint title will switch also.
+     */
     private void initHint() {
         textSwitcher = (TextSwitcher) findViewById(R.id.hint);
         textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-//                TextView textView = new TextView(LoginActivity.this);
                 LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
                 TextView textView = (TextView) inflater.inflate(R.layout.item_hint, null);
                 textView.setPadding(40, 70, 0, 0);
@@ -82,7 +93,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         textSwitcher2.setFactory(new ViewSwitcher.ViewFactory() {
             @Override
             public View makeView() {
-//                TextView textView = new TextView(LoginActivity.this);
                 LayoutInflater inflater = LayoutInflater.from(LoginActivity.this);
                 TextView textView = (TextView) inflater.inflate(R.layout.item_hint_bigger, null);
                 textView.setPadding(40, 100, 0, 0);
@@ -96,6 +106,10 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         textSwitcher2.setText(getResources().getString(R.string.login_backup_e));
     }
 
+
+    /**
+     * init login card view
+     */
     private void initCard() {
         card = (LinearLayout) findViewById(R.id.card);
 
@@ -136,9 +150,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         editTextPassword.setText(Info.getInstance().user.getPassword());
     }
 
-    private void initExpandableMode() {
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -153,7 +164,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         }
         setSubmitTitle(mode);
     }
-
 
 
     @Override
@@ -437,6 +447,10 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Reset LoginBtn Title when mode change
+     * Call by subSubmitTitle@override
+     */
     private void setSubmitTitle() {
         Log.e("Set", "submitTitle");
         if (mode.equals(Mode.LOGIN)) {
@@ -566,6 +580,11 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
          */
     }
 
+    /**
+     * Convert button mode when leave `login mode`
+     *
+     * @param v (Button)v the button will be changed
+     */
     protected void changeBtn(View v) {
         Button btn = (Button) v;
         if (btn.getText().toString().trim().equals(getResources().getString(R.string.login_signup))
@@ -582,12 +601,18 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Reset button mode when back to `login mode`
+     *
+     * @param v (Button)v the button will be changed
+     */
     protected void resetBtn(View v) {
         v.setVisibility(View.VISIBLE);
         Button btn = (Button) v;
         btn.setTextColor(getResources().getColor(R.color.primary));
         if (btn.getId() == R.id.login_forget) {
             btn.setText(R.string.login_forget);
+            // Don't forget reload listener
             btn.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View view) {
@@ -597,6 +622,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
             );
         } else if (btn.getId() == R.id.login_signup) {
             btn.setText(R.string.login_signup);
+            // Don't forget reload listener
             btn.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View view) {
@@ -607,6 +633,11 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * Restore size before show view
+     *
+     * @param v (Button|MaterialEditText)v
+     */
     protected void showView(View v) {
         if (v.getId() == R.id.login_forget || v.getId() == R.id.login_signup) {
             /* showButton*/
@@ -625,6 +656,10 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         v.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Fix layout params before hide view v
+     * @param v (Button|MaterialEditText)v
+     */
     protected void hideView(View v) {
         ViewGroup.LayoutParams lp = v.getLayoutParams();
         lp.height = 0;
