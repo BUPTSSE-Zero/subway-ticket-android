@@ -10,6 +10,11 @@ import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
+/**
+ * The Station class
+ * It is client class match to SubwayStation
+ */
+
 public class Station {
     private int clientLine = 0;
     private int serverLine = 0;
@@ -43,6 +48,12 @@ public class Station {
 
     }
 
+    /**
+     * Convert server std data container to client mode
+     *
+     * @param subwayStation Server result
+     * @return Client mode result
+     */
     public static Station SubwayStationAdapter(SubwayStation subwayStation) {
         Station s = new Station();
         s.clientLine = SubwayLineUtil.ToClientTypeId(subwayStation.getSubwayLine().getSubwayLineId());
@@ -55,6 +66,15 @@ public class Station {
         return s;
     }
 
+    /**
+     * Convert server std data container from PreferRoute class to client mode
+     *
+     * @param preferRoute A class contain two SubwayStation
+     * @return ArrayList\<Station\>
+     *              size = 2
+     *              ArrayList.get(0) start Station
+     *              ArrayList.get(1) end Station
+     */
     public static List<Station> PreferRouteAdapter(PreferRoute preferRoute) {
         List<Station> result = new ArrayList<>();
         Station start = new Station(
@@ -69,6 +89,11 @@ public class Station {
         result.add(end);
         return result;
     }
+
+    /**
+     * Accessor of Station class
+     *
+     */
 
     public StationMessage getStationMessage() {
         return stationMessage;
@@ -106,11 +131,14 @@ public class Station {
         return this;
     }
 
+    /**
+     * getLine auto return clientLine
+     */
     public int getLine() {
         return clientLine;
     }
 
-    public Station setLine(int line) {
+    public Station setClientLine(int line) {
         this.clientLine = line;
         return this;
     }
