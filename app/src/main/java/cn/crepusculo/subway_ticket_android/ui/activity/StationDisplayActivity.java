@@ -298,9 +298,11 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
     public void onItemClick(int position, SubwayStation data, int mode) {
         switch (mode) {
             case SearchHistoryAdapter.STATUS_COME:
+                SEARCH_STATUS = SearchActivity.EDIT_TEXT_REQUEST_CODE_START;
                 setSearchResult(Station.SubwayStationAdapter(data));
                 break;
             case SearchHistoryAdapter.STATUS_GO:
+                SEARCH_STATUS = SearchActivity.EDIT_TEXT_REQUEST_CODE_END;
                 setSearchResult(Station.SubwayStationAdapter(data));
                 break;
         }
