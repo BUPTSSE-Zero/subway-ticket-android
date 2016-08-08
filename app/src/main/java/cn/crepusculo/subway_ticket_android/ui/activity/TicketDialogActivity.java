@@ -12,7 +12,7 @@ import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
 public class TicketDialogActivity extends BaseActivity {
     private TextView start;
-    private TextView destination;
+    private TextView end;
     private TextView status;
     private TextView date;
     private TicketOrder bills;
@@ -39,18 +39,17 @@ public class TicketDialogActivity extends BaseActivity {
 
     private void initResource(){
         start = (TextView)findViewById(R.id.start_dialog);
-        destination = (TextView)findViewById(R.id.destination_dialog);
+        end = (TextView) findViewById(R.id.destination_dialog);
         status =(TextView)findViewById(R.id.status);
         date = (TextView)findViewById(R.id.date);
     }
     private void initTextView(){
         start.setText(bills.getStartStation().getSubwayStationName());
-        destination.setText(bills.getEndStation().getSubwayStationName());
+        end.setText(bills.getEndStation().getSubwayStationName());
         date.setText("" + bills.getTicketOrderTime());
         status.setText(bills.getStatus());
         ImageView v_s = (ImageView)findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView)findViewById(R.id.go_dialog);
-//        v_s.setColorFilter(R.color.accent);
         SubwayLineUtil.setColor(
                 TicketDialogActivity.this,
                 v_s,

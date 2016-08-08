@@ -13,6 +13,13 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.adapter.PagerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.PositionTranslationAdapter;
 
+/**
+ * Including three fragment
+ *
+ * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketHistoryFragment
+ * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPossessFragment
+ * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPayFragment
+ */
 public class TicketManagerActivity extends BaseActivity {
 
     private ViewPager viewPager;
@@ -25,19 +32,11 @@ public class TicketManagerActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-//        if(Build.VERSION.SDK_INT > 21){
-//            getWindow().setStatusBarColor(getResources().getColor(R.color.primary));
-//            getWindow()
-//                    .getDecorView()
-//                    .setSystemUiVisibility(
-//                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//        }
         initToolbar();
         initTabLayout();
         initViewPager();
         checkPagePosition();
     }
-
 
     protected void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
