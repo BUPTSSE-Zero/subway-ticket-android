@@ -67,7 +67,12 @@
         <activity
             android:name=".ui.activity.RefundActivity"
             android:launchMode="singleTask" />
-
+        <activity
+            android:name=".ui.activity.PayActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.activity.DisplayActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
