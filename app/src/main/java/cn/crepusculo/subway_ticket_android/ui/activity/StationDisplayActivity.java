@@ -27,7 +27,6 @@ import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
-import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.StationDisplayAdapter;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
@@ -205,8 +204,8 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
 
     /**
      * Request for reload station info
-     *         if success, call `reloadRecycleView` to refresh recycleView
-     *         else, show progress view with error log
+     * if success, call `reloadRecycleView` to refresh recycleView
+     * else, show progress view with error log
      */
     private void reloadStations() {
         Log.e("loadMessage", "lines.get(id).getSubwayLineId()" + lines.get(id).getSubwayLineId());
@@ -226,19 +225,11 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
                         showDisplayView(Mode.PROGRESS);
                         Response response;
                         try {
-//                            String json = new String(error.networkResponse.data, GsonUtils.PROTOCOL_CHARSET);
-//                            Log.e("Json:", json);
-//                            Gson gson = new Gson();
-//                            response =  gson.fromJson(json,Response.class);
-//                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                             progressTextView.setText(error.getMessage());
                         } catch (NullPointerException e) {
                             progressTextView.setText("网络访问超时");
                         }
-//                        catch (UnsupportedEncodingException e) {
-//                            Log.e("Register", "Exception" + e);
-//                            response = null;
-//                        }
                     }
                 }
         );
@@ -256,7 +247,6 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
     }
 
     /**
-     *
      * @see SearchActivity
      */
     private void setSearchResult(Station s) {
@@ -268,8 +258,8 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
                 gson.toJson(s));
         putIntent(result);
     }
+
     /**
-     *
      * @see SearchActivity
      */
     private void putIntent(Bundle b) {
@@ -297,16 +287,27 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
     @Override
     public void onItemClick(int position, SubwayStation data, int mode) {
         switch (mode) {
-            case SearchHistoryAdapter.STATUS_COME:
+            case StationDisplayAdapter.STATUS_START:
                 SEARCH_STATUS = SearchActivity.EDIT_TEXT_REQUEST_CODE_START;
                 setSearchResult(Station.SubwayStationAdapter(data));
                 break;
-            case SearchHistoryAdapter.STATUS_GO:
+            case StationDisplayAdapter.STATUS_END:
                 SEARCH_STATUS = SearchActivity.EDIT_TEXT_REQUEST_CODE_END;
                 setSearchResult(Station.SubwayStationAdapter(data));
                 break;
         }
         finish();
+        overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (pickerUI.isPanelShown()) {
+            pickerUI.slide();
+        } else {
+            super.onBackPressed();
+            overridePendingTransition(R.anim.fade_in_center, R.anim.fade_out_center);
+        }
     }
 
     private class Mode {

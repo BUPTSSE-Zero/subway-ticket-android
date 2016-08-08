@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import cn.crepusculo.subway_ticket_android.R;
 
 public class StationDisplayAdapter extends RecyclerView.Adapter<StationDisplayAdapter.ViewHolder> {
-    public static final int STATUS_COME = 1;
-    public static final int STATUS_GO = 2;
+    public static final int STATUS_START = 1;
+    public static final int STATUS_END = 2;
 
     private final LayoutInflater mInflater;
     public Context context;
@@ -51,13 +51,13 @@ public class StationDisplayAdapter extends RecyclerView.Adapter<StationDisplayAd
         holder.goToThere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(position, stationArrayList.get(position), STATUS_GO);
+                listener.onItemClick(position, stationArrayList.get(position), STATUS_END);
             }
         });
         holder.comeFromThere.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClick(position, stationArrayList.get(position), STATUS_COME);
+                listener.onItemClick(position, stationArrayList.get(position), STATUS_START);
             }
         });
     }

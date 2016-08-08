@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -388,12 +389,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_START) {
             // Only write start_edit_text
+            Log.e("MainActivity", "GetResult" + "START");
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_START);
             startStation = new Gson().fromJson(obj_str, Station.class);
             setEditText(editTextStart, startStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
+            Log.e("MainActivity", "GetResult" + "END");
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_END);
             endStation = new Gson().fromJson(obj_str, Station.class);
@@ -647,7 +650,16 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         if (editTextStart.getText().toString().trim().length() >= 1 && editTextEnd.getText().toString().trim().length() >= 1) {
             fab_search.setVisibility(View.VISIBLE);
+            fab_search.startAnimation(AnimationUtils.loadAnimation(
+                    MainActivity.this, R.anim.fade_in_center
+                    )
+            );
         } else {
+            fab_search.startAnimation(
+                    AnimationUtils.loadAnimation(
+                            MainActivity.this, R.anim.fade_out_center
+                    )
+            );
             fab_search.setVisibility(View.INVISIBLE);
         }
     }
@@ -680,6 +692,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     protected void getLocation() {
+        /**
+         * hide fab-search at first
+         */
+        if (fab_search.isShown()) {
+            fab_search.startAnimation(
+                    AnimationUtils.loadAnimation(
+                            MainActivity.this, R.anim.fade_out_center
+                    )
+            );
+            fab_search.setVisibility(View.INVISIBLE);
+        }
         /**
          * Inflater view
          */
@@ -731,13 +754,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             public void onClick(View view) {
                 endStation = station;
                 setEditText(editTextEnd, endStation);
+
                 sheet.dismiss();
             }
         });
 
         customDelegate.setCustomView(view);
         sheet.setDelegate(customDelegate);
-
         sheet.show();
     }
 
