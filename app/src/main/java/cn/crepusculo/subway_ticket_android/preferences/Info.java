@@ -7,26 +7,33 @@ import java.util.Arrays;
 
 import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
 
+/**
+ * The Info Class
+ * <br/>
+ * put more info preference here
+ * <br/>
+ * <p/>
+ * info-
+ * - user
+ * - id
+ * - password cache
+ * - ticket
+ * - @redundant ticketsCode
+ * - app
+ * - city
+ * - not work in Beta
+ * - token
+ * -
+ */
 public class Info {
 
-    private static Info mInstance = null;
     private static final String filename = "info";
-    private SharedPreferences preferences = SharedPreferencesUtils.getPreferences(filename);
-
+    private static Info mInstance = null;
     public String token = null;
-
     public User user;
     public Ticket ticket;
     public App app;
-
-    public String getToken() {
-        return token;
-    }
-
-    public Info setToken(String token) {
-        this.token = token;
-        return this;
-    }
+    private SharedPreferences preferences = SharedPreferencesUtils.getPreferences(filename);
 
     private Info() {
         user = new User();
@@ -46,6 +53,15 @@ public class Info {
         }
 
         return mInstance;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Info setToken(String token) {
+        this.token = token;
+        return this;
     }
 
     public class User {
