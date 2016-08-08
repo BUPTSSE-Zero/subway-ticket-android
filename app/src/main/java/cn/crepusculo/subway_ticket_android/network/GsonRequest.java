@@ -19,7 +19,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
-import java.net.PortUnreachableException;
 import java.util.Map;
 
 /**
@@ -41,6 +40,7 @@ public class GsonRequest<T> extends Request<T> {
             String.format("application/json; charset=%s", PROTOCOL_CHARSET);
 
     private final Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
@@ -50,13 +50,6 @@ public class GsonRequest<T> extends Request<T> {
     private final Response.Listener<T> listener;
     private final Object postObject;
     private Map<String, String> headers;
-
-
-    private void checkNullPointer(Class<T> classType, TypeToken<T> typeToken) {
-        if (classType == null && typeToken == null) {
-            throw new NullPointerException("The classType and typeToken cannot be both null!!");
-        }
-    }
 
 
     /**
@@ -133,6 +126,7 @@ public class GsonRequest<T> extends Request<T> {
         this.postObject = null;
     }
 
+
     /**
      * Make a POST request and return a parsed object from JSON by
      * {@link com.google.gson.Gson}
@@ -163,7 +157,6 @@ public class GsonRequest<T> extends Request<T> {
 
         this.listener = listener;
     }
-
 
     /**
      * Make a POST request with custom header and return a parsed object form JSON by
@@ -233,6 +226,12 @@ public class GsonRequest<T> extends Request<T> {
         this.headers = headers;
 
         this.listener = listener;
+    }
+
+    private void checkNullPointer(Class<T> classType, TypeToken<T> typeToken) {
+        if (classType == null && typeToken == null) {
+            throw new NullPointerException("The classType and typeToken cannot be both null!!");
+        }
     }
 
     @Override
