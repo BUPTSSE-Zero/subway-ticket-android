@@ -17,17 +17,15 @@
         android:text="@string/error_none_ticket_info"
         android:textColor="@color/light_secondary_text" />
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/md_white_1000" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </android.support.design.widget.CoordinatorLayout>
 
     <com.dpizarro.uipicker.library.picker.PickerUI
         android:id="@+id/picker_ui_view"

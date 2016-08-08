@@ -32,7 +32,7 @@ import cn.crepusculo.subway_ticket_android.ui.adapter.StationDisplayAdapter;
 import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
-public class StationDisplayActivity extends BaseActivity {
+public class StationDisplayActivity extends BaseActivity implements StationDisplayAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     private TextView progressTextView;
     private PickerUI pickerUI;
@@ -72,6 +72,9 @@ public class StationDisplayActivity extends BaseActivity {
         lines = new ArrayList<>();
         NetworkUtils.subwayGetLineListByCity(
                 getString(R.string.BEIJING_ID),
+                /**
+                 * Get Lines info successfully
+                 */
                 new Response.Listener<SubwayLineListResult>() {
                     @Override
                     public void onResponse(SubwayLineListResult response) {
@@ -80,14 +83,19 @@ public class StationDisplayActivity extends BaseActivity {
                                 ) {
                             linesName.add(line.getSubwayLineName());
                             pickerUI.setItems(StationDisplayActivity.this, linesName);
+                            Log.e("loadMessage", "Success load LINE message");
                         }
+                        reloadStations();
                     }
                 },
+                /**
+                 * Failure in request
+                 */
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         /**
-                         * 获取失败
+                         *
                          */
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
@@ -133,7 +141,8 @@ public class StationDisplayActivity extends BaseActivity {
                                     )
                             );
                             if (!lines.isEmpty()) {
-                                reloadRecycleView();
+                                Log.e("loadMessage", "Start to Load stations message");
+                                reloadStations();
                             }
                         }
                     }
@@ -164,61 +173,62 @@ public class StationDisplayActivity extends BaseActivity {
     private void initRecycleView() {
         stations = new ArrayList<>();
 
+
+        RecyclerView.LayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        showDisplayView(Mode.RECYCLE);
+
         if (!lines.isEmpty()) {
-            reloadRecycleView();
-        }
-
-        if (!stations.isEmpty()) {
-            RecyclerView.LayoutManager layoutManager;
-            layoutManager = new LinearLayoutManager(this);
-
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setHasFixedSize(true);
-            StationDisplayAdapter adapter = new StationDisplayAdapter(
-                    StationDisplayActivity.this,
-                    stations,
-                    new StationDisplayAdapter.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(int position, SubwayStation data, int mode) {
-                            switch (mode) {
-                                case SearchHistoryAdapter.STATUS_COME:
-                                    setSearchResult(Station.SubwayStationAdapter(data));
-                                    break;
-                                case SearchHistoryAdapter.STATUS_GO:
-                                    setSearchResult(Station.SubwayStationAdapter(data));
-                                    break;
-
-                            }
-                            finish();
-                        }
-                    });
-            recyclerView.setAdapter(adapter);
+            reloadStations();
+            Log.e("loadMessage", "reloadStations: size:" + stations.size());
         }
     }
 
 
-    private void reloadRecycleView() {
-
+    private void reloadStations() {
+        Log.e("loadMessage", "lines.get(id).getSubwayLineId()" + lines.get(id).getSubwayLineId());
         NetworkUtils.subwayGetStationByLine(
                 "" + lines.get(id).getSubwayLineId(),
                 new Response.Listener<SubwayStationListResult>() {
                     @Override
                     public void onResponse(SubwayStationListResult response) {
                         stations = new ArrayList<>(response.getSubwayStationList());
+                        Log.e("loadMessage", "Success to Load STATIONS message");
+                        reloadRecycleView();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        showDisplayView(Mode.PROGRESS);
+                        Response response;
                         try {
-                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            progressTextView.setText(r.result_description);
+//                            String json = new String(error.networkResponse.data, GsonUtils.PROTOCOL_CHARSET);
+//                            Log.e("Json:", json);
+//                            Gson gson = new Gson();
+//                            response =  gson.fromJson(json,Response.class);
+//                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            progressTextView.setText(error.getMessage());
                         } catch (NullPointerException e) {
                             progressTextView.setText("网络访问超时");
                         }
+//                        catch (UnsupportedEncodingException e) {
+//                            Log.e("Register", "Exception" + e);
+//                            response = null;
+//                        }
                     }
                 }
         );
+    }
+
+    private void reloadRecycleView() {
+        Log.e("loadMessage", "reloadStations: size:" + stations.size());
+        StationDisplayAdapter adapter = new StationDisplayAdapter(
+                StationDisplayActivity.this, stations, this);
+        recyclerView.setAdapter(adapter);
+        showDisplayView(Mode.RECYCLE);
     }
 
     private void setSearchResult(Station s) {
@@ -240,5 +250,33 @@ public class StationDisplayActivity extends BaseActivity {
             setResult(SearchActivity.EDIT_TEXT_REQUEST_CODE_END, intent);
         else
             setResult(SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH, intent);
+    }
+
+    private void showDisplayView(int mode) {
+        if (mode == Mode.PROGRESS) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            progressTextView.setVisibility(View.VISIBLE);
+        } else if (mode == Mode.RECYCLE) {
+            recyclerView.setVisibility(View.VISIBLE);
+            progressTextView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onItemClick(int position, SubwayStation data, int mode) {
+        switch (mode) {
+            case SearchHistoryAdapter.STATUS_COME:
+                setSearchResult(Station.SubwayStationAdapter(data));
+                break;
+            case SearchHistoryAdapter.STATUS_GO:
+                setSearchResult(Station.SubwayStationAdapter(data));
+                break;
+        }
+        finish();
+    }
+
+    private class Mode {
+        public static final int PROGRESS = 1;
+        public static final int RECYCLE = 2;
     }
 }

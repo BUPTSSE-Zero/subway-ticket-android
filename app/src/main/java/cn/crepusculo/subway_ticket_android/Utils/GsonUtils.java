@@ -8,16 +8,9 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 
 public class GsonUtils {
-    protected static final String PROTOCOL_CHARSET = "utf-8";
+    public static final String PROTOCOL_CHARSET = "utf-8";
 
     GsonUtils() {
-    }
-
-    public class Response {
-        public long result_code;
-        public String result_description;
-
-        public Response(){}
     }
 
     static public Response resolveErrorResponse(VolleyError error) {
@@ -32,5 +25,12 @@ public class GsonUtils {
             response = null;
         }
         return response;
+    }
+
+    public class Response {
+        public long result_code;
+        public String result_description;
+
+        public Response(){}
     }
 }

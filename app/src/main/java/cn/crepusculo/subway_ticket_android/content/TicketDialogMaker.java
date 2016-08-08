@@ -22,6 +22,11 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
 
+/**
+ * The class TicketDialogMaker
+ * <p/>
+ * Inflate a ticket message dialog
+ */
 public class TicketDialogMaker implements View.OnClickListener {
     public final static int HISTORY = 3;
     public final static int INVALID = 1;
