@@ -79,10 +79,10 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
     private android.support.design.widget.FloatingActionButton fab_search;
     /* EditText */
-    private ImageButton editText_btn;
-    private EditText editText_start;
-    private EditText editText_end;
-    private ImageView i_come, i_go;
+    private ImageButton editTextBtn;
+    private EditText editTextStart;
+    private EditText editTextEnd;
+    private ImageView imageStart, imageEnd;
 
     @Override
     protected int getLayoutResource() {
@@ -265,52 +265,54 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /**
          * Bind compacts
          */
-        i_come = (ImageView) findViewById(R.id.edittext_drawable_come);
-        i_go = (ImageView) findViewById(R.id.edittext_drawable_go);
-        editText_start = (EditText) findViewById(R.id.edittext_come);
-        editText_end = (EditText) findViewById(R.id.edittext_go);
-        editText_btn = (ImageButton) findViewById(R.id.edittext_btn);
+        imageStart = (ImageView) findViewById(R.id.edittext_drawable_come);
+        imageEnd = (ImageView) findViewById(R.id.edittext_drawable_go);
+        editTextStart = (EditText) findViewById(R.id.edittext_come);
+        editTextEnd = (EditText) findViewById(R.id.edittext_go);
+        editTextBtn = (ImageButton) findViewById(R.id.edittext_btn);
 
-        editText_start.setLongClickable(false);
-        editText_end.setLongClickable(false);
-        editText_btn.setBackgroundColor(getResources().getColor(R.color.transparent));
+        editTextStart.setLongClickable(false);
+        editTextEnd.setLongClickable(false);
+        editTextBtn.setBackgroundColor(getResources().getColor(R.color.transparent));
 
         /**
          * Set listener
          */
 
-        i_come.setOnClickListener(new View.OnClickListener() {
+        imageStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText_start.setText(null);
+                startStation = null;
+                setEditText(editTextStart, null);
                 updateEditTextDrawable();
             }
         });
 
-        i_go.setOnClickListener(new View.OnClickListener() {
+        imageEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editText_end.setText(null);
+                endStation = null;
+                setEditText(editTextEnd, null);
                 updateEditTextDrawable();
             }
         });
 
-        editText_start.addTextChangedListener(this);
+        editTextStart.addTextChangedListener(this);
 
-        editText_start.setOnClickListener(new View.OnClickListener() {
+        editTextStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
             }
         });
-        editText_end.setOnClickListener(new View.OnClickListener() {
+        editTextEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showSearch(SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
             }
         });
 
-        editText_btn.setOnClickListener(new View.OnClickListener() {
+        editTextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (endStation != null && startStation != null) {
@@ -320,11 +322,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
                 } else if (endStation == null && startStation != null) {
                     endStation = startStation;
+                    startStation = null;
                 } else if (endStation != null) {
                     startStation = endStation;
+                    endStation = null;
                 }
-                SetEditText(editText_start, startStation);
-                SetEditText(editText_end, endStation);
+                setEditText(editTextStart, startStation);
+                setEditText(editTextEnd, endStation);
             }
         });
     }
@@ -376,6 +380,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
      *                    <p/>
      *                    EDIT_TEXT_REQUEST_CODE_EMPTY
      *                    data   KEY_Start : ×         KEY_end: ×
+     *
      * @param data        Intent data back from SearchActivity
      */
     @Override
@@ -386,13 +391,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_START);
             startStation = new Gson().fromJson(obj_str, Station.class);
-            SetEditText(editText_start, startStation);
+            setEditText(editTextStart, startStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_END);
             endStation = new Gson().fromJson(obj_str, Station.class);
-            SetEditText(editText_end, endStation);
+            setEditText(editTextEnd, endStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
             String obj_str_e = data.getStringExtra(
@@ -402,8 +407,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             endStation = new Gson().fromJson(obj_str_e, Station.class);
             startStation = new Gson().fromJson(obj_str_s, Station.class);
 
-            SetEditText(editText_start, startStation);
-            SetEditText(editText_end, endStation);
+            setEditText(editTextStart, startStation);
+            setEditText(editTextEnd, endStation);
 
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_EMPTY) {
             // None of edit_text will be rewrite
@@ -414,7 +419,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     /**
-     * @param view       View
+     * Drawable Side Menu ClickListener
+     *
+     * @param view        View
      * @param position   Count from 0 , position in side menu
      * @param drawerItem DrawerItem
      * @return Keep true
@@ -472,6 +479,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     /**
+     * FAB
      * @param view Float Action Button and Float Action Button in Float Action Menu
      */
     @Override
@@ -490,7 +498,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 jumpToActivity(TicketManagerActivity.class, bundle);
                 return;
             case R.id.action_subway:
-                jumpToActivity(StationDisplayActivity.class);
+                showDisplay();
                 fab_menu.collapse();
                 return;
             case R.id.action_locate:
@@ -530,6 +538,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
         }
+    }
+
+    private void showDisplay() {
+        Bundle bundle = new Bundle();
+        bundle.putInt("requestCode", SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
+        jumpToActivityWithResult(StationDisplayActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
+
     }
 
     /**
@@ -619,25 +634,25 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
      * If both EditText are not null, show search FAB, else dismiss it
      */
     private void updateEditTextDrawable() {
-        if (TextUtils.isEmpty(editText_start.getText())) {
-            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        if (TextUtils.isEmpty(editTextStart.getText())) {
+            imageStart.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
-            i_come.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+            imageStart.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
-        if (TextUtils.isEmpty(editText_end.getText())) {
-            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
+        if (TextUtils.isEmpty(editTextEnd.getText())) {
+            imageEnd.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon_outline));
         } else {
-            i_go.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
+            imageEnd.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
 
-        if (editText_start.getText().toString().trim().length() >= 1 && editText_end.getText().toString().trim().length() >= 1) {
+        if (editTextStart.getText().toString().trim().length() >= 1 && editTextEnd.getText().toString().trim().length() >= 1) {
             fab_search.setVisibility(View.VISIBLE);
         } else {
             fab_search.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void SetEditText(EditText e, Station s) {
+    private void setEditText(EditText e, Station s) {
         if (s != null) {
             e.setText(
                     SubwayLineUtil.ConnectLineNameStr(
@@ -707,7 +722,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             @Override
             public void onClick(View view) {
                 startStation = station;
-                SetEditText(editText_start, startStation);
+                setEditText(editTextStart, startStation);
                 sheet.dismiss();
             }
         });
@@ -715,7 +730,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             @Override
             public void onClick(View view) {
                 endStation = station;
-                SetEditText(editText_end, endStation);
+                setEditText(editTextEnd, endStation);
                 sheet.dismiss();
             }
         });
