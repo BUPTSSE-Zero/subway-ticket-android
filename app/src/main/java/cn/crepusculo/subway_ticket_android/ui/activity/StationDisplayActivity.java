@@ -32,6 +32,9 @@ import cn.crepusculo.subway_ticket_android.ui.adapter.StationDisplayAdapter;
 import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
 import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
 
+/**
+ * StationDisplayActivity class
+ */
 public class StationDisplayActivity extends BaseActivity implements StationDisplayAdapter.OnItemClickListener {
     private RecyclerView recyclerView;
     private TextView progressTextView;
@@ -67,6 +70,10 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
+    /**
+     * Request Line info, if success, call `reloadStations` to request stations info
+     * if not, show progress message with error response
+     */
     private void initLines() {
         linesName = new ArrayList<>();
         lines = new ArrayList<>();
@@ -108,6 +115,7 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
                 });
     }
 
+
     private void initPickUI() {
         id = 0;
         PickerUISettings pickerUISettings = new PickerUISettings.Builder()
@@ -125,7 +133,16 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
 
                 final int mPosition = position;
                 final String mValueResult = valueResult;
-
+                /**
+                 * Here is a trick
+                 * Every time you touch wheel view, flag+1, and after 1.5s later, flag-1
+                 *
+                 * When wheel view close, the flag reset to zero
+                 *
+                 *
+                 * Design to avoid wheel view dismiss too fast
+                 *
+                 */
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -186,7 +203,11 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         }
     }
 
-
+    /**
+     * Request for reload station info
+     *         if success, call `reloadRecycleView` to refresh recycleView
+     *         else, show progress view with error log
+     */
     private void reloadStations() {
         Log.e("loadMessage", "lines.get(id).getSubwayLineId()" + lines.get(id).getSubwayLineId());
         NetworkUtils.subwayGetStationByLine(
@@ -223,6 +244,9 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         );
     }
 
+    /**
+     * Through resetting adapter to refresh recycle view
+     */
     private void reloadRecycleView() {
         Log.e("loadMessage", "reloadStations: size:" + stations.size());
         StationDisplayAdapter adapter = new StationDisplayAdapter(
@@ -231,6 +255,10 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         showDisplayView(Mode.RECYCLE);
     }
 
+    /**
+     *
+     * @see SearchActivity
+     */
     private void setSearchResult(Station s) {
         Gson gson = new Gson();
         Bundle result = new Bundle();
@@ -240,7 +268,10 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
                 gson.toJson(s));
         putIntent(result);
     }
-
+    /**
+     *
+     * @see SearchActivity
+     */
     private void putIntent(Bundle b) {
         Intent intent = new Intent(StationDisplayActivity.this, MainActivity.class);
         intent.putExtras(b);
@@ -251,6 +282,7 @@ public class StationDisplayActivity extends BaseActivity implements StationDispl
         else
             setResult(SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH, intent);
     }
+
 
     private void showDisplayView(int mode) {
         if (mode == Mode.PROGRESS) {
