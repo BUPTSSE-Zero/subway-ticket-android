@@ -1,14 +1,11 @@
 package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,47 +23,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private Context mContext;
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener {
-        void onItemClick(Station data);
-    }
-
-    public SearchAdapter(Context context, List<Station> list,OnItemClickListener listener){
+    public SearchAdapter(Context context, List<Station> list, OnItemClickListener listener) {
         mInflater = LayoutInflater.from(context);
         mContext = context;
         mListener = listener;
         this.list = new ArrayList<>(list);
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final View itemView;
-        private final TextView txtName;
-        private final TextView txtLine;
-        private final ImageView imageView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-            txtName = (TextView) itemView.findViewById(R.id.txtName);
-            txtLine = (TextView) itemView.findViewById(R.id.txtLine);
-            imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        }
-
-        public void bind(final Station station) {
-            String name = station.getName();
-            String line = station.getLine()+"号线";
-            txtName.setText(name);
-            txtLine.setText(line);
-//            imageView.setColorFilter(SubwayLineUtil.getColor(station.getLine()));
-            imageView.getDrawable().setColorFilter(
-                    mContext.getResources().getColor(SubwayLineUtil.getColor(station.getLine())),
-                    PorterDuff.Mode.SRC_ATOP);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onItemClick(station);
-                }
-            });
-        }
     }
 
     @Override
@@ -86,11 +47,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         return list.size();
     }
 
-    public void setStations(List<Station> newList){
+    public void setStations(List<Station> newList) {
         list = new ArrayList<>(newList);
     }
 
-    public void animateTo(List<Station> models){
+    /**
+     * Register animation
+     *
+     * @param models Data ArrayList
+     */
+    public void animateTo(List<Station> models) {
         applyAndAnimateRemovals(models);
         applyAndAnimateAdditions(models);
         applyAndAnimateMovedItems(models);
@@ -139,5 +105,46 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         final Station station = list.remove(fromPosition);
         list.add(toPosition, station);
         notifyItemMoved(fromPosition, toPosition);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Station data);
+    }
+
+    /**
+     * ViewHolder
+     */
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final View itemView;
+        private final TextView txtName;
+        private final TextView txtLine;
+        private final ImageView imageView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+            txtName = (TextView) itemView.findViewById(R.id.txtName);
+            txtLine = (TextView) itemView.findViewById(R.id.txtLine);
+            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+        }
+
+        /**
+         * Call in `onBindViewHolder`
+         */
+        public void bind(final Station station) {
+            String name = station.getName();
+            String line = station.getLine() + "号线";
+            txtName.setText(name);
+            txtLine.setText(line);
+            imageView.getDrawable().setColorFilter(
+                    mContext.getResources().getColor(SubwayLineUtil.getColor(station.getLine())),
+                    PorterDuff.Mode.SRC_ATOP);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(station);
+                }
+            });
+        }
     }
 }

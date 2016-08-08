@@ -36,6 +36,11 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
     @Override
     public int getItemViewType(int position) {
+        /**
+         * Judge type with class name
+         *
+         * @return Status of class on this position
+         */
         if (list.get(position).getClass().getName().equals(PreferRoute.class.getName())) {
             Log.e("getItemViewType", "TYPE:route");
             return STATUS_ROUTE;
@@ -45,6 +50,11 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         }
     }
 
+    /**
+     * @param parent   parent view
+     * @param viewType Decide by classType in `getItemViewType` method
+     * @return ViewHolder contain view inflate with their type
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == STATUS_ROUTE) {
@@ -59,6 +69,13 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
 
     }
 
+    /**
+     * Bind data and ui here with different type
+     *
+     * @param holder    ViewHolder automatically call onCerateViewHolder and then put in here
+     * @param position  position, never try to deal with the warning
+     *
+     */
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         if (list.get(position).getClass().getName().equals(Station.class.getName())) {
