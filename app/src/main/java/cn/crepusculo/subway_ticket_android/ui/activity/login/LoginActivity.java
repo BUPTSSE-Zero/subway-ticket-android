@@ -30,9 +30,9 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
 import cn.crepusculo.subway_ticket_android.ui.activity.MainActivity;
-import cn.crepusculo.subway_ticket_android.utils.CircularAnimUtil;
-import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
-import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
+import cn.crepusculo.subway_ticket_android.util.GsonUtils;
+import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
 public class LoginActivity<T> extends BaseActivity implements View.OnClickListener {
     ViewGroup.LayoutParams buttonSize;

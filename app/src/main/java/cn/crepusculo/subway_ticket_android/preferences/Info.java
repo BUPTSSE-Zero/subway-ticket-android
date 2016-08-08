@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.Arrays;
 
-import cn.crepusculo.subway_ticket_android.utils.SharedPreferencesUtils;
+import cn.crepusculo.subway_ticket_android.util.SharedPreferencesUtils;
 
 /**
  * The Info Class

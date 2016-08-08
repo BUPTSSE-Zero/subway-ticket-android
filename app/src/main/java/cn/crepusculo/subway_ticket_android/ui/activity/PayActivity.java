@@ -29,11 +29,11 @@ import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
-import cn.crepusculo.subway_ticket_android.utils.CalendarUtils;
-import cn.crepusculo.subway_ticket_android.utils.GsonUtils;
-import cn.crepusculo.subway_ticket_android.utils.NetworkUtils;
-import cn.crepusculo.subway_ticket_android.utils.SubwayLineUtil;
-import cn.crepusculo.subway_ticket_android.utils.TestUtils;
+import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
+import cn.crepusculo.subway_ticket_android.util.GsonUtils;
+import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
+import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
 public class PayActivity extends BaseActivity {
     private ImageButton startPic;
