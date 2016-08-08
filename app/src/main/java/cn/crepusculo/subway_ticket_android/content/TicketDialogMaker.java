@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,74 +30,81 @@ public class TicketDialogMaker implements View.OnClickListener {
     public final static int HISTORY = 3;
     public final static int INVALID = 1;
     public final static int PREPARED = 2;
-    Dialog dialog;
+    /**
+     * Mode of Dialog
+     * <p/>
+     * Depend On Fragment
+     */
+    public int mode = 0;
+    /**
+     * Compat containers
+     */
+    private Dialog dialog;
     private ExpandableLinearLayout subTitleLayout;
-    private ExpandableRelativeLayout buttonLayout;
     private ExpandableLinearLayout qrLayout;
+    /**
+     * Context
+     */
+    private Activity mActivity;
+    private Context mContext;
 
+    public TicketDialogMaker(Activity activity, Context context, TicketOrder item) {
+        this.mActivity = activity;
+        this.mContext = context;
+        initDialog();
 
-    public TicketDialogMaker(Activity mActivity, Context mContext, TicketOrder item) {
-        Rect displayRectangle = new Rect();
-        Window window = mActivity.getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
-
-    /* inflate and adjust layout */
-        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.layout_dialog_bills, null);
-        layout.setMinimumWidth(displayRectangle.width());
-        layout.setMinimumHeight((int) (displayRectangle.height() * 0.7f));
-
-        dialog = new Dialog(mContext, R.style.AppTheme_Dialog);
-        int width = mContext.getResources().getDisplayMetrics().widthPixels;
-        int height = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.8);
-
-        dialog.getWindow().setLayout(width, height);
-
+        /**
+         * Declare compat
+         */
         TextView start;
         TextView destination;
         TextView status;
         TextView date;
         TicketOrder bills;
         List<Button> buttons;
-
-        dialog.setContentView(layout);
-        dialog.getWindow().setLayout(width, height);
-        dialog.show();
-
+        /**
+         * Bind compat
+         */
         start = (TextView) dialog.findViewById(R.id.start_dialog);
         destination = (TextView) dialog.findViewById(R.id.destination_dialog);
         status = (TextView) dialog.findViewById(R.id.status);
         date = (TextView) dialog.findViewById(R.id.date);
 
         this.subTitleLayout = (ExpandableLinearLayout) dialog.findViewById(R.id.expanded_sub_title);
-        this.buttonLayout = (ExpandableRelativeLayout) dialog.findViewById(R.id.expanded_btn);
         this.qrLayout = (ExpandableLinearLayout) dialog.findViewById(R.id.expanded_qr);
 
-        start.setText(item.getStartStation().getSubwayStationName());
-        destination.setText(item.getEndStation().getSubwayStationName());
-        date.setText(item.getEndStation().getSubwayStationName());
-        status.setText(TicketOrder.translationCode(mContext, item.getStatus()));
         ImageView v_s = (ImageView) dialog.findViewById(R.id.come_dialog);
         ImageView v_d = (ImageView) dialog.findViewById(R.id.go_dialog);
 
+        /**
+         * Full in Data
+         */
+        start.setText(item.getStartStation().getSubwayStationName());
+        destination.setText(item.getEndStation().getSubwayStationName());
+        date.setText(item.getEndStation().getSubwayStationName());
+        status.setText(TicketOrder.translationCode(context, item.getStatus()));
+
+
         SubwayLineUtil.setColor(
-                mContext,
+                context,
                 v_s,
                 item.getStartStation().getSubwayLine().getSubwayLineId()
         );
 
         SubwayLineUtil.setColor(
-                mContext,
+                context,
                 v_d,
                 item.getEndStation().getSubwayLine().getSubwayLineId()
         );
 
-
+        /**
+         * Bind button
+         */
         buttons = new ArrayList<>();
 
-        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_3));
-        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_1));
-        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_2));
+        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_cancel));
+        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_display_qr));
+        buttons.add((Button) dialog.findViewById(R.id.dialog_btn_refund_ticket));
 
         for (final Button button : buttons) {
             button.setOnClickListener(this);
@@ -110,10 +116,10 @@ public class TicketDialogMaker implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.dialog_btn_3:
+            case R.id.dialog_btn_cancel:
                 dialog.dismiss();
                 return;
-            case R.id.dialog_btn_1:
+            case R.id.dialog_btn_display_qr:
                 if (subTitleLayout.isExpanded()) {
                     subTitleLayout.collapse();
                     new Handler().postDelayed(new Runnable() {
@@ -132,10 +138,31 @@ public class TicketDialogMaker implements View.OnClickListener {
                     }, 400);
                 }
                 return;
-            case R.id.dialog_btn_2:
+            case R.id.dialog_btn_refund_ticket:
 
                 return;
             default:
         }
+    }
+
+    private void initDialog() {
+        View layout;
+        Rect displayRectangle = new Rect();
+        Window window = mActivity.getWindow();
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+        /* inflate and adjust layout */
+        LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.layout_dialog_bills, null);
+        layout.setMinimumWidth(displayRectangle.width());
+        layout.setMinimumHeight((int) (displayRectangle.height() * 0.7f));
+        dialog = new Dialog(mContext, R.style.AppTheme_Dialog);
+        /* set size */
+        int width = mContext.getResources().getDisplayMetrics().widthPixels;
+        int height = (int) (mContext.getResources().getDisplayMetrics().widthPixels * 0.8);
+        dialog.getWindow().setLayout(width, height);
+
+        dialog.setContentView(layout);
+        dialog.getWindow().setLayout(width, height);
+        dialog.show();
     }
 }

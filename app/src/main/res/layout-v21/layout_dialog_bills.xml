@@ -1,174 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/md_white_1000"
-    android:theme="@style/AppTheme.Dialog.Linear"
+    android:id="@+id/dialog_bills"
     style="@style/AppTheme.Dialog.Linear"
-    android:transitionName="@string/cardview_dialog_transition"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/dialog_bills">
+    android:animateLayoutChanges="true"
+    android:background="@color/md_white_1000"
+    android:theme="@style/AppTheme.Dialog.Linear"
+    android:transitionName="@string/cardview_dialog_transition">
 
     <com.github.aakira.expandablelayout.ExpandableLinearLayout
-        app:ael_duration="500"
-        app:ael_interpolator="bounce"
+        android:id="@+id/expanded_sub_title"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.Dialog.Linear.NoPadding"
+        app:ael_duration="500"
         app:ael_expanded="true"
-        android:id="@+id/expanded_sub_title"
-        style="@style/AppTheme.Dialog.Linear.NoPadding"
-        android:theme="@style/AppTheme.Dialog.Linear.NoPadding">
+        app:ael_interpolator="bounce">
 
     <LinearLayout
         android:id="@+id/title_1"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/AppTheme.Dialog.Linear.NoPadding"
         android:theme="@style/AppTheme.Dialog.Linear.NoPadding">
 
         <ImageView
+            android:id="@+id/come_dialog"
+            style="@style/AppTheme.Dialog.Title.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/come_dialog"
             android:src="@drawable/ic_fiber_manual_record_black_16dp"
-            style="@style/AppTheme.Dialog.Title.Icon"
             android:theme="@style/AppTheme.Dialog.Title.Icon"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/start_dialog"
             style="@style/AppTheme.Dialog.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:theme="@style/AppTheme.CardView.Title"
             />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/title_2"
-        android:layout_below="@+id/title_1"
-        android:orientation="horizontal"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/AppTheme.Dialog.Linear.NoPadding"
+        android:layout_below="@+id/title_1"
+        android:orientation="horizontal"
         android:theme="@style/AppTheme.Dialog.Linear.NoPadding"
         >
         <ImageView
+            android:id="@+id/go_dialog"
+            style="@style/AppTheme.Dialog.Title.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/go_dialog"
             android:src="@drawable/ic_fiber_manual_record_black_16dp"
-            style="@style/AppTheme.Dialog.Title.Icon"
             android:theme="@style/AppTheme.Dialog.Title.Icon"/>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/destination_dialog"
             style="@style/AppTheme.Dialog.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:theme="@style/AppTheme.CardView.Title"
             />
     </LinearLayout>
 
         <TextView
-            android:layout_below="@id/title_2"
-            android:drawableStart="@drawable/ic_information_outline"
-            android:drawablePadding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/status"
             style="@style/AppTheme.Dialog.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_2"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_information_outline"
             android:theme="@style/AppTheme.CardView.Text"/>
 
         <TextView
-            android:layout_below="@id/status"
-            android:drawableStart="@drawable/ic_time_black_24dp"
-            android:drawablePadding="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/date"
             style="@style/AppTheme.Dialog.Text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/status"
+            android:drawablePadding="8dp"
+            android:drawableStart="@drawable/ic_time_black_24dp"
             android:theme="@style/AppTheme.CardView.Text" />
 
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
     <com.github.aakira.expandablelayout.ExpandableLinearLayout
-        app:ael_interpolator="bounce"
-        app:ael_duration="500"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:ael_expanded="false"
         android:id="@+id/expanded_qr"
         style="@style/AppTheme.Dialog.Linear.NoPadding"
-        android:theme="@style/AppTheme.Dialog.Linear.NoPadding">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:theme="@style/AppTheme.Dialog.Linear.NoPadding"
+        app:ael_duration="500"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce">
 
         <ImageView
+            android:id="@+id/qr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="qr"
-            android:id="@+id/qr"
             android:src="@drawable/ic_qr"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/light_secondary_text"
-            android:text="safasfsasafasfasfsafa"/>
+            android:text="safasfsasafasfasfsafa"
+            android:textColor="@color/light_secondary_text" />
 
     </com.github.aakira.expandablelayout.ExpandableLinearLayout>
 
     <com.github.aakira.expandablelayout.ExpandableRelativeLayout
         android:id="@+id/expanded_btn"
+        style="@style/AppTheme.Dialog.Linear.NoPadding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         app:ael_expanded="true"
-        android:layout_alignParentBottom="true"
         app:theme="@style/AppTheme.Dialog.Linear.NoPadding"
-        style="@style/AppTheme.Dialog.Linear.NoPadding"
         >
         <Button
-            android:id="@+id/dialog_btn_3"
+            android:id="@+id/dialog_btn_cancel"
+            style="@style/AppTheme.Dialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            style="@style/AppTheme.Dialog.Button"
-            app:theme="@style/AppTheme.Dialog.Button"
-            android:background="@drawable/ripple_effect"
-            android:text="@string/dialog_btn_3"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/linearLayout"
-            android:layout_alignParentStart="true" />
+            android:background="@drawable/ripple_effect"
+            android:gravity="center"
+            android:text="@string/dialog_btn_3"
+            app:theme="@style/AppTheme.Dialog.Button" />
 
         <Button
-            android:id="@+id/dialog_btn_1"
+            android:id="@+id/dialog_btn_display_qr"
+            style="@style/AppTheme.Dialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            style="@style/AppTheme.Dialog.Button"
-            app:theme="@style/AppTheme.Dialog.Button"
-            android:background="@drawable/ripple_effect"
-            android:text="@string/dialog_btn_1"
             android:layout_below="@+id/linearLayout"
-            android:layout_toStartOf="@+id/dialog_btn_2" />
+            android:layout_toStartOf="@+id/dialog_btn_refund_ticket"
+            android:background="@drawable/ripple_effect"
+            android:gravity="center"
+            android:text="@string/dialog_btn_1"
+            app:theme="@style/AppTheme.Dialog.Button" />
 
         <Button
             android:id="@+id/dialog_btn_2"
+            style="@style/AppTheme.Dialog.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            style="@style/AppTheme.Dialog.Button"
-            app:theme="@style/AppTheme.Dialog.Button"
-            android:background="@drawable/ripple_effect"
-            android:text="@string/dialog_btn_2"
-            android:layout_marginStart="0dp"
+            android:layout_alignParentEnd="true"
             android:layout_below="@+id/linearLayout"
-            android:layout_alignParentEnd="true" />
+            android:layout_marginStart="0dp"
+            android:background="@drawable/ripple_effect"
+            android:gravity="center"
+            android:text="@string/dialog_btn_2"
+            app:theme="@style/AppTheme.Dialog.Button" />
 
     </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
 
