@@ -648,7 +648,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             imageEnd.setImageDrawable(getResources().getDrawable(R.drawable.ic_hexagon));
         }
 
-        if (editTextStart.getText().toString().trim().length() >= 1 && editTextEnd.getText().toString().trim().length() >= 1) {
+        if (!TextUtils.isEmpty(editTextStart.getText()) && !TextUtils.isEmpty(editTextEnd.getText())) {
             fab_search.setVisibility(View.VISIBLE);
             fab_search.startAnimation(AnimationUtils.loadAnimation(
                     MainActivity.this, R.anim.fade_in_center
