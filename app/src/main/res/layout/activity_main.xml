@@ -127,49 +127,8 @@
         app:fab_colorPressed="@color/primary"
         app:fab_title="Action subway" />
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/multiple_actions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/nav_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:padding="0dp"
-        app:fab_addButtonColorNormal="@color/md_white_1000"
-        app:fab_addButtonColorPressed="@color/primary"
-        app:fab_addButtonPlusIconColor="@color/md_grey_800"
-        app:fab_labelStyle="@style/AppTheme">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_subway"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_subway_white_24dp"
-            app:fab_colorNormal="@color/md_white_1000"
-            app:fab_colorPressed="@color/primary" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_locate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_place_white_24dp"
-            app:fab_colorNormal="@color/md_white_1000"
-            app:fab_colorPressed="@color/primary" />
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_bills"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_ticket_black_24dp"
-            app:fab_colorNormal="@color/md_white_1000"
-            app:fab_colorPressed="@color/primary"
-            />
-
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
-
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/action_search"
+        android:id="@+id/action_submit_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/nav_content"
@@ -177,7 +136,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
-        android:src="@drawable/ic_find_in_page_white_24dp"
+        android:src="@drawable/ic_done"
         android:visibility="invisible"
         app:fabSize="normal"
         app:layout_behavior="cn.crepusculo.subway_ticket_android.ui.behavior" />

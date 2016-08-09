@@ -14,6 +14,7 @@ public class Account {
     public static final String REGISTER = "register";
     public static final String GET_CAPTCHA = "phone_captcha";
     public static final String LOGIN = "login";
+    public static final String CHECK_LOGIN = "check_login";
     public static final String RESET_PASSWORD = "reset_password";
     public static final String MODIFY_PASSWORD = "modify_password";
     public static final String LOGOUT = "logout";

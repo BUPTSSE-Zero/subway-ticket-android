@@ -28,7 +28,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -58,7 +57,7 @@
             android:name=".ui.activity.StationDisplayActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ui.activity.settings.ResetPassword"
+            android:name=".ui.activity.settings.ModifyPassword"
             android:launchMode="singleTask" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data

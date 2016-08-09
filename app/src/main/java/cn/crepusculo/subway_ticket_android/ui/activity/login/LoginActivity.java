@@ -34,7 +34,7 @@ import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
-public class LoginActivity<T> extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     ViewGroup.LayoutParams buttonSize;
     // Default method login
     private String mode = Mode.LOGIN;
@@ -47,11 +47,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
     private Button forgetBtn;
     private TextSwitcher textSwitcher;
     private TextSwitcher textSwitcher2;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected int getLayoutResource() {
@@ -123,13 +118,6 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         loginBtn = (ActionProcessButton) findViewById(R.id.login_login);
 
         loginBtn.setOnClickListener(this);
-        loginBtn.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                jumpToActivity(MainActivity.class);
-                return false;
-            }
-        });
 
         signBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,24 +135,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
 
         // --------- Fill with cache ------------
         editTextUserName.setText(Info.getInstance().user.getId());
-        editTextPassword.setText(Info.getInstance().user.getPassword());
     }
-
-
-    @Override
-    public void onBackPressed() {
-        loginBtn.setProgress(0);
-        if (!mode.equals(Mode.LOGIN)) {
-            mode = Mode.LOGIN;
-            showView(forgetBtn);
-            showView(signBtn);
-            if (editTextCaptcha.getVisibility() == View.VISIBLE) {
-                hideView(editTextCaptcha);
-            }
-        }
-        setSubmitTitle(mode);
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -180,50 +151,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
          */
         if (mode.equals(Mode.LOGIN)) {
             editTextPassword.setHint(R.string.login_user_password);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    NetworkUtils.accountLogin(
-                            new LoginRequest(loginId, loginPwd),
-                            new Response.Listener<MobileLoginResult>() {
-                                @Override
-                                public void onResponse(MobileLoginResult response) {
-                                    /**
-                                     * Only save preference when success
-                                     */
-                                    int code = response.getResultCode();
-                                    Log.e("Login", "Success!" + response.getResultCode() + response.getResultDescription());
-
-                                    Info.getInstance().user.setId(loginId);
-                                    Info.getInstance().user.setPassword(loginPwd);
-                                    Info.getInstance().setToken(response.getToken());
-
-                                    loginBtn.setProgress(100);
-
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    CircularAnimUtil.startActivityThenFinish(
-                                            LoginActivity.this,
-                                            intent,
-                                            false,
-                                            loginBtn, R.color.primary, 329);
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    try {
-                                        GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                                        Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
-                                    } catch (NullPointerException e) {
-                                        Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
-                                    } finally {
-                                        loginBtn.setProgress(-1);
-                                    }
-                                }
-                            }
-                    );
-                }
-            }, 1500);
+            login(loginId, loginPwd);
         } // END IF
 
         /**
@@ -280,7 +208,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -294,22 +222,10 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.Listener<Result>() {
                         @Override
                         public void onResponse(Result response) {
-                            Log.e("Register", "Success!" + response.getResultCode());
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Update mode
-                                    loginBtn.setProgress(100);
-                                    try {
-                                        Thread.sleep(1000);
-                                        setSubmitTitle(Mode.LOGIN);
-                                    } catch (InterruptedException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            }, 1500);
+                            loginBtn.setProgress(100);
+                            setSubmitTitle(Mode.LOGIN);
+                            login(editTextUserName.getText().toString().trim(),
+                                    editTextPassword.getText().toString().trim());
                         }
 
                     },
@@ -327,7 +243,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -390,15 +306,13 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
                         }
                     });
         } else if (mode.equals(Mode.UPDATE)) {
-            editTextPassword.setText(null);
-            editTextPassword.setHint(R.string.login_user_password_update);
             NetworkUtils.accountResetPassword(
                     new ResetPasswordRequest(
                             editTextUserName.getText().toString().trim(),
@@ -407,20 +321,10 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                     new Response.Listener<Result>() {
                         @Override
                         public void onResponse(Result response) {
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Update mode
-                                    loginBtn.setProgress(100);
-                                    try {
-                                        Thread.sleep(1000);
-                                        setSubmitTitle(Mode.LOGIN);
-                                    } catch (InterruptedException e) {
-                                        // TODO Auto-generated catch block
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }, 1500);
+                            loginBtn.setProgress(100);
+                            setSubmitTitle(Mode.LOGIN);
+                            login(editTextUserName.getText().toString().trim(),
+                                    editTextPassword.getText().toString().trim());
                         }
                     },
                     new Response.ErrorListener() {
@@ -437,7 +341,7 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -665,6 +569,41 @@ public class LoginActivity<T> extends BaseActivity implements View.OnClickListen
         lp.height = 0;
         v.setLayoutParams(lp);
         v.setVisibility(View.INVISIBLE);
+    }
+
+    private void login(final String phoneNumber, final String password){
+        NetworkUtils.accountLogin(
+                new LoginRequest(phoneNumber, password),
+                new Response.Listener<MobileLoginResult>() {
+                    @Override
+                    public void onResponse(MobileLoginResult response) {
+                        /**
+                         * Only save preference when success
+                         */
+                        Log.e("Login", "Success!" + response.getResultCode() + response.getResultDescription());
+
+                        Info.getInstance().user.setId(phoneNumber);
+                        Info.getInstance().user.setPassword(password);
+                        Info.getInstance().setToken(response.getToken());
+
+                        loginBtn.setProgress(100);
+                        LoginActivity.this.finish();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
+                        } catch (NullPointerException e) {
+                            Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                        } finally {
+                            loginBtn.setProgress(-1);
+                        }
+                    }
+                }
+        );
     }
 
     private static class Mode {

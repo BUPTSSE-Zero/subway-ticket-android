@@ -61,6 +61,7 @@ public class Info {
 
     public Info setToken(String token) {
         this.token = token;
+        SharedPreferencesUtils.putString(preferences, InfoKeys.KEYS_TOKEN, token);
         return this;
     }
 

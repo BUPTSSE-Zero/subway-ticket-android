@@ -62,6 +62,13 @@ public class NetworkUtils {
         return NetworkMethodWrapper.put(url, Result.class, requestModel, listener, errorListener);
     }
 
+    public static Request accountCheckLogin(String authToken,
+                                       Response.Listener<Result> listener,
+                                       Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Account.getApiFullName(Account.CHECK_LOGIN));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.getObject(url, Result.class, header, listener, errorListener);
+    }
 
     public static Request accountLogin(LoginRequest request,
                                        Response.Listener<MobileLoginResult> listener,

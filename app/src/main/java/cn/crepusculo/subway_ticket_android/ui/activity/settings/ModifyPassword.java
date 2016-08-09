@@ -27,7 +27,7 @@ import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
  * <p/>
  * Created by airfr on 2016/8/7.
  */
-public class ResetPassword extends BaseActivity {
+public class ModifyPassword extends BaseActivity {
     MaterialEditText oriEditText;
     MaterialEditText newEditText;
     Button nextButton;
@@ -35,7 +35,7 @@ public class ResetPassword extends BaseActivity {
 
     @Override
     protected int getLayoutResource() {
-        return R.layout.activity_reset_password;
+        return R.layout.activity_modify_password;
     }
 
     @Override
@@ -60,7 +60,6 @@ public class ResetPassword extends BaseActivity {
     }
 
     protected void bindButton() {
-
         nextButton = (Button) findViewById(R.id.nextButton);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,16 +85,11 @@ public class ResetPassword extends BaseActivity {
                                 /**
                                  * Make delay display effect
                                  */
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                        Snackbar.make(findViewById(R.id.action_reset_pwd), "Success!", Snackbar.LENGTH_LONG).show();
-                                        Info.getInstance().user.setPassword(newPassword);
-                                        oriEditText.setText(null);
-                                        newEditText.setText(null);
-                                    }
-                                }, 1500);
+                                progressBar.setVisibility(View.INVISIBLE);
+                                Snackbar.make(findViewById(R.id.action_reset_pwd), response.getResultDescription(), Snackbar.LENGTH_LONG).show();
+                                Info.getInstance().user.setPassword(newPassword);
+                                oriEditText.setText(null);
+                                newEditText.setText(null);
                             }
                         },
                         new Response.ErrorListener() {
@@ -105,14 +99,9 @@ public class ResetPassword extends BaseActivity {
                                     GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                                     Snackbar.make(findViewById(R.id.action_reset_pwd), r.result_description, Snackbar.LENGTH_LONG).show();
                                 } catch (NullPointerException e) {
-                                    Snackbar.make(findViewById(R.id.action_reset_pwd), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.action_reset_pwd), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
                                 }
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressBar.setVisibility(View.INVISIBLE);
-                                    }
-                                }, 2000);
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
                         });
             }

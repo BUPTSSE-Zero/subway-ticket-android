@@ -5,16 +5,18 @@
     <string name="warning">警告</string>
     <string name="app_name">地铁2033</string>
     <string name="action_settings">设置</string>
+    <string name="tools">工具</string>
     <string name="action_search">查找</string>
 
     <string name="retry">重试</string>
 
+    <string name="click_avatar_to_login">请点击头像登录/注册</string>
     <string name="login_user_name">用户名</string>
     <string name="login_user_password">密码</string>
     <string name="login_user_password_update">新密码</string>
     <string name="login_user_password_captcha">验证码</string>
 
-    <string name="login_submit">进入应用</string>
+    <string name="login_submit">登 录</string>
     <string name="login_update">更新密码</string>
     <string name="login_update_e">Reset password</string>
     <string name="login_forget">忘记密码</string>
@@ -24,8 +26,8 @@
     <string name="login_backup">登录模式</string>
     <string name="login_backup_e">Sign in</string>
     <string name="login_user_name_hint">请输入中国大陆11位手机号</string>
-    <string name="login_user_pwd_hint">请输入 6~15 位英文数字混合密码</string>
-    <string name="login_user_captcha_hint">请输入 6 位数字验证密码</string>
+    <string name="login_user_pwd_hint">请输入 6~20 位密码</string>
+    <string name="login_user_captcha_hint">请输入 6 位数字验证码</string>
 
     <string name="common_exit">退出</string>
 
@@ -90,4 +92,12 @@
     <string name="BEIJING_ID">1</string>
 
     <string name="qr">二维码</string>
+
+    <string name="account_safety">账号安全</string>
+    <string name="action_modify_password">修改密码</string>
+    <string name="other">其它</string>
+    <string name="action_logout">注销账号</string>
+
+    <string name="network_timeout">网络访问超时</string>
+    <string name="token_invalid">登录状态失效，请重新登录</string>
 </resources>

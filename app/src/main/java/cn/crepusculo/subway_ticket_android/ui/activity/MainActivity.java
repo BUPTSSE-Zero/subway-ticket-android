@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -22,10 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.bm.library.PhotoView;
 import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.Drawer;
@@ -37,8 +33,6 @@ import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
 import com.subwayticket.database.model.StationMessage;
-import com.subwayticket.database.model.TicketOrder;
-import com.subwayticket.model.result.OrderListResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +40,10 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
+import cn.crepusculo.subway_ticket_android.ui.activity.login.LoginActivity;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.ApplicationSettings;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.PersonalSettings;
 import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
-import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
@@ -71,20 +65,16 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     private View nav;
     /* Side Menu */
     private Drawer drawer;
+    private PrimaryDrawerItem[] primaryDrawerItems;
     /* Fabs */
-    private com.github.jorgecastilloprz.FABProgressCircle fabProgressCircle;
     private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
-    private com.getbase.floatingactionbutton.FloatingActionButton fab_unfoucs;
-    private com.getbase.floatingactionbutton.FloatingActionButton fab_locate;
-    private com.getbase.floatingactionbutton.FloatingActionsMenu fab_menu;
-    private com.getbase.floatingactionbutton.FloatingActionButton fab_subway;
-    private com.getbase.floatingactionbutton.FloatingActionButton fab_bills;
-    private android.support.design.widget.FloatingActionButton fab_search;
+    private android.support.design.widget.FloatingActionButton fab_submitorder;
     /* EditText */
     private ImageButton editTextBtn;
     private EditText editTextStart;
     private EditText editTextEnd;
     private ImageView imageStart, imageEnd;
+
 
     @Override
     protected int getLayoutResource() {
@@ -140,41 +130,18 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /**
          * Bind compacts
          */
-        fab_menu = (com.getbase.floatingactionbutton.FloatingActionsMenu)
-                findViewById(R.id.multiple_actions);
-
-        fab_subway = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.action_subway);
-
-        fab_locate = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.action_locate);
-
-        fab_bills = (com.getbase.floatingactionbutton.FloatingActionButton)
-                findViewById(R.id.action_bills);
-
-
-        fab_search = (android.support.design.widget.FloatingActionButton)
-                findViewById(R.id.action_search);
+        fab_submitorder = (android.support.design.widget.FloatingActionButton)
+                findViewById(R.id.action_submit_order);
 
         fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_settings);
 
-
-        updateHint();
-
-        /**
-         *  fab menu listener register
-         *
-         */
-        fab_bills.setOnClickListener(this);
-        fab_subway.setOnClickListener(this);
-        fab_locate.setOnClickListener(this);
         /**
          * fab listener register
          *
          */
         fab_settings.setOnClickListener(this);
-        fab_search.setOnClickListener(this);
+        fab_submitorder.setOnClickListener(this);
     }
 
     private void initDrawer() {
@@ -183,24 +150,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          **/
         String[] drawerItemsNames = getResources().getStringArray(R.array.drawer_items);
         int[] drawerItemIcons = {
-                R.drawable.ic_qr_24dp,
                 R.drawable.ic_ticket_light_24dp,
                 R.drawable.ic_find_in_page_light_24dp,
-                R.drawable.ic_account_light_24dp,
                 R.drawable.ic_settings_light_24dp,
-                R.drawable.ic_settings_light_24dp
+                R.drawable.ic_info_outline,
+                R.drawable.ic_exit,
         };
 
         /* init side menu concept */
-        PrimaryDrawerItem[] primaryDrawerItems = {
+        primaryDrawerItems = new PrimaryDrawerItem[]{
                 new PrimaryDrawerItem()
-                        .withName(drawerItemsNames[SideNavBtn.GET_QR])
-                        .withIcon(drawerItemIcons[SideNavBtn.GET_QR])
-                        .withTextColorRes(R.color.light_primary_text)
-                        .withIconColorRes(R.color.light_primary_text)
-                        .withIdentifier(SideNavBtn.GET_QR),
-
-                new PrimaryDrawerItem()
+                        .withSelectable(false)
                         .withName(drawerItemsNames[SideNavBtn.BILLS])
                         .withTextColorRes(R.color.light_primary_text)
                         .withIconColorRes(R.color.light_primary_text)
@@ -208,6 +168,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                         .withIdentifier(SideNavBtn.BILLS),
 
                 new PrimaryDrawerItem()
+                        .withSelectable(false)
                         .withName(drawerItemsNames[SideNavBtn.CITES])
                         .withIconColorRes(R.color.light_primary_text)
                         .withTextColorRes(R.color.light_primary_text)
@@ -215,6 +176,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                         .withIdentifier(SideNavBtn.CITES),
 
                 new PrimaryDrawerItem()
+                        .withSelectable(false)
                         .withName(drawerItemsNames[SideNavBtn.PROFILE])
                         .withTextColorRes(R.color.light_primary_text)
                         .withIconColorRes(R.color.light_primary_text)
@@ -222,11 +184,20 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                         .withIdentifier(SideNavBtn.PROFILE),
 
                 new PrimaryDrawerItem()
-                        .withName(drawerItemsNames[SideNavBtn.SETTINGS])
+                        .withSelectable(false)
+                        .withName(drawerItemsNames[SideNavBtn.ABOUT_ME])
                         .withTextColorRes(R.color.light_primary_text)
                         .withIconColorRes(R.color.light_primary_text)
-                        .withIcon(drawerItemIcons[SideNavBtn.SETTINGS])
-                        .withIdentifier(SideNavBtn.SETTINGS)
+                        .withIcon(drawerItemIcons[SideNavBtn.ABOUT_ME])
+                        .withIdentifier(SideNavBtn.ABOUT_ME),
+
+                new PrimaryDrawerItem()
+                        .withSelectable(false)
+                        .withName(drawerItemsNames[SideNavBtn.EXIT])
+                        .withTextColorRes(R.color.light_primary_text)
+                        .withIconColorRes(R.color.light_primary_text)
+                        .withIcon(drawerItemIcons[SideNavBtn.EXIT])
+                        .withIdentifier(SideNavBtn.EXIT)
         };
 
         for (PrimaryDrawerItem item : primaryDrawerItems
@@ -237,7 +208,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /* build side Menu */
         drawer = new DrawerBuilder()
                 .withActivity(this)
-                .withHeader(R.layout.header_drawer)
+                .withHeader(R.layout.nav_header_main)
                 .withTranslucentNavigationBar(true)
                 .withDisplayBelowStatusBar(false)
                 .withCloseOnClick(true)
@@ -246,21 +217,24 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 .withSelectedItem(-1)
                 .withDrawerGravity(Gravity.START)
                 .addDrawerItems(
-                        primaryDrawerItems[SideNavBtn.GET_QR],
-                        primaryDrawerItems[SideNavBtn.BILLS],
                         primaryDrawerItems[SideNavBtn.CITES],
                         new DividerDrawerItem(),
-                        primaryDrawerItems[SideNavBtn.PROFILE],
-                        primaryDrawerItems[SideNavBtn.SETTINGS]
+                        primaryDrawerItems[SideNavBtn.ABOUT_ME],
+                        primaryDrawerItems[SideNavBtn.EXIT]
                 )
-                .addStickyDrawerItems(new PrimaryDrawerItem()
-                        .withName(R.string.common_exit)
-                        .withSelectable(true)
-                        .withIdentifier(SideNavBtn.EXIT)
-                        .withOnDrawerItemClickListener(this))
                 .withOnDrawerItemClickListener(this)
                 .withCloseOnClick(true)
                 .build();
+
+        drawer.getHeader().findViewById(R.id.nav_header_portrait_main).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(info.getToken() == null) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     protected void initSearchEditTextView() {
@@ -335,8 +309,29 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         });
     }
 
+    private void changeDrawer(){
+        TextView userIdView = (TextView)drawer.getHeader().findViewById(R.id.nav_header_userid_main);
+        if(info.getToken() != null){
+            userIdView.setText(info.user.getId());
+            if(drawer.getDrawerItem(SideNavBtn.PROFILE) == null)
+                drawer.addItemAtPosition(primaryDrawerItems[SideNavBtn.PROFILE], 0);
+            if(drawer.getDrawerItem(SideNavBtn.BILLS) == null)
+                drawer.addItemAtPosition(primaryDrawerItems[SideNavBtn.BILLS], 0);
+        }else{
+            userIdView.setText(R.string.click_avatar_to_login);
+            drawer.removeItem(SideNavBtn.BILLS);
+            drawer.removeItem(SideNavBtn.PROFILE);
+        }
+    }
 
     // --------------------------------- listener --------------------------------------------------
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeDrawer();
+    }
 
     @Override
     public void onBackPressed() {
@@ -436,18 +431,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /**
          * Jump to Ticket Message Manager 'Pay'
          */
-        if (id == SideNavBtn.GET_QR) {
+        if (id == SideNavBtn.BILLS) {
             Bundle bundle = new Bundle();
-            bundle.putInt("TYPE", position + 1);
-            jumpToActivity(TicketManagerActivity.class, bundle);
-            drawer.closeDrawer();
-        }
-        /**
-         * Jump to Ticket Message Manager 'History'
-         */
-        else if (id == SideNavBtn.BILLS) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("TYPE", position + 1);
+            bundle.putInt("TYPE", 0);
             jumpToActivity(TicketManagerActivity.class, bundle);
             drawer.closeDrawer();
         }
@@ -466,15 +452,12 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             drawer.closeDrawer();
         }
         /**
-         * Show profile
+         * Show about me
          */
-        else if (id == SideNavBtn.SETTINGS) {
+        else if (id == SideNavBtn.ABOUT_ME) {
             showSettingsView();
             drawer.closeDrawer();
         }
-        /**
-         * Show finish app dialog
-         */
         else if (id == SideNavBtn.EXIT) {
             finishApp();
             drawer.closeDrawer();
@@ -488,31 +471,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
      */
     @Override
     public void onClick(View view) {
-        fab_bills.setVisibility(View.VISIBLE);
         int id = view.getId();
         Log.e("id", "" + id);
         switch (id) {
-            case R.id.action_bills:
-                fab_menu.collapse();
-
-                updateHint();
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("TYPE", 2);
-                jumpToActivity(TicketManagerActivity.class, bundle);
-                return;
-            case R.id.action_subway:
-                showDisplay();
-                fab_menu.collapse();
-                return;
-            case R.id.action_locate:
-                getLocation();
-                fab_menu.collapse();
-                return;
             case R.id.action_settings:
                 drawer.openDrawer();
                 return;
-            case R.id.action_search:
+            case R.id.action_submit_order:
                 List<String> route = new ArrayList<>();
                 Bundle b = new Bundle();
                 b.putString("route_start", new Gson().toJson(startStation));
@@ -522,7 +487,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 CircularAnimUtil.startActivity(
                         MainActivity.this,
                         intent,
-                        findViewById(R.id.action_search),
+                        findViewById(R.id.action_submit_order),
                         getResources().getColor(R.color.primary),
                         300);
         }
@@ -542,48 +507,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         } else {
             jumpToActivityWithResult(SearchActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_END);
         }
-    }
-
-    private void showDisplay() {
-        Bundle bundle = new Bundle();
-        bundle.putInt("requestCode", SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
-        jumpToActivityWithResult(StationDisplayActivity.class, bundle, SearchActivity.EDIT_TEXT_REQUEST_CODE_START);
-
-    }
-
-    /**
-     * Request server to check is any NOT_EXTRACT_TICKET here
-     * if any, show fab button fab_bills
-     */
-    private void updateHint() {
-        int ticketCount = 0;
-        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
-                "" + TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET,
-                "" + 0,
-                "" + System.currentTimeMillis(),
-                info.getToken(),
-                new Response.Listener<OrderListResult>() {
-                    @Override
-                    public void onResponse(OrderListResult response) {
-                        int ticketCount = response.getTicketOrderList().size();
-                        if (ticketCount > 0) {
-                            if (fab_menu.getChildCount() == 2)
-                                fab_menu.addButton(fab_bills);
-                        } else {
-                            if (fab_menu.getChildCount() == 3)
-                                fab_menu.removeButton(fab_bills);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (fab_menu.getChildCount() == 3)
-                            fab_menu.removeButton(fab_bills);
-                    }
-                }
-        );
-
     }
 
     /**
@@ -610,23 +533,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private void finishApp() {
-        int type = 0;
-        new MaterialDialog.Builder(this)
-                .titleColor(getResources().getColor(R.color.primary))
-                .positiveColor(getResources().getColor(R.color.primary))
-                .negativeColor(getResources().getColor(R.color.primary))
-                .title(R.string.exit_dialog)
-                .content(R.string.exit_dialog_content)
-                .positiveText(R.string.agree)
-                .autoDismiss(true)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        MainActivity.this.finish();
-                    }
-                })
-                .negativeText(R.string.cancel)
-                .show();
+        finish();
     }
 
     /**
@@ -650,20 +557,20 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         }
 
         if (!TextUtils.isEmpty(editTextStart.getText()) && !TextUtils.isEmpty(editTextEnd.getText())) {
-            fab_search.setVisibility(View.VISIBLE);
-            fab_search.startAnimation(AnimationUtils.loadAnimation(
+            fab_submitorder.setVisibility(View.VISIBLE);
+            fab_submitorder.startAnimation(AnimationUtils.loadAnimation(
                     MainActivity.this, R.anim.fade_in_center
                     )
             );
         } else {
-            if (fab_search.isShown()) {
-                fab_search.startAnimation(
+            if (fab_submitorder.isShown()) {
+                fab_submitorder.startAnimation(
                         AnimationUtils.loadAnimation(
                                 MainActivity.this, R.anim.fade_out_center
                         )
                 );
             }
-            fab_search.setVisibility(View.INVISIBLE);
+            fab_submitorder.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -698,13 +605,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         /**
          * hide fab-search at first
          */
-        if (fab_search.isShown()) {
-            fab_search.startAnimation(
+        if (fab_submitorder.isShown()) {
+            fab_submitorder.startAnimation(
                     AnimationUtils.loadAnimation(
                             MainActivity.this, R.anim.fade_out_center
                     )
             );
-            fab_search.setVisibility(View.INVISIBLE);
+            fab_submitorder.setVisibility(View.INVISIBLE);
         }
         /**
          * Inflater view
@@ -768,13 +675,11 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     }
 
     private class SideNavBtn {
-        public final static int GET_QR = 0;
-        public final static int BILLS = 1;
-        public final static int CITES = 2;
-        public final static int PROFILE = 3;
-        public final static int SETTINGS = 4;
-        public final static int ABOUT_ME = 5;
-        public final static int EXIT = 9;
+        public final static int BILLS = 0;
+        public final static int CITES = 1;
+        public final static int PROFILE = 2;
+        public final static int ABOUT_ME = 3;
+        public final static int EXIT = 4;
 
     }
 
