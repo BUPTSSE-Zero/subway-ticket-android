@@ -49,7 +49,7 @@ public class TicketHistoryFragment extends BaseFragment {
     }
 
     protected void initArrayFromServer() {
-        Log.e("PayFragment", "initArrayFromServer");
+        Log.e("HistoryFragment", "initArrayFromServer");
         NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
                 "" + TicketOrder.ORDER_STATUS_FINISHED,
                 "0",
@@ -58,7 +58,7 @@ public class TicketHistoryFragment extends BaseFragment {
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
-                        Log.e("SubmitFragment", "Success get TicketOrder" + response.getTicketOrderList().size());
+                        Log.e("HistoryFragment", "Success get TicketOrder" + response.getTicketOrderList().size());
                         serverResult = new ArrayList<TicketOrder>(response.getTicketOrderList());
                         convertData();
                     }
@@ -68,7 +68,7 @@ public class TicketHistoryFragment extends BaseFragment {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Log.e("SubmitFragment", "Error" + r.result_description);
+                            Log.e("HistoryFragment", "Error" + r.result_description);
                             textView.setText(r.result_description);
                         } catch (NullPointerException e) {
                             if (error != null) {

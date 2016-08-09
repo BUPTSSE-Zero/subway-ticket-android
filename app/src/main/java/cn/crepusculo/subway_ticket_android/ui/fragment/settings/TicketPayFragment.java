@@ -58,8 +58,9 @@ public class TicketPayFragment extends BaseFragment {
                 new Response.Listener<OrderListResult>() {
                     @Override
                     public void onResponse(OrderListResult response) {
-                        Log.e("SubmitFragment", "Success get TicketOrder" + response.getTicketOrderList().size());
+                        Log.e("PayFragment", "Success get TicketOrder" + response.getTicketOrderList().size());
                         serverResult = new ArrayList<TicketOrder>(response.getTicketOrderList());
+                        Log.e("PayFragment", "Local TicketOrder Size" + serverResult.size());
                         convertData();
                     }
                 },
@@ -68,7 +69,7 @@ public class TicketPayFragment extends BaseFragment {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Log.e("SubmitFragment", "Error" + r.result_description);
+                            Log.e("PayFragment", "Error" + r.result_description);
                             textView.setText(r.result_description);
                         } catch (NullPointerException e) {
                             if (error != null) {
@@ -103,11 +104,12 @@ public class TicketPayFragment extends BaseFragment {
                 /**
                  * Get server result and load them to @params itemData
                  */
+                Log.e("PayFragment", "Load a time");
                 cn.crepusculo.subway_ticket_android.content.TicketOrder data =
                         new cn.crepusculo.subway_ticket_android.content.TicketOrder(result);
                 itemsData.add(data);
             }
-
+            Log.e("PayFragment", "ItemsDate.Size()" + itemsData.size());
             RecyclerView.LayoutManager layoutManager;
             layoutManager = new LinearLayoutManager(getActivity());
 

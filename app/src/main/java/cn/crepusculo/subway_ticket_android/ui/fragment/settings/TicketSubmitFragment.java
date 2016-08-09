@@ -127,6 +127,7 @@ public class TicketSubmitFragment extends BaseFragment {
             /**
              * Else load cache text view
              */
+            Log.e("SubmitFragment", "No ticket");
             showDisplayView(Mode.PROGRESS);
         }
     }
