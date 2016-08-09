@@ -3,6 +3,7 @@ package cn.crepusculo.subway_ticket_android.ui.fragment.settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +22,7 @@ import cn.crepusculo.subway_ticket_android.ui.fragment.BaseFragment;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
-public class TicketPossessFragment extends BaseFragment {
+public class TicketSubmitFragment extends BaseFragment {
     ArrayList<TicketOrder> serverResult = new ArrayList<>();
     ArrayList<cn.crepusculo.subway_ticket_android.content.TicketOrder> itemsData = new ArrayList<>();
 
@@ -30,7 +31,7 @@ public class TicketPossessFragment extends BaseFragment {
 
     @Override
     protected int getFragmentLayout() {
-        return R.layout.fragment_ticket_pay;
+        return R.layout.fragment_ticket_possess;
     }
 
     @Override
@@ -40,6 +41,59 @@ public class TicketPossessFragment extends BaseFragment {
         initCacheView();
         initArrayFromServer();
 
+
+    }
+
+    protected void initCacheView() {
+        textView = (TextView) mRootView.findViewById(R.id.textView);
+    }
+
+    protected void initArrayFromServer() {
+        Log.e("SubmitFragment", "initArrayFromServer");
+        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
+                "" + TicketOrder.ORDER_STATUS_NOT_PAY,
+                "0",
+                "" + System.currentTimeMillis(),
+                Info.getInstance().getToken(),
+                new Response.Listener<OrderListResult>() {
+                    @Override
+                    public void onResponse(OrderListResult response) {
+                        Log.e("SubmitFragment", "Success get TicketOrder" + response.getTicketOrderList().size());
+                        serverResult = new ArrayList<TicketOrder>(response.getTicketOrderList());
+                        convertData();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        try {
+                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
+                            Log.e("SubmitFragment", "Error" + r.result_description);
+                            textView.setText(r.result_description);
+                        } catch (NullPointerException e) {
+                            if (error != null) {
+                                Snackbar.make(mRootView, error.getMessage(), Snackbar.LENGTH_LONG).show();
+                                textView.setText(error.getMessage());
+                            } else {
+                                Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                textView.setText("网络访问超时");
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void showDisplayView(int mode) {
+        if (mode == Mode.PROGRESS) {
+            recyclerView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.VISIBLE);
+        } else if (mode == Mode.RECYCLE) {
+            recyclerView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void convertData() {
         if (!serverResult.isEmpty()) {
             /**
              * Get Data from Sever Successful
@@ -68,56 +122,12 @@ public class TicketPossessFragment extends BaseFragment {
                         }
                     });
             recyclerView.setAdapter(adapter);
+            showDisplayView(Mode.RECYCLE);
         } else {
             /**
              * Else load cache text view
              */
             showDisplayView(Mode.PROGRESS);
-        }
-
-
-    }
-
-    protected void initCacheView() {
-        textView = (TextView) mRootView.findViewById(R.id.textView);
-    }
-
-    protected void initArrayFromServer() {
-        NetworkUtils.ticketOrderGetOrderListByStatusAndStartTimeAndEndTime(
-                "" + TicketOrder.ORDER_STATUS_NOT_PAY,
-                "0",
-                "" + System.currentTimeMillis(),
-                Info.getInstance().getToken(),
-                new Response.Listener<OrderListResult>() {
-                    @Override
-                    public void onResponse(OrderListResult response) {
-                        for (TicketOrder order : response.getTicketOrderList()
-                                ) {
-                            serverResult.add(order);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        try {
-                            GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            textView.setText(r.result_description);
-                        } catch (NullPointerException e) {
-                            Snackbar.make(mRootView, "网络访问超时", Snackbar.LENGTH_LONG).show();
-                            textView.setText("网络访问超时");
-                        }
-                    }
-                });
-    }
-
-    private void showDisplayView(int mode) {
-        if (mode == Mode.PROGRESS) {
-            recyclerView.setVisibility(View.INVISIBLE);
-            textView.setVisibility(View.VISIBLE);
-        } else if (mode == Mode.RECYCLE) {
-            recyclerView.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.INVISIBLE);
         }
     }
 

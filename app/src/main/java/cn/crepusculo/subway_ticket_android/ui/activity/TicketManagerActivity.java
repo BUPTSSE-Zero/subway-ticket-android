@@ -12,12 +12,13 @@ import android.view.MenuItem;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.ui.adapter.PagerAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.PositionTranslationAdapter;
+import cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketSubmitFragment;
 
 /**
  * Including three fragment
  *
  * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketHistoryFragment
- * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPossessFragment
+ * @see TicketSubmitFragment
  * @see cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPayFragment
  */
 public class TicketManagerActivity extends BaseActivity {

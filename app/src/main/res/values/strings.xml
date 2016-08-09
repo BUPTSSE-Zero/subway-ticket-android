@@ -43,8 +43,8 @@
 
     <string name="choice_usual_route">选择路线</string>
     <!-- ticket tab -->
-    <string name="ticket_tab1">未完成</string>
-    <string name="ticket_tab2">待取</string>
+    <string name="ticket_tab1">未取票</string>
+    <string name="ticket_tab2">未支付</string>
     <string name="ticket_tab3">历史</string>
 
     <string name="ticket_mode_not_pay">未支付</string>

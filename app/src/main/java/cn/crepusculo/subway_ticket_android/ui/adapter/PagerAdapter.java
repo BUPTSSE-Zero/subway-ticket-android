@@ -4,10 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
 import cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketHistoryFragment;
 import cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPayFragment;
-import cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketPossessFragment;
+import cn.crepusculo.subway_ticket_android.ui.fragment.settings.TicketSubmitFragment;
 
 
 public class PagerAdapter extends FragmentPagerAdapter{
@@ -24,7 +23,7 @@ public class PagerAdapter extends FragmentPagerAdapter{
             case 0:
                 return new TicketPayFragment();
             case 1:
-                return new TicketPossessFragment();
+                return new TicketSubmitFragment();
             case 2:
                 return new TicketHistoryFragment();
             default:

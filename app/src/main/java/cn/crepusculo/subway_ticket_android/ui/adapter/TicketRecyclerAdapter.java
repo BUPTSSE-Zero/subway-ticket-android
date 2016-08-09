@@ -2,7 +2,6 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -80,18 +79,19 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         ));
         holder.status.setText(TicketOrder.translationCode(context, dataset.get(p).getStatus()));
 
-        GradientDrawable grad_s = (GradientDrawable) holder.start.getBackground();
-        GradientDrawable grad_d = (GradientDrawable) holder.destination.getBackground();
-
         SubwayLineUtil.setColor(
                 context,
                 holder.start_p,
-                dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
+                SubwayLineUtil.ToClientTypeId(
+                        dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId()
+                )
         );
         SubwayLineUtil.setColor(
                 context,
                 holder.destination_p,
-                dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
+                SubwayLineUtil.ToClientTypeId(
+                        dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId()
+                )
         );
 
     }
