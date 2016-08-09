@@ -117,7 +117,7 @@ public class TicketPayFragment extends BaseFragment {
             TicketRecyclerAdapter adapter = new TicketRecyclerAdapter(this.getActivity(), itemsData,
                     new TicketRecyclerAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holde) {
+                        public void onItemClick(cn.crepusculo.subway_ticket_android.content.TicketOrder item, TicketRecyclerAdapter.Holder holder) {
                             TicketDialogMaker t = new TicketDialogMaker(mActivity, mContext, item);
                         }
                     });

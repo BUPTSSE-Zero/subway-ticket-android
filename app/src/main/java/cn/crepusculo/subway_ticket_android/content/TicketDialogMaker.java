@@ -4,7 +4,9 @@ package cn.crepusculo.subway_ticket_android.content;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.ui.activity.DisplayActivity;
+import cn.crepusculo.subway_ticket_android.ui.activity.PayActivity;
 import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
@@ -28,15 +33,13 @@ import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
  * Inflate a ticket message dialog
  */
 public class TicketDialogMaker implements View.OnClickListener {
-    public final static int HISTORY = 3;
-    public final static int INVALID = 1;
-    public final static int PREPARED = 2;
+
     /**
      * Mode of Dialog
      * <p/>
      * Depend On Fragment
      */
-    public int mode = 0;
+    private char mode;
     /**
      * Compat containers
      */
@@ -48,10 +51,15 @@ public class TicketDialogMaker implements View.OnClickListener {
      */
     private Activity mActivity;
     private Context mContext;
+    private TicketOrder mTicketOrder;
 
     public TicketDialogMaker(Activity activity, Context context, TicketOrder item) {
         this.mActivity = activity;
         this.mContext = context;
+        this.mTicketOrder = item;
+
+        mode = mTicketOrder.getStatus();
+
         initDialog();
 
         /**
@@ -80,22 +88,26 @@ public class TicketDialogMaker implements View.OnClickListener {
         /**
          * Full in Data
          */
-        start.setText(item.getStartStation().getSubwayStationName());
-        destination.setText(item.getEndStation().getSubwayStationName());
-        date.setText(CalendarUtils.formatCurrentTimeMills(item.getTicketOrderTime().getTime()));
-        status.setText(TicketOrder.translationCode(context, item.getStatus()));
+        start.setText(mTicketOrder.getStartStation().getSubwayStationName());
+        destination.setText(mTicketOrder.getEndStation().getSubwayStationName());
+        date.setText(CalendarUtils.formatCurrentTimeMills(mTicketOrder.getTicketOrderTime().getTime()));
+        status.setText(TicketOrder.translationCode(context, mTicketOrder.getStatus()));
 
 
         SubwayLineUtil.setColor(
                 context,
                 v_s,
-                item.getStartStation().getSubwayLine().getSubwayLineId()
+                SubwayLineUtil.ToClientTypeId(
+                        mTicketOrder.getStartStation().getSubwayLine().getSubwayLineId()
+                )
         );
 
         SubwayLineUtil.setColor(
                 context,
                 v_d,
-                item.getEndStation().getSubwayLine().getSubwayLineId()
+                SubwayLineUtil.ToClientTypeId(
+                        mTicketOrder.getEndStation().getSubwayLine().getSubwayLineId()
+                )
         );
 
         /**
@@ -110,7 +122,6 @@ public class TicketDialogMaker implements View.OnClickListener {
         for (int i = 0; i < buttons.size(); i++) {
             buttons.get(i).setOnClickListener(this);
         }
-
     }
 
 
@@ -140,7 +151,21 @@ public class TicketDialogMaker implements View.OnClickListener {
                 }
                 return;
             case R.id.dialog_btn_refund_ticket:
-
+                /**
+                 * Jump to display activity
+                 */
+                dialog.dismiss();
+                Bundle b = new Bundle();
+                com.subwayticket.database.model.TicketOrder result;
+                result = SubwayLineUtil.convertToServer(mTicketOrder);
+                if (result != null) {
+                    b.putString(PayActivity.KEY_WORD, new Gson().toJson(result));
+                    Intent intent = new Intent(this.mActivity, DisplayActivity.class);
+                    intent.putExtras(b);
+                    mActivity.startActivity(intent);
+                    mActivity.finish();
+                    mActivity.overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
+                }
                 return;
             default:
         }
@@ -166,4 +191,6 @@ public class TicketDialogMaker implements View.OnClickListener {
         dialog.getWindow().setLayout(width, height);
         dialog.show();
     }
+
+
 }

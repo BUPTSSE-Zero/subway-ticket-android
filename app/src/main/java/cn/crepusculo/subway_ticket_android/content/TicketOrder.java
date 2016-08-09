@@ -101,9 +101,8 @@ public class TicketOrder {
             default:
                 return "Unknown";
         }
-
-
     }
+
     /*
     ================ accessor ================
      */

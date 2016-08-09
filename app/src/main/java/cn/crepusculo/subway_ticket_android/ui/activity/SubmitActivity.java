@@ -307,7 +307,7 @@ public class SubmitActivity extends BaseActivity {
             editAmount.setText(String.valueOf(count));
 
             backBtn.setVisibility(View.VISIBLE);
-            cancelBtn.setVisibility(View.VISIBLE);
+            cancelBtn.setVisibility(View.INVISIBLE);
             checkButton.setText(R.string.pay_bill_now);
         }
     }

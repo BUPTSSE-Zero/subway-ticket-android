@@ -78,7 +78,8 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
                 dataset.get(p).getTicketOrderTime().getTime()
         ));
         holder.status.setText(TicketOrder.translationCode(context, dataset.get(p).getStatus()));
-
+        Log.e("ColorUtils", "line" + dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId());
+        Log.e("ColorUtils", "line" + dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId());
         SubwayLineUtil.setColor(
                 context,
                 holder.start_p,

@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.widget.ImageView;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 
 
 public class SubwayLineUtil {
@@ -120,5 +121,21 @@ public class SubwayLineUtil {
     public static int ToClientTypeId(int line) {
         String s = "" + line;
         return Integer.parseInt(s.substring(1));
+    }
+
+    public static com.subwayticket.database.model.TicketOrder convertToServer(TicketOrder order) {
+        com.subwayticket.database.model.TicketOrder result = new com.subwayticket.database.model.TicketOrder();
+        result.setAmount(order.getAmount());
+        result.setComment(order.getComment());
+        result.setEndStation(order.getEndStation());
+        result.setExtractAmount(order.getExtractAmount());
+        result.setExtractCode(order.getExtractCode());
+        result.setStartStation(order.getStartStation());
+        result.setStatus(order.getStatus());
+        result.setTicketOrderId(order.getTicketOrderId());
+        result.setTicketOrderTime(order.getTicketOrderTime());
+        result.setTicketPrice(order.getTicketPrice());
+        result.setUser(order.getUser());
+        return result;
     }
 }

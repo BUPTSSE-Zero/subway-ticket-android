@@ -51,6 +51,7 @@ import cn.crepusculo.subway_ticket_android.ui.activity.settings.PersonalSettings
 import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
+import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
@@ -721,7 +722,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          * Pretend to we try our best to locate our position by science power
          */
 //        Station s = LocateUtil.getInstance().getMeMyPosition()
-        Station s = new Station(3);
+        Station s = Station.SubwayStationAdapter(TestUtils.BuildSubwayStation(3));
         s.setAvailable(false);
         StationMessage message = new StationMessage();
         message.setContent("因捕鱼行动进行," + s.getName() + "站关闭");

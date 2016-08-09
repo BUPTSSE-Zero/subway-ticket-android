@@ -51,13 +51,14 @@
     <string name="ticket_mode_not_extract_ticket">未取票</string>
     <string name="ticket_mode_finished">已完成</string>
     <string name="ticket_mode_refunded">已退订</string>
+
     <!-- card view -->
     <string name="cardview_time">time</string>
     <string name="cardview_status">status</string>
 
     <!-- dialog -->
     <string name="dialog_btn_1">提票</string>
-    <string name="dialog_btn_2">退票</string>
+    <string name="dialog_btn_2">查看详情</string>
     <string name="dialog_btn_3">取消</string>
     <string name="cardview_dialog_transition">cardview_dialog_transition</string>
     <string name="choose">确认</string>
