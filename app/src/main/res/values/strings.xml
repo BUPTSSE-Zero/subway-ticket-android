@@ -93,6 +93,9 @@
 
     <string name="qr">二维码</string>
 
+    <string name="my_orders">我的订单</string>
+    <string name="account_settings">账号设置</string>
+    <string name="about_me">关于应用</string>
     <string name="account_safety">账号安全</string>
     <string name="action_modify_password">修改密码</string>
     <string name="other">其它</string>

@@ -8,327 +8,367 @@
 
     <include layout="@layout/toolbar" />
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/card_view"
-        style="@style/AppTheme.CardView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:minHeight="250dp"
-        android:stateListAnimator="@animator/raise_z"
-        android:theme="@style/AppTheme.CardView"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="6dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            style="@style/AppTheme.CardView.NoPadding"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:paddingEnd="12dp"
-            android:paddingStart="12dp"
-            android:paddingTop="8dp"
-            android:theme="@style/AppTheme.CardView.NoPadding">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                style="@style/AppTheme.CardView.NoPadding"
+            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/card_view"
+                style="@style/AppTheme.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:theme="@style/AppTheme.CardView.NoPadding">
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:stateListAnimator="@animator/raise_z"
+                android:theme="@style/AppTheme.CardView"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
-                    style="@style/AppTheme.Clear"
-                    android:layout_width="wrap_content"
+                    style="@style/AppTheme.CardView.NoPadding"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="12dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="8dp"
                     android:theme="@style/AppTheme.CardView.NoPadding">
 
-                    <TextView
-                        android:id="@+id/start_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/common_start"
-                        android:theme="@style/AppTheme.CardView.Title" />
-
-                    <ImageButton
-                        android:id="@+id/start_pic"
-                        style="@style/AppTheme.Clear"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        style="@style/AppTheme.CardView.NoPadding"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:orientation="vertical"
+                        android:theme="@style/AppTheme.CardView.NoPadding">
+
+                        <LinearLayout
+                            style="@style/AppTheme.Clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:theme="@style/AppTheme.CardView.NoPadding">
+
+                            <TextView
+                                android:id="@+id/start_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_start"
+                                android:textSize="@dimen/normal_text_size" />
+
+                            <ImageButton
+                                android:id="@+id/start_pic"
+                                style="@style/AppTheme.Clear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:paddingEnd="8dp"
+                                android:paddingStart="8dp"
+                                android:src="@drawable/ic_right_bottom_arrow_24dp"
+                                android:theme="@style/AppTheme.CardView.Title" />
+
+                            <TextView
+                                android:id="@+id/start"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:theme="@style/AppTheme.CardView.Title" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            style="@style/AppTheme.Clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/destination_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/common_end"
+                                android:textSize="@dimen/normal_text_size" />
+
+                            <ImageButton
+                                android:id="@+id/destination_pic"
+                                style="@style/AppTheme.Clear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:clickable="true"
+                                android:paddingEnd="8dp"
+                                android:paddingStart="8dp"
+                                android:src="@drawable/ic_right_top_arrow_24dp"
+                                android:theme="@style/AppTheme.CardView.Title" />
+
+                            <TextView
+                                android:id="@+id/destination"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:theme="@style/AppTheme.CardView.Title" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/time_linear_1"
+                        style="@style/AppTheme.Clear.Distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
                         android:clickable="true"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp"
-                        android:src="@drawable/ic_right_bottom_arrow_24dp"
-                        android:theme="@style/AppTheme.CardView.Title" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/start"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/date_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="4dp"
+                            android:drawableStart="@drawable/ic_time_black_24dp"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="4dp"
+                            android:paddingStart="4dp"
+                            android:text="@string/time_pay"
+                            android:theme="@style/AppTheme.CardView.Text" />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="4dp"
+                            android:paddingStart="32dp"
+                            android:theme="@style/AppTheme.CardView.Text" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/time_linear_2"
+                        style="@style/AppTheme.Clear.Distance"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:theme="@style/AppTheme.CardView.Title" />
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/date_limit_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="4dp"
+                            android:drawableStart="@drawable/ic_time_black_24dp"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="4dp"
+                            android:paddingStart="4dp"
+                            android:text="@string/time_effect"
+                            android:theme="@style/AppTheme.CardView.Text" />
+
+                        <TextView
+                            android:id="@+id/date_limit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="4dp"
+                            android:paddingStart="32dp"
+                            android:theme="@style/AppTheme.CardView.Text" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
+            </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    style="@style/AppTheme.Clear"
+            <LinearLayout
+                style="@style/AppTheme.Clear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:theme="@style/AppTheme.Clear.EditText"
+                android:orientation="horizontal">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:drawablePadding="16dp"
+                    android:drawableStart="@drawable/ic_num_0_primary_24dp"
+                    android:text="@string/ticket_count"
+                    android:textColor="@color/primary"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:theme="@style/AppTheme.CardView.Title" />
 
-                    <TextView
-                        android:id="@+id/destination_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="@string/common_end"
-                        android:theme="@style/AppTheme.CardView.Title" />
+                <TextView
+                    android:id="@+id/count"
+                    style="AppTheme.Clear.EditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:text="1"
+                    android:textSize="@dimen/large_text_size"
+                    android:textColor="@android:color/black"
+                    android:singleLine="true" />
 
-                    <ImageButton
-                        android:id="@+id/destination_pic"
-                        style="@style/AppTheme.Clear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp"
-                        android:src="@drawable/ic_right_top_arrow_24dp"
-                        android:theme="@style/AppTheme.CardView.Title" />
+                <ImageButton
+                    android:id="@+id/btn_subtract_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:theme="@style/AppTheme.CardView.Title"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:tint="@color/red" />
 
-                    <TextView
-                        android:id="@+id/destination"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:theme="@style/AppTheme.CardView.Title" />
+                <ImageButton
+                    android:id="@+id/btn_increase_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:theme="@style/AppTheme.CardView.Title"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:tint="@color/green" />
 
-                </LinearLayout>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/time_linear_1"
-                style="@style/AppTheme.Clear.Distance"
+                style="@style/AppTheme.Clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:theme="@style/AppTheme.Clear.EditText">
 
                 <TextView
-                    android:id="@+id/date_hint"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_time_black_24dp"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="4dp"
-                    android:text="@string/time_pay"
-                    android:theme="@style/AppTheme.CardView.Text" />
+                    android:drawablePadding="16dp"
+                    android:drawableStart="@drawable/ic_cash_primary_24dp"
+                    android:text="@string/ticket_pay"
+                    android:textColor="@color/primary"
+                    android:layout_gravity="center_vertical"
+                    android:theme="@style/AppTheme.CardView.Title" />
 
                 <TextView
-                    android:id="@+id/date"
+                    android:id="@+id/price"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="32dp"
-                    android:theme="@style/AppTheme.CardView.Text" />
+                    android:layout_height="match_parent"
+                    android:text="3.0"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/large_text_size"
+                    android:textColor="@color/text_black"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/time_linear_2"
-                style="@style/AppTheme.Clear.Distance"
+                style="@style/AppTheme.Clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:theme="@style/AppTheme.Clear.EditText">
 
                 <TextView
-                    android:id="@+id/date_limit_hint"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
-                    android:drawableStart="@drawable/ic_time_black_24dp"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="4dp"
-                    android:text="@string/time_effect"
-                    android:theme="@style/AppTheme.CardView.Text" />
+                    android:drawablePadding="16dp"
+                    android:drawableStart="@drawable/ic_cash_primary_24dp"
+                    android:text="@string/ticket_all_pay"
+                    android:textColor="@color/primary"
+                    android:layout_gravity="center_vertical"
+                    android:theme="@style/AppTheme.CardView.Title" />
 
                 <TextView
-                    android:id="@+id/date_limit"
+                    android:id="@+id/amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingEnd="4dp"
-                    android:paddingStart="32dp"
-                    android:theme="@style/AppTheme.CardView.Text" />
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical"
+                    android:text="3.0"
+                    android:textSize="@dimen/xlarge_text_size"
+                    android:textStyle="bold"
+                    android:textColor="@color/red"/>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancel_btn"
+                    style="@style/AppTheme.Dialog.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start|center_vertical"
+                    android:background="@drawable/ripple_effect"
+                    android:gravity="center"
+                    android:text="@string/cancel_bill"
+                    android:theme="@style/AppTheme.Dialog.Button"
+                    android:visibility="invisible" />
+
+                <com.dd.processbutton.iml.ActionProcessButton
+                    android:id="@+id/check_button"
+                    style="@style/AppTheme.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:minWidth="150dp"
+                    android:padding="4dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/post_bill"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="18sp"
+                    android:theme="@style/AppTheme.Button"
+                    app:pb_colorComplete="@color/green_complete"
+                    app:pb_colorNormal="@color/primary"
+                    app:pb_colorPressed="@color/blue_pressed"
+                    app:pb_colorProgress="@color/purple_progress"
+                    app:pb_cornerRadius="0dp"
+                    app:pb_textComplete="Success"
+                    app:pb_textError="Error"
+                    app:pb_textProgress="Loading" />
+
+                <Button
+                    android:id="@+id/back_btn"
+                    style="@style/AppTheme.Dialog.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end|center_vertical"
+                    android:background="@drawable/ripple_effect"
+                    android:gravity="center"
+                    android:text="@string/pay_bill_not_now"
+                    android:theme="@style/AppTheme.Dialog.Button"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        style="@style/AppTheme.Clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:theme="@style/AppTheme.Clear.EditText">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_num_0_primary_24dp"
-            android:text="@string/ticket_count"
-            android:textColor="@color/primary"
-            android:theme="@style/AppTheme.CardView.Title" />
-
-        <EditText
-            android:id="@+id/count"
-            style="AppTheme.Clear.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:digits="0123456789"
-            android:gravity="center"
-            android:hint="0"
-            android:imeOptions="actionDone"
-            android:inputType="number"
-            android:maxLength="5"
-            android:singleLine="true" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/AppTheme.Clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:theme="@style/AppTheme.Clear.EditText">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_cash_primary_24dp"
-            android:text="@string/ticket_pay"
-            android:textColor="@color/primary"
-            android:theme="@style/AppTheme.CardView.Title" />
-
-        <EditText
-            android:id="@+id/price"
-            style="AppTheme.Clear.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:editable="false"
-            android:enabled="false"
-            android:gravity="center"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/text_black"
-            android:textColorHint="@color/text_black" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/AppTheme.Clear"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:theme="@style/AppTheme.Clear.EditText">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_cash_primary_24dp"
-            android:text="@string/ticket_all_pay"
-            android:textColor="@color/primary"
-            android:theme="@style/AppTheme.CardView.Title" />
-
-        <EditText
-            android:id="@+id/amount"
-            style="AppTheme.Clear.EditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="false"
-            android:editable="false"
-            android:enabled="false"
-            android:gravity="center"
-            android:inputType="textNoSuggestions"
-            android:textColor="@color/text_black"
-            android:textColorHint="@color/text_black" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancel_btn"
-            style="@style/AppTheme.Dialog.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="start|center_vertical"
-            android:background="@drawable/ripple_effect"
-            android:gravity="center"
-            android:text="@string/cancel_bill"
-            android:theme="@style/AppTheme.Dialog.Button"
-            android:visibility="invisible" />
-
-        <com.dd.processbutton.iml.ActionProcessButton
-            android:id="@+id/check_button"
-            style="@style/AppTheme.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:minWidth="150dp"
-            android:padding="4dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-            android:text="@string/post_bill"
-            android:textColor="@color/md_white_1000"
-            android:textSize="18sp"
-            android:theme="@style/AppTheme.Button"
-            app:pb_colorComplete="@color/green_complete"
-            app:pb_colorNormal="@color/primary"
-            app:pb_colorPressed="@color/blue_pressed"
-            app:pb_colorProgress="@color/purple_progress"
-            app:pb_cornerRadius="0dp"
-            app:pb_textComplete="Success"
-            app:pb_textError="Error"
-            app:pb_textProgress="Loading" />
-
-        <Button
-            android:id="@+id/back_btn"
-            style="@style/AppTheme.Dialog.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end|center_vertical"
-            android:background="@drawable/ripple_effect"
-            android:gravity="center"
-            android:text="@string/pay_bill_not_now"
-            android:theme="@style/AppTheme.Dialog.Button"
-            android:visibility="invisible" />
-    </RelativeLayout>
+    </ScrollView>
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,13 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.bm.library.PhotoView;
 import com.google.gson.Gson;
 import com.mikepenz.materialdrawer.Drawer;
@@ -32,11 +37,11 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
-import com.subwayticket.database.model.StationMessage;
+import com.subwayticket.database.model.PreferRoute;
 import com.subwayticket.database.model.SubwayStation;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.subwayticket.model.request.AddPreferRouteRequest;
+import com.subwayticket.model.result.Result;
+import com.subwayticket.model.result.TicketPriceResult;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
@@ -45,8 +50,8 @@ import cn.crepusculo.subway_ticket_android.ui.activity.login.LoginActivity;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.ApplicationSettings;
 import cn.crepusculo.subway_ticket_android.ui.activity.settings.PersonalSettings;
 import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
-import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
-import cn.crepusculo.subway_ticket_android.util.TestUtils;
+import cn.crepusculo.subway_ticket_android.util.GsonUtils;
+import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
 public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity
         implements Drawer.OnDrawerItemClickListener,
@@ -70,6 +75,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     /* Fabs */
     private com.getbase.floatingactionbutton.FloatingActionButton fab_settings;
     private android.support.design.widget.FloatingActionButton fab_submitorder;
+    private FloatingActionButton fabAddPreferRoute;
     /* EditText */
     private ImageButton editTextBtn;
     private EditText editTextStart;
@@ -136,13 +142,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
 
         fab_settings = (com.getbase.floatingactionbutton.FloatingActionButton)
                 findViewById(R.id.action_settings);
-
+        fabAddPreferRoute = (FloatingActionButton)findViewById(R.id.btn_add_prefer_route);
         /**
          * fab listener register
          *
          */
         fab_settings.setOnClickListener(this);
         fab_submitorder.setOnClickListener(this);
+        fabAddPreferRoute.setOnClickListener(this);
     }
 
     private void initDrawer() {
@@ -332,6 +339,13 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     protected void onResume() {
         super.onResume();
         changeDrawer();
+        if(info.getToken() != null && startStation != null
+                && endStation != null && !isPreferRoute()){
+            fabAddPreferRoute.setVisibility(View.VISIBLE);
+            fabAddPreferRoute.startAnimation(AnimationUtils.loadAnimation(
+                    MainActivity.this, R.anim.fade_in_center));
+        }else
+            fabAddPreferRoute.setVisibility(View.GONE);
     }
 
     @Override
@@ -471,7 +485,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
      * @param view Float Action Button and Float Action Button in Float Action Menu
      */
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         int id = view.getId();
         Log.e("id", "" + id);
         switch (id) {
@@ -479,20 +493,51 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 drawer.openDrawer();
                 return;
             case R.id.action_submit_order:
-                List<String> route = new ArrayList<>();
-                Bundle b = new Bundle();
-                b.putString("route_start", new Gson().toJson(startStation));
-                b.putString("route_end", new Gson().toJson(endStation));
-                Intent intent = new Intent(MainActivity.this, SubmitActivity.class);
-                intent.putExtras(b);
-                CircularAnimUtil.startActivity(
-                        MainActivity.this,
-                        intent,
-                        findViewById(R.id.action_submit_order),
-                        getResources().getColor(R.color.primary),
-                        300);
-        }
+                NetworkUtils.subwayGetTicketPriceByStartStationAndEndStation(
+                        String.valueOf(startStation.getSubwayStationId()),
+                        String.valueOf(endStation.getSubwayStationId()),
+                        new Response.Listener<TicketPriceResult>() {
+                            @Override
+                            public void onResponse(TicketPriceResult response) {
+                                Bundle b = new Bundle();
+                                b.putString(SubmitActivity.BUNDLE_KEY_START_STATION, new Gson().toJson(startStation));
+                                b.putString(SubmitActivity.BUNDLE_KEY_END_STATION, new Gson().toJson(endStation));
+                                b.putFloat(SubmitActivity.BUNDLE_KEY_TICKET_PRICE, response.getPrice());
+                                Intent intent = new Intent(MainActivity.this, SubmitActivity.class);
+                                intent.putExtras(b);
+                                CircularAnimUtil.startActivity(
+                                        MainActivity.this,
+                                        intent,
+                                        findViewById(R.id.action_submit_order),
+                                        getResources().getColor(R.color.primary),
+                                        300);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(MainActivity.this, R.string.error_failure_to_get_ticket_info, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                break;
+            case R.id.btn_add_prefer_route:
+                NetworkUtils.preferenceAddPreferRoute(new AddPreferRouteRequest(
+                                startStation.getSubwayStationId(), endStation.getSubwayStationId()),
+                        info.getToken(), new Response.Listener<Result>() {
+                            @Override
+                            public void onResponse(Result response) {
+                                Toast.makeText(MainActivity.this, response.getResultDescription(), Toast.LENGTH_SHORT).show();
+                                view.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_out_center));
+                                view.setVisibility(View.GONE);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
 
+                            }
+                        });
+                break;
+        }
     }
 
     // -------------------------------- listener end -----------------------------
@@ -537,6 +582,17 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         finish();
     }
 
+    private boolean isPreferRoute(){
+        if(Info.preferRoutes == null)
+            return false;
+        for(PreferRoute pr : Info.preferRoutes){
+            if(pr.getStartStationId() == startStation.getSubwayStationId() &&
+                    pr.getEndStationId() == endStation.getSubwayStationId())
+                return true;
+        }
+        return false;
+    }
+
     /**
      * UpdateEditTextDrawable
      * Bind with callback listener `onTextChanged`
@@ -572,6 +628,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                 );
             }
             fab_submitorder.setVisibility(View.INVISIBLE);
+            fabAddPreferRoute.setVisibility(View.GONE);
         }
     }
 

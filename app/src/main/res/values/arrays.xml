@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="drawer_items">
-        <item>我的订单</item>
+        <item>@string/my_orders</item>
         <item>选择城市</item>
-        <item>账号设置</item>
+        <item>@string/account_settings</item>
         <item>关于应用</item>
         <item>退出应用</item>
     </string-array>

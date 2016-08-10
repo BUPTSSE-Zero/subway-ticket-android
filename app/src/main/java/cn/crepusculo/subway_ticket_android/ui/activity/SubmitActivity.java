@@ -10,16 +10,16 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.dd.processbutton.iml.ActionProcessButton;
 import com.google.gson.Gson;
+import com.subwayticket.database.model.SubwayStation;
+import com.subwayticket.database.model.TicketOrder;
 import com.subwayticket.model.request.SubmitOrderRequest;
 import com.subwayticket.model.result.Result;
 import com.subwayticket.model.result.SubmitOrderResult;
@@ -28,15 +28,17 @@ import java.util.Calendar;
 
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
-import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
-import cn.crepusculo.subway_ticket_android.util.TestUtils;
 
 public class SubmitActivity extends BaseActivity {
+    public static String BUNDLE_KEY_START_STATION = "StartStation";
+    public static String BUNDLE_KEY_END_STATION = "EndStation";
+    public static String BUNDLE_KEY_TICKET_PRICE = "TicketPrice";
+
     private String mode;
     /**
      * Compat
@@ -49,15 +51,18 @@ public class SubmitActivity extends BaseActivity {
     private TextView endText;
     private TextView date;
     private TextView dateLimit;
-    private EditText editCount;
-    private EditText editAmount;
-    private EditText editPrice;
-    private TicketOrder payRequest;
+    private TextView textCount;
+    private TextView textAmount;
+    private TextView textPrice;
     private ActionProcessButton checkButton;
     private Button backBtn;
     private Button cancelBtn;
-    private Station start;
-    private Station end;
+    private ImageButton addAmountBtn;
+    private ImageButton subAmountBtn;
+    private SubwayStation startStation;
+    private SubwayStation endStation;
+    private float ticketPrice;
+    private TicketOrder payRequest;
 
     @Override
     protected int getLayoutResource() {
@@ -66,25 +71,18 @@ public class SubmitActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        /**
-         * Create payRequest with default value
-         * Waiting for NetWork Response
-         */
-        payRequest = TestUtils.BuildTicketOrder(0, 0, TicketOrder.ORDER_STATUS_NOT_PAY);
-
         // init toolbar with homeAsUp button
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
         }
 
         // init functions
         buildBills();
         loadCompacts();
-        setCardInfo(payRequest);
+        setCardInfo();
 
         // init mode
         mode = Mode.SUBMIT;
@@ -102,18 +100,42 @@ public class SubmitActivity extends BaseActivity {
         // date part
         date = (TextView) findViewById(R.id.date);
         dateLimit = (TextView) findViewById(R.id.date_limit);
-        // edit text
-        editCount = (EditText) findViewById(R.id.count);
-        editPrice = (EditText) findViewById(R.id.price);
-        editAmount = (EditText) findViewById(R.id.amount);
+        // text
+        textCount = (TextView) findViewById(R.id.count);
+        textPrice = (TextView) findViewById(R.id.price);
+        textAmount = (TextView) findViewById(R.id.amount);
+        textPrice.setText(String.valueOf(ticketPrice));
+        textAmount.setText(String.valueOf(ticketPrice * Integer.parseInt(textCount.getText().toString())));
+        // button
+        addAmountBtn = (ImageButton) findViewById(R.id.btn_increase_amount);
+        addAmountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int newCount = Integer.parseInt(textCount.getText().toString());
+                newCount++;
+                if(newCount > 10)
+                    newCount = 10;
+                textCount.setText(String.valueOf(newCount));
+                textAmount.setText(String.valueOf(ticketPrice * newCount));
+            }
+        });
+        subAmountBtn = (ImageButton) findViewById(R.id.btn_subtract_amount);
+        subAmountBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int newCount = Integer.parseInt(textCount.getText().toString());
+                newCount--;
+                if(newCount < 1)
+                    newCount = 1;
+                textCount.setText(String.valueOf(newCount));
+                textAmount.setText(String.valueOf(ticketPrice * newCount));
+            }
+        });
         // check button
         checkButton = (ActionProcessButton) findViewById(R.id.check_button);
         checkButton.setMode(ActionProcessButton.Mode.ENDLESS);
         backBtn = (Button) findViewById(R.id.back_btn);
         cancelBtn = (Button) findViewById(R.id.cancel_btn);
-        // bind listener
-        endPic.setOnClickListener(new ImageButtonOnClickListener());
-        startPic.setOnClickListener(new ImageButtonOnClickListener());
 
         checkButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,13 +148,13 @@ public class SubmitActivity extends BaseActivity {
                  * Mode.Submit
                  */
                 if (mode.equals(Mode.SUBMIT)) {
-                    final int count = TextUtils.isEmpty(editCount.getText()) ?
-                            0 : Integer.parseInt(editCount.getText().toString().trim());
+                    final int count = TextUtils.isEmpty(textCount.getText()) ?
+                            0 : Integer.parseInt(textCount.getText().toString().trim());
 
                     NetworkUtils.ticketOrderSubmit(
                             new SubmitOrderRequest(
-                                    start.getId(),
-                                    end.getId(),
+                                    startStation.getSubwayStationId(),
+                                    endStation.getSubwayStationId(),
                                     count
                             ),
                             Info.getInstance().getToken(),
@@ -140,14 +162,14 @@ public class SubmitActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(SubmitOrderResult response) {
                                     Log.e("Request", "Success!!");
-                                    payRequest = new TicketOrder(response.getTicketOrder());
+                                    payRequest = response.getTicketOrder();
                                     new Handler().postDelayed(new Runnable() {
                                         @Override
                                         public void run() {
                                             checkButton.setProgress(100);
                                             setSubmitTitle(Mode.SUCCESS);
                                         }
-                                    }, 2000);
+                                    }, 1000);
                                 }
                             },
                             new Response.ErrorListener() {
@@ -155,7 +177,6 @@ public class SubmitActivity extends BaseActivity {
                                 public void onErrorResponse(VolleyError error) {
                                     checkButton.setProgress(-1);
                                     GsonUtils.Response r;
-                                    Log.e("Request", start.getId() + " " + end.getId() + " " + count);
                                     try {
                                         r = GsonUtils.resolveErrorResponse(error);
                                         Snackbar.make(
@@ -236,41 +257,29 @@ public class SubmitActivity extends BaseActivity {
     private void buildBills() {
         Bundle b = getBundle();
         if (b != null) {
-            String start_str = b.getString("route_start");
-            String end_str = b.getString("route_end");
-            Log.e("SubmitActivity", start_str + end_str);
-            start = new Gson().fromJson(start_str, Station.class);
-            end = new Gson().fromJson(end_str, Station.class);
-        } else {
-            /* Failure to get tickle info */
-            new MaterialDialog.Builder(this)
-                    .title(R.string.error)
-                    .titleColor(getResources().getColor(R.color.primary))
-                    .content(R.string.error_failure_to_get_ticket_info)
-                    .autoDismiss(true)
-                    .show();
+            String start_str = b.getString(BUNDLE_KEY_START_STATION);
+            String end_str = b.getString(BUNDLE_KEY_END_STATION);
+            startStation = new Gson().fromJson(start_str, SubwayStation.class);
+            endStation = new Gson().fromJson(end_str, SubwayStation.class);
+            ticketPrice = b.getFloat(BUNDLE_KEY_TICKET_PRICE);
         }
-
     }
 
-    /**
-     * @param info TickOrder never used
-     */
-    private void setCardInfo(TicketOrder info) {
+    private void setCardInfo() {
         Calendar c = Calendar.getInstance();
-        startText.setText(start.getName());
-        endText.setText(end.getName());
+        startText.setText(startStation.getDisplayName());
+        endText.setText(endStation.getDisplayName());
         date.setText(CalendarUtils.format(c));
         dateLimit.setText(CalendarUtils.format_limit(c));
         SubwayLineUtil.setColor(
                 this,
                 startPic,
-                start.getLine()
+                Station.SubwayStationAdapter(startStation).getLine()
         );
         SubwayLineUtil.setColor(
                 this,
                 endPic,
-                end.getLine()
+                Station.SubwayStationAdapter(endStation).getLine()
         );
     }
 
@@ -301,11 +310,6 @@ public class SubmitActivity extends BaseActivity {
         if (mode.equals(Mode.SUBMIT)) {
             checkButton.setText(R.string.post_bill);
         } else {
-
-            editPrice.setText(String.valueOf(payRequest.getTicketPrice()));
-            double count = payRequest.getTicketPrice() * Integer.parseInt(editCount.getText().toString().trim());
-            editAmount.setText(String.valueOf(count));
-
             backBtn.setVisibility(View.VISIBLE);
             cancelBtn.setVisibility(View.INVISIBLE);
             checkButton.setText(R.string.pay_bill_now);
@@ -321,31 +325,6 @@ public class SubmitActivity extends BaseActivity {
         public static String SUCCESS = "success";
 
         private Mode() {
-        }
-    }
-
-    /**
-     * Swap start and end when click image
-     */
-    private class ImageButtonOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            Station swap = start;
-            start = end;
-            end = swap;
-            startText.setText(start.getName());
-            endText.setText(end.getName());
-
-            SubwayLineUtil.setColor(
-                    SubmitActivity.this,
-                    startPic,
-                    getResources().getColor(SubwayLineUtil.getColor(start.getLine()))
-            );
-            SubwayLineUtil.setColor(
-                    SubmitActivity.this,
-                    endPic,
-                    getResources().getColor(SubwayLineUtil.getColor(end.getLine()))
-            );
         }
     }
 }

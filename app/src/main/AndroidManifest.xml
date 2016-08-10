@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".ui.activity.TicketManagerActivity"
+            android:label="@string/my_orders"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.TicketDialogActivity"
@@ -44,14 +45,16 @@
         </activity>
         <activity
             android:name=".ui.activity.SubmitActivity"
+            android:label="@string/post_bill"
             android:theme="@style/AppTheme.NoActionBar"
             />
-
         <activity
             android:name=".ui.activity.settings.ApplicationSettings"
+            android:label="@string/about_me"
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.settings.PersonalSettings"
+            android:label="@string/account_settings"
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.StationDisplayActivity"
