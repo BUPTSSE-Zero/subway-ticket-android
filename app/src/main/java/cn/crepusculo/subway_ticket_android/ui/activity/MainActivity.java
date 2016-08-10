@@ -33,6 +33,7 @@ import com.mingle.sweetpick.CustomDelegate;
 import com.mingle.sweetpick.DimEffect;
 import com.mingle.sweetpick.SweetSheet;
 import com.subwayticket.database.model.StationMessage;
+import com.subwayticket.database.model.SubwayStation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +55,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
     /* Sheet */
     private SweetSheet sheet;
     /* Storage */
-    private Station startStation;
-    private Station endStation;
+    private SubwayStation startStation;
+    private SubwayStation endStation;
     /* view */
     private View view;
     private ViewGroup viewGroup;
@@ -292,7 +293,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             @Override
             public void onClick(View view) {
                 if (endStation != null && startStation != null) {
-                    Station swap = startStation;
+                    SubwayStation swap = startStation;
                     startStation = endStation;
                     endStation = swap;
 
@@ -388,14 +389,14 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
             Log.e("MainActivity", "GetResult" + "START");
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_START);
-            startStation = new Gson().fromJson(obj_str, Station.class);
+            startStation = new Gson().fromJson(obj_str, SubwayStation.class);
             setEditText(editTextStart, startStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_END) {
             // Only write end_edit_text
             Log.e("MainActivity", "GetResult" + "END");
             String obj_str = data.getStringExtra(
                     SearchActivity.KEY_END);
-            endStation = new Gson().fromJson(obj_str, Station.class);
+            endStation = new Gson().fromJson(obj_str, SubwayStation.class);
             setEditText(editTextEnd, endStation);
         } else if (resultCode == SearchActivity.EDIT_TEXT_REQUEST_CODE_BOTH) {
             // Both write two edit_text
@@ -403,8 +404,8 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
                     SearchActivity.KEY_END);
             String obj_str_s = data.getStringExtra(
                     SearchActivity.KEY_START);
-            endStation = new Gson().fromJson(obj_str_e, Station.class);
-            startStation = new Gson().fromJson(obj_str_s, Station.class);
+            endStation = new Gson().fromJson(obj_str_e, SubwayStation.class);
+            startStation = new Gson().fromJson(obj_str_s, SubwayStation.class);
 
             setEditText(editTextStart, startStation);
             setEditText(editTextEnd, endStation);
@@ -574,13 +575,9 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         }
     }
 
-    private void setEditText(EditText e, Station s) {
+    private void setEditText(EditText e, SubwayStation s) {
         if (s != null) {
-            e.setText(
-                    SubwayLineUtil.ConnectLineNameStr(
-                            s.getLine(),
-                            s.getName()
-                    ));
+            e.setText(s.getDisplayName());
         } else {
             e.setText(null);
         }
@@ -599,79 +596,6 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.main_activity);
         sheet = new SweetSheet(rl);
         sheet.setBackgroundEffect(new DimEffect(12f));
-    }
-
-    protected void getLocation() {
-        /**
-         * hide fab-search at first
-         */
-        if (fab_submitorder.isShown()) {
-            fab_submitorder.startAnimation(
-                    AnimationUtils.loadAnimation(
-                            MainActivity.this, R.anim.fade_out_center
-                    )
-            );
-            fab_submitorder.setVisibility(View.INVISIBLE);
-        }
-        /**
-         * Inflater view
-         */
-        RelativeLayout rl = (RelativeLayout) findViewById(R.id.main_activity);
-        View view = LayoutInflater.from(this).inflate(R.layout.item_locate_station, rl, false);
-        /**
-         * Bind view with delegate animation
-         */
-        CustomDelegate customDelegate = new CustomDelegate(true, CustomDelegate.AnimationType.DuangAnimation);
-
-        /**
-         * For beta version, Using fake data here
-         *
-         * Pretend to we try our best to locate our position by science power
-         */
-//        Station s = LocateUtil.getInstance().getMeMyPosition()
-        Station s = Station.SubwayStationAdapter(TestUtils.BuildSubwayStation(3));
-        s.setAvailable(false);
-        StationMessage message = new StationMessage();
-        message.setContent("因捕鱼行动进行," + s.getName() + "站关闭");
-        s.setStationMessage(message);
-
-        TextView textName = (TextView) view.findViewById(R.id.txtName);
-        textName.setText(s.getName());
-        TextView textLine = (TextView) view.findViewById(R.id.txtLine);
-        textLine.setText(s.getLine() + " 号线");
-
-        TextView textMessage = (TextView) view.findViewById(R.id.message);
-        if (s.isAvailable()) {
-            textMessage.setText(R.string.normal);
-        } else {
-            String strClose = getString(R.string.close);
-            String strMessage = s.getStationMessage().getContent();
-            String content = strClose + '\n' + strMessage;
-            textMessage.setText(content);
-        }
-
-        final Station station = s;
-        view.findViewById(R.id.comeFromThere).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startStation = station;
-                setEditText(editTextStart, startStation);
-                sheet.dismiss();
-            }
-        });
-        view.findViewById(R.id.goToThere).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                endStation = station;
-                setEditText(editTextEnd, endStation);
-
-                sheet.dismiss();
-            }
-        });
-
-        customDelegate.setCustomView(view);
-        sheet.setDelegate(customDelegate);
-        sheet.show();
     }
 
     private class SideNavBtn {

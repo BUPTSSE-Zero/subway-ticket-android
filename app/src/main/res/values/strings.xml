@@ -40,8 +40,8 @@
     <string name="common_go_prep">到</string>
     <string name="common_from_prep">从</string>
 
-    <string name="comeformthere">设为起点</string>
-    <string name="gotothere">设为目标</string>
+    <string name="comeformthere">设为起始站</string>
+    <string name="gotothere">设为终点站</string>
 
     <string name="choice_usual_route">选择路线</string>
     <!-- ticket tab -->
@@ -98,6 +98,6 @@
     <string name="other">其它</string>
     <string name="action_logout">注销账号</string>
 
-    <string name="network_timeout">网络访问超时</string>
+    <string name="network_error">网络错误或访问超时</string>
     <string name="token_invalid">登录状态失效，请重新登录</string>
 </resources>

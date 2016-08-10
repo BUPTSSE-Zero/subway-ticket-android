@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -23,9 +24,15 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.subwayticket.database.model.HistoryRoute;
 import com.subwayticket.database.model.PreferRoute;
+import com.subwayticket.database.model.PreferSubwayStation;
 import com.subwayticket.database.model.SubwayLine;
 import com.subwayticket.database.model.SubwayStation;
+import com.subwayticket.model.request.AddPreferRouteRequest;
+import com.subwayticket.model.request.AddPreferStationRequest;
 import com.subwayticket.model.result.HistoryRouteListResult;
+import com.subwayticket.model.result.PreferRouteListResult;
+import com.subwayticket.model.result.PreferStationListResult;
+import com.subwayticket.model.result.Result;
 import com.subwayticket.model.result.SubwayLineListResult;
 import com.subwayticket.model.result.SubwayStationListResult;
 
@@ -33,11 +40,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.RecycleViewDivider;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
-import cn.crepusculo.subway_ticket_android.ui.adapter.SearchHistoryAdapter;
+import cn.crepusculo.subway_ticket_android.ui.adapter.SearchPreferAdapter;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
@@ -53,18 +59,16 @@ public class SearchActivity extends BaseActivity implements
 
     public static String KEY_START = "start";
     public static String KEY_END = "end";
-    /* search list */
-    ArrayList<Object> objects;
     /* var */
     private int SEARCH_STATUS;
     private Bundle result;
-    private ArrayList<Station> stationArrayList;
+    private ArrayList<SubwayStation> stationArrayList;
     private SearchAdapter searchAdapter;
 
 
     /* compats */
     private RecyclerView listView;
-    private RecyclerView historyView;
+    private RecyclerView preferListView;
 
     @Override
     protected int getLayoutResource() {
@@ -108,106 +112,228 @@ public class SearchActivity extends BaseActivity implements
         listView = (RecyclerView) findViewById(R.id.list);
         listView.setLayoutManager(new LinearLayoutManager(this));
 
-        boolean status = initData();
+        initData();
         searchAdapter = new SearchAdapter(
                 SearchActivity.this,
                 stationArrayList,
                 new SearchAdapter.OnItemClickListener() {
                     @Override
-                    public void onItemClick(Station data) {
-                        SEARCH_STATUS = getBundle().getInt("requestCode");
-                        setSearchResult(data);
-                        finish();
+                    public void onItemClick(SubwayStation data, final View v) {
+                        if(v.getId() == R.id.btn_add_prefer_station){
+                            NetworkUtils.preferenceAddPreferStation(new AddPreferStationRequest(data.getSubwayStationId()),
+                                    Info.getInstance().getToken(),
+                                    new Response.Listener<Result>() {
+                                        @Override
+                                        public void onResponse(Result response) {
+                                            Toast.makeText(SearchActivity.this, response.getResultDescription(), Toast.LENGTH_SHORT).show();
+                                            v.setVisibility(View.GONE);
+                                            updateSearchPreferAdapter();
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            updateSearchPreferAdapter();
+                                        }
+                                    });
+                        }else {
+                            SEARCH_STATUS = getBundle().getInt("requestCode");
+                            setSearchResult(data);
+                            finish();
+                        }
                     }
                 });
         listView.setAdapter(searchAdapter);
-        searchAdapter.animateTo(stationArrayList);
-        searchAdapter.animateTo(stationArrayList);
         listView.setVisibility(View.GONE);
+        searchAdapter.animateTo(stationArrayList);
+        searchAdapter.animateTo(stationArrayList);
 
-        /* ----------------TEST DATA------------------------- */
-        Station station1 = new Station("安贞门", 4, 1101);
-        Station station2 = new Station("安定门", 5, 121);
+        preferListView = (RecyclerView) findViewById(R.id.prefer_list);
+        preferListView.setLayoutManager(new LinearLayoutManager(this));
+        RecycleViewDivider dividerLine = new RecycleViewDivider(RecycleViewDivider.VERTICAL);
+        dividerLine.setSize(4);
+        dividerLine.setColor(0xFFDDDDDD);
+        preferListView.addItemDecoration(dividerLine);
+        updateSearchPreferAdapter();
+    }
 
-        final PreferRoute preferRoute1 = new PreferRoute("99999999999", 111, 181);
-        SubwayLine line1 = new SubwayLine(13);
-        SubwayLine line2 = new SubwayLine(8);
 
-        SubwayStation ss1 = new SubwayStation(111);
-        ss1.setSubwayStationName("五道口");
-        ss1.setSubwayLine(line1);
+    private void updateSearchPreferAdapter(){
+        if(Info.getInstance().getToken() == null){
+            Info.historyRoutes = null;
+            Info.preferRoutes = null;
+            Info.preferStations = null;
+            setSearchPreferAdapter();
+        }else {
+            NetworkUtils.preferencePreferStation(Info.getInstance().getToken(),
+                    new Response.Listener<PreferStationListResult>() {
+                        @Override
+                        public void onResponse(PreferStationListResult response) {
+                            Info.preferStations = response.getPreferSubwayStationList();
+                            setSearchPreferAdapter();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Info.preferStations = null;
+                            setSearchPreferAdapter();
+                        }
+                    });
 
-        SubwayStation ss2 = new SubwayStation(181);
-        ss2.setSubwayStationName("什刹海");
-        ss2.setSubwayLine(line2);
+            NetworkUtils.preferencePrefeRoute(Info.getInstance().getToken(),
+                    new Response.Listener<PreferRouteListResult>() {
+                        @Override
+                        public void onResponse(PreferRouteListResult response) {
+                            Info.preferRoutes = response.getPreferRouteList();
+                            setSearchPreferAdapter();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Info.preferRoutes = null;
+                            setSearchPreferAdapter();
+                        }
+                    });
 
-        preferRoute1.setStartStation(ss1);
-        preferRoute1.setEndStation(ss2);
-        // -----------------TEST DATA end----------------------
+            NetworkUtils.preferenceHistory(
+                    Info.getInstance().getToken(),
+                    new Response.Listener<HistoryRouteListResult>() {
+                        @Override
+                        public void onResponse(HistoryRouteListResult response) {
+                            Info.historyRoutes = response.getHistoryRouteList();
+                            setSearchPreferAdapter();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Info.historyRoutes = null;
+                            setSearchPreferAdapter();
+                        }
+                    });
 
-        objects = new ArrayList<>();
+        }
+    }
 
-        NetworkUtils.preferenceHistory(
-                Info.getInstance().getToken(),
-                new Response.Listener<HistoryRouteListResult>() {
-                    @Override
-                    public void onResponse(HistoryRouteListResult response) {
-                        ArrayList<HistoryRoute> historyRoutes =
-                                new ArrayList<>(response.getHistoryRouteList());
-                        if (!historyRoutes.isEmpty())
-                            objects.add(historyRoutes);
+    private void setSearchPreferAdapter(){
+        ArrayList<Object> objects = new ArrayList<>();
+        if(Info.preferStations != null) {
+            for (PreferSubwayStation ps : Info.preferStations) {
+                objects.add(ps.getSubwayStation());
+            }
+        }
+        if(Info.preferRoutes != null){
+            for (PreferRoute pr : Info.preferRoutes){
+                objects.add(pr);
+            }
+        }
+        if(Info.historyRoutes != null){
+            for (HistoryRoute hr : Info.historyRoutes){
+                boolean addFlag = true;
+                if(Info.preferRoutes != null){
+                    for (PreferRoute pr : Info.preferRoutes){
+                        if(hr.getStartStationId() == pr.getStartStationId() &&
+                                hr.getEndStartionId() == pr.getEndStationId()){
+                            addFlag = false;
+                            break;
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                });
-        objects.add(station1);
-        objects.add(station2);
-        objects.add(preferRoute1);
-
-        SearchHistoryAdapter searchHistoryAdapter;
-        searchHistoryAdapter = new SearchHistoryAdapter(
+                }
+                if(addFlag)
+                    objects.add(hr);
+            }
+        }
+        SearchPreferAdapter searchPreferAdapter = new SearchPreferAdapter(
                 this,
                 objects,
-                new SearchHistoryAdapter.OnItemClickListener() {
+                new SearchPreferAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(int position, Object data, int mode) {
+                        PreferRoute preferRoute;
+                        HistoryRoute historyRoute;
                         switch (mode) {
-                            case SearchHistoryAdapter.STATUS_COME:
+                            case SearchPreferAdapter.STATUS_COME:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_START;
-                                setSearchResult((Station) data);
+                                setSearchResult((SubwayStation) data);
                                 break;
-                            case SearchHistoryAdapter.STATUS_GO:
+                            case SearchPreferAdapter.STATUS_GO:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_END;
-                                setSearchResult((Station) data);
+                                setSearchResult((SubwayStation) data);
                                 break;
-                            case SearchHistoryAdapter.STATUS_ROUTE:
+                            case SearchPreferAdapter.STATUS_REMOVE_PREFER_ROUTE:
+                                preferRoute = (PreferRoute) data;
+                                NetworkUtils.preferenceRemovePreferRoute(preferRoute.getStartStationId(), preferRoute.getEndStationId(),
+                                        Info.getInstance().getToken(), new Response.Listener<Result>() {
+                                            @Override
+                                            public void onResponse(Result response) {
+                                                Toast.makeText(SearchActivity.this, response.getResultDescription(), Toast.LENGTH_SHORT).show();
+                                                updateSearchPreferAdapter();
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                updateSearchPreferAdapter();
+                                            }
+                                        });
+                                return;
+                            case SearchPreferAdapter.STATUS_ADD_PREFER_ROUTE:
+                                historyRoute = (HistoryRoute)data;
+                                NetworkUtils.preferenceAddPreferRoute(new AddPreferRouteRequest(historyRoute.getStartStationId(),
+                                                historyRoute.getEndStartionId()), Info.getInstance().getToken(),
+                                        new Response.Listener<Result>() {
+                                            @Override
+                                            public void onResponse(Result response) {
+                                                Toast.makeText(SearchActivity.this, response.getResultDescription(), Toast.LENGTH_SHORT).show();
+                                                updateSearchPreferAdapter();
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                updateSearchPreferAdapter();
+                                            }
+                                        });
+                                return;
+                            case SearchPreferAdapter.STATUS_REMOVE_PREFER_STATION:
+                                NetworkUtils.preferenceRemovePreferStation(((SubwayStation)data).getSubwayStationId(),
+                                        Info.getInstance().getToken(),
+                                        new Response.Listener<Result>() {
+                                            @Override
+                                            public void onResponse(Result response) {
+                                                Toast.makeText(SearchActivity.this, response.getResultDescription(), Toast.LENGTH_SHORT).show();
+                                                updateSearchPreferAdapter();
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                updateSearchPreferAdapter();
+                                            }
+                                        });
+                                return;
+                            case SearchPreferAdapter.VIEW_TYPE_PREFER_ROUTE:
                                 SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_BOTH;
-                                PreferRoute preferRoute = (PreferRoute) data;
-                                ArrayList<Station> stations = new ArrayList<>(Station.PreferRouteAdapter(preferRoute));
-                                setSearchResult(stations.get(0), stations.get(1));
+                                preferRoute = (PreferRoute) data;;
+                                setSearchResult(preferRoute.getStartStation(), preferRoute.getEndStation());
+                                break;
+                            case SearchPreferAdapter.VIEW_TYPE_HISTORY_ROUTE:
+                                SEARCH_STATUS = EDIT_TEXT_REQUEST_CODE_BOTH;
+                                historyRoute = (HistoryRoute)data;
+                                setSearchResult(historyRoute.getStartStation(), historyRoute.getEndStation());
                                 break;
                         }
                         finish();
                     }
                 });
-        historyView = (RecyclerView) findViewById(R.id.history);
-        historyView.setLayoutManager(new LinearLayoutManager(this));
-        RecycleViewDivider dividerLine = new RecycleViewDivider(RecycleViewDivider.VERTICAL);
-        dividerLine.setSize(4);
-        dividerLine.setColor(0xFFDDDDDD);
-        historyView.addItemDecoration(dividerLine);
-        historyView.setAdapter(searchHistoryAdapter);
 
-
+        preferListView.setAdapter(searchPreferAdapter);
+        listView.setAdapter(searchAdapter);
     }
-
 
     @Override
     public void onBackPressed() {
+        if(listView.getVisibility() == View.VISIBLE){
+            listView.setVisibility(View.GONE);
+            preferListView.setVisibility(View.VISIBLE);
+            return;
+        }
         Intent intent = new Intent();
         setResult(EDIT_TEXT_REQUEST_CODE_EMPTY, intent);
         super.onBackPressed();
@@ -237,9 +363,8 @@ public class SearchActivity extends BaseActivity implements
                                             List<SubwayStation> stationList = response.getSubwayStationList();
                                             for (SubwayStation s : stationList
                                                     ) {
-                                                Station station = Station.SubwayStationAdapter(s);
-                                                stationArrayList.add(station);
-                                                Log.e("Data", "Add:!" + s.getSubwayStationId() + station.getName());
+                                                stationArrayList.add(s);
+                                                Log.e("Data", "Add:!" + s.getSubwayStationId() + s.getSubwayStationName());
                                             }
                                         }
                                     },
@@ -256,18 +381,11 @@ public class SearchActivity extends BaseActivity implements
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        /**
-                         * Avoid using dialog due to unload context
-                         * Avoid using snackbar for the same reason and skb will hover it
-                         */
-//                        showErrorDialog();
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-//                            Snackbar.make(findViewById(R.id.activity_search), r.result_description, Snackbar.LENGTH_LONG).show();
-                            Toast.makeText(getApplicationContext(), r.result_description, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), r.result_description, Toast.LENGTH_SHORT).show();
                         } catch (NullPointerException e) {
-//                            Snackbar.make(findViewById(R.id.activity_search), "网络访问超时", Snackbar.LENGTH_LONG).show();
-                            Toast.makeText(getApplicationContext(), "网络访问超时", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), R.string.network_error, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -278,7 +396,7 @@ public class SearchActivity extends BaseActivity implements
         result = new Bundle();
     }
 
-    private void setSearchResult(Station start, Station end) {
+    private void setSearchResult(SubwayStation start, SubwayStation end) {
         Gson gson = new Gson();
         result.putString(KEY_START, gson.toJson(start));
         putIntent(result);
@@ -286,7 +404,7 @@ public class SearchActivity extends BaseActivity implements
         putIntent(result);
     }
 
-    private void setSearchResult(Station s) {
+    private void setSearchResult(SubwayStation s) {
         Gson gson = new Gson();
         result.putString(
                 SEARCH_STATUS == EDIT_TEXT_REQUEST_CODE_START ? KEY_START : KEY_END,
@@ -309,9 +427,8 @@ public class SearchActivity extends BaseActivity implements
     public boolean onQueryTextChange(String newText) {
         // User changed the text
         listView.setVisibility(View.VISIBLE);
-        historyView.setVisibility(View.GONE);
-        final List<Station> filteredModelList = filter(stationArrayList, newText);
-        searchAdapter.animateTo(filteredModelList);
+        preferListView.setVisibility(View.GONE);
+        searchAdapter.animateTo(filter(stationArrayList, newText));
         listView.scrollToPosition(0);
         return false;
     }
@@ -327,45 +444,22 @@ public class SearchActivity extends BaseActivity implements
      * @param query Filter key word
      * @return List after filter
      */
-    private List<Station> filter(List<Station> list, String query) {
+    private List<SubwayStation> filter(List<SubwayStation> list, String query) {
         if (TextUtils.isEmpty(query)) {
             return stationArrayList;
         } else {
             query = query.toLowerCase();
-            final List<Station> filteredModelList = new ArrayList<>();
-            for (Station station : list) {
-                final String text = station.getName();
-                if (text.contains(query)) {
+            final List<SubwayStation> filteredModelList = new ArrayList<>();
+            for (SubwayStation station : list) {
+                if (station.getSubwayStationName().contains(query)) {
+                    filteredModelList.add(station);
+                }else if(station.getSubwayStationEnglishName().toLowerCase().contains(query)){
+                    filteredModelList.add(station);
+                }else if(station.getSubwayStationAbbrName().toLowerCase().contains(query)){
                     filteredModelList.add(station);
                 }
             }
             return filteredModelList;
         }
-    }
-
-    public void showErrorDialog() {
-        MaterialDialog dialog = new MaterialDialog.Builder(getApplicationContext())
-                .title(R.string.error)
-                .content(R.string.error_failure_to_get_subway_list)
-                .positiveText(R.string.retry)
-                .positiveColor(getResources().getColor(R.color.primary))
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        initData();
-                        dialog.dismiss();
-                    }
-                })
-                .negativeText(R.string.cancel)
-                .negativeColor(getResources().getColor(R.color.primary))
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                        Intent intent = new Intent();
-                        finish();
-                    }
-                })
-                .show();
     }
 }

@@ -3,7 +3,12 @@ package cn.crepusculo.subway_ticket_android.preferences;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.subwayticket.database.model.HistoryRoute;
+import com.subwayticket.database.model.PreferRoute;
+import com.subwayticket.database.model.PreferSubwayStation;
+
 import java.util.Arrays;
+import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.util.SharedPreferencesUtils;
 
@@ -34,6 +39,9 @@ public class Info {
     public Ticket ticket;
     public App app;
     private SharedPreferences preferences = SharedPreferencesUtils.getPreferences(filename);
+    public static List<PreferRoute> preferRoutes;
+    public static List<HistoryRoute> historyRoutes;
+    public static List<PreferSubwayStation> preferStations;
 
     private Info() {
         user = new User();

@@ -5,15 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- now we work with search view in action bar-->
-    <!--<android.support.v7.widget.SearchView-->
-        <!--android:id="@+id/search_view"-->
-        <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"/>-->
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/history"
+        android:id="@+id/prefer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

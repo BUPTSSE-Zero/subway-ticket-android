@@ -83,7 +83,7 @@ public class StationAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         StationHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_row, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_row_station, parent, false);
             holder = new StationHolder();
             holder.name = (TextView) convertView.findViewById(R.id.txtName);
             holder.line = (TextView) convertView.findViewById(R.id.txtLine);

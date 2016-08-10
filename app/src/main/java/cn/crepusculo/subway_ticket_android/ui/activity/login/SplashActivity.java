@@ -39,6 +39,10 @@ public class SplashActivity extends BaseActivity {
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            if(error.networkResponse == null){
+                                Toast.makeText(SplashActivity.this, getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                             Info.getInstance().setToken(null);
                             if(r.result_code == 401)

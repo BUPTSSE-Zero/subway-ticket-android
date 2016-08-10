@@ -1,7 +1,6 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.settings;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
@@ -99,7 +98,7 @@ public class ModifyPassword extends BaseActivity {
                                     GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                                     Snackbar.make(findViewById(R.id.action_reset_pwd), r.result_description, Snackbar.LENGTH_LONG).show();
                                 } catch (NullPointerException e) {
-                                    Snackbar.make(findViewById(R.id.action_reset_pwd), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(findViewById(R.id.action_reset_pwd), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                                 }
                                 progressBar.setVisibility(View.INVISIBLE);
                             }

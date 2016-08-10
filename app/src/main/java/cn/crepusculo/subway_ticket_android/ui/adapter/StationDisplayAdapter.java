@@ -44,7 +44,7 @@ public class StationDisplayAdapter extends RecyclerView.Adapter<StationDisplayAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = mInflater.inflate(R.layout.item_station_display, parent, false);
-        Log.e("onCreateViewHolder", "inflate item_row_history_station");
+        Log.e("onCreateViewHolder", "inflate item_row_prefer_station");
         return new ViewHolder(itemView);
     }
 

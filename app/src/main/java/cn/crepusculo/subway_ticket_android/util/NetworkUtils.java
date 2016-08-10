@@ -1,7 +1,10 @@
 package cn.crepusculo.subway_ticket_android.util;
 
+import android.util.Log;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.subwayticket.model.request.AddPreferRouteRequest;
 import com.subwayticket.model.request.AddPreferStationRequest;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.ModifyPasswordRequest;
@@ -262,11 +265,11 @@ public class NetworkUtils {
     public static Request preferenceAddPreferStation(
             AddPreferStationRequest addPreferStationRequest,
             String authToken,
-            Response.Listener<PreferStationListResult> listener,
+            Response.Listener<Result> listener,
             Response.ErrorListener errorListener) {
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.getApiFullName(Preference.ADD));
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.ADD);
         Map<String, String> header = generateHeaderByAuthToken(authToken);
-        return NetworkMethodWrapper.getObject(url, PreferStationListResult.class, header, listener, errorListener);
+        return NetworkMethodWrapper.post(url, Result.class, addPreferStationRequest, header, listener, errorListener);
     }
 
     public static Request preferenceRemovePreferStation(
@@ -274,9 +277,9 @@ public class NetworkUtils {
             String authToken,
             Response.Listener<Result> listener,
             Response.ErrorListener errorListener) {
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.getApiFullName(Preference.REMOVE));
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_STATION), Preference.REMOVE, String.valueOf(stationID));
         Map<String, String> header = generateHeaderByAuthToken(authToken);
-        return NetworkMethodWrapper.getObject(url, Result.class, header, listener, errorListener);
+        return NetworkMethodWrapper.delete(url, Result.class, null, header, listener, errorListener);
     }
 
     public static Request preferencePrefeRoute(
@@ -289,22 +292,23 @@ public class NetworkUtils {
     }
 
     public static Request preferenceAddPreferRoute(
-            AddPreferStationRequest addPreferRouteRequest,
-            String authToken,
-            Response.Listener<PreferRouteListResult> listener,
-            Response.ErrorListener errorListener) {
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.getApiFullName(Preference.ADD));
-        Map<String, String> header = generateHeaderByAuthToken(authToken);
-        return NetworkMethodWrapper.getObject(url, PreferRouteListResult.class, header, listener, errorListener);
-    }
-
-    public static Request preferenceRemovePreferRoute(
-            int stationID,
+            AddPreferRouteRequest addPreferRouteRequest,
             String authToken,
             Response.Listener<Result> listener,
             Response.ErrorListener errorListener) {
-        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.getApiFullName(Preference.REMOVE));
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.ADD);
         Map<String, String> header = generateHeaderByAuthToken(authToken);
-        return NetworkMethodWrapper.getObject(url, Result.class, header, listener, errorListener);
+        return NetworkMethodWrapper.post(url, Result.class, addPreferRouteRequest, header, listener, errorListener);
+    }
+
+    public static Request preferenceRemovePreferRoute(
+            int startStationId, int endStationId,
+            String authToken,
+            Response.Listener<Result> listener,
+            Response.ErrorListener errorListener) {
+        String url = Url.getUrl(Preference.getApiFullName(Preference.PREFER_ROUTE), Preference.REMOVE,
+                String.valueOf(startStationId), String.valueOf(endStationId));
+        Map<String, String> header = generateHeaderByAuthToken(authToken);
+        return NetworkMethodWrapper.delete(url, Result.class, null, header, listener, errorListener);
     }
 }

@@ -1,6 +1,5 @@
 package cn.crepusculo.subway_ticket_android.ui.activity.login;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
@@ -17,7 +16,6 @@ import android.widget.ViewSwitcher;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.dd.processbutton.iml.ActionProcessButton;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.subwayticket.model.request.LoginRequest;
 import com.subwayticket.model.request.PhoneCaptchaRequest;
@@ -29,8 +27,6 @@ import com.subwayticket.model.result.Result;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.activity.BaseActivity;
-import cn.crepusculo.subway_ticket_android.ui.activity.MainActivity;
-import cn.crepusculo.subway_ticket_android.util.CircularAnimUtil;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 
@@ -208,7 +204,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -243,7 +239,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -306,7 +302,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -341,7 +337,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     }
                                 }, 1500);
                             } catch (NullPointerException e) {
-                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                             } finally {
                                 loginBtn.setProgress(-1);
                             }
@@ -597,7 +593,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
                             Snackbar.make(findViewById(R.id.login_activity), r.result_description, Snackbar.LENGTH_LONG).show();
                         } catch (NullPointerException e) {
-                            Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_timeout), Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(findViewById(R.id.login_activity), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                         } finally {
                             loginBtn.setProgress(-1);
                         }

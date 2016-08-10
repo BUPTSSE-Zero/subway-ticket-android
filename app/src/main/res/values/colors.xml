@@ -13,6 +13,7 @@
     <color name="light_secondary_text">#727272</color>
 
     <color name="error">#B8353A</color>
+    <color name="orange">#FF9800</color>
 
     <!-- beijing subway line spec color -->
     <color name="line_1">#A8353A</color>
