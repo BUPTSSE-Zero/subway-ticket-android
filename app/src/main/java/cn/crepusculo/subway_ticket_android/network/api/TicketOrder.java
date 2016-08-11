@@ -17,7 +17,7 @@ public class TicketOrder {
     public static final String CANCEL = "cancel";
     public static final String PAY = "pay";
     public static final String REFUND = "refund";
-    public static final String GET_ORDER_INFO = "order_info";
+    public static final String GET_ORDER_INFO = "order_info/by_orderid";
     public static final String GET_ORDER_LIST = "order_list";
 
     public static String getApiFullName(String apiName) {

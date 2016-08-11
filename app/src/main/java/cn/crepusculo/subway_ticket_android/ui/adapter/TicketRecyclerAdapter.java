@@ -11,10 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.subwayticket.database.model.TicketOrder;
+
 import java.util.ArrayList;
 
 import cn.crepusculo.subway_ticket_android.R;
-import cn.crepusculo.subway_ticket_android.content.TicketOrder;
 import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
@@ -72,14 +73,14 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
     protected void updateText(Holder holder, int p) {
         holder.start.setText(dataset.get(p).getStartStation().getSubwayStationName());
+        holder.startLine.setText(dataset.get(p).getStartStation().getSubwayLine().getSubwayLineName());
         holder.destination.setText(dataset.get(p).getEndStation().getSubwayStationName());
+        holder.destinationLine.setText(dataset.get(p).getEndStation().getSubwayLine().getSubwayLineName());
         // FIXME:: Need to Decode
         holder.date.setText(CalendarUtils.formatCurrentTimeMills(
                 dataset.get(p).getTicketOrderTime().getTime()
         ));
-        holder.status.setText(TicketOrder.translationCode(context, dataset.get(p).getStatus()));
-        Log.e("ColorUtils", "line" + dataset.get(p).getStartStation().getSubwayLine().getSubwayLineId());
-        Log.e("ColorUtils", "line" + dataset.get(p).getEndStation().getSubwayLine().getSubwayLineId());
+        holder.status.setText(cn.crepusculo.subway_ticket_android.content.TicketOrder.translationCode(context, dataset.get(p).getStatus()));
         SubwayLineUtil.setColor(
                 context,
                 holder.start_p,
@@ -106,8 +107,10 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
 
         public ImageView start_p;
         public TextView start;
+        public TextView startLine;
 
         public TextView destination;
+        public TextView destinationLine;
         public ImageView destination_p;
 
         public TextView date;
@@ -120,7 +123,9 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
             mCardView = (CardView) v.findViewById(R.id.card_view);
 
             start = (TextView) v.findViewById(R.id.start);
+            startLine = (TextView) v.findViewById(R.id.start_line);
             destination = (TextView) v.findViewById(R.id.destination);
+            destinationLine = (TextView) v.findViewById(R.id.destination_line);
 
             date = (TextView) v.findViewById(R.id.date);
             status = (TextView) v.findViewById(R.id.status);

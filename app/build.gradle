@@ -98,4 +98,6 @@ dependencies {
     /* Picker */
     compile 'com.github.davidpizarro:pickerui:1.0.1'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    /* QR Code */
+    compile 'com.google.zxing:javase:+'
 }

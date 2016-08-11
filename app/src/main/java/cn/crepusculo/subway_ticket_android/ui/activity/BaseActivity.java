@@ -91,10 +91,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.finish();
     }
 
-    public void backToPreviousActicity2() {
-        this.finishActivity(RESULT_OK);
-    }
-
     protected Bundle getBundle() {
         return this.getIntent().getExtras();
     }

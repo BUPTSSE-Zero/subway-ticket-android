@@ -27,8 +27,8 @@ import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 
 public class PayActivity extends AppCompatActivity {
-    public static final String KEY_WORD = "key";
-    private TicketOrder order;
+    public static final String BUNDLE_KEY_ORDER_ID = "orderId";
+    private String orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +51,7 @@ public class PayActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
 
         if (!b.isEmpty()) {
-            order = new Gson().fromJson(b.getString(KEY_WORD), TicketOrder.class);
+            orderId = b.getString(BUNDLE_KEY_ORDER_ID, null);
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -61,10 +61,10 @@ public class PayActivity extends AppCompatActivity {
         }
     }
 
-    Element getAlipay() {
+    private Element getAlipay() {
         Element element = new Element();
-        element.setTitle("支付宝");
-        element.setIcon(R.drawable.met_ic_clear);
+        element.setTitle(getString(R.string.alipay));
+        element.setIcon(R.drawable.ic_cash_black_24dp);
         element.setColor(ContextCompat.getColor(this, mehdi.sakout.aboutpage.R.color.about_item_icon_color));
         element.setGravity(Gravity.START);
         element.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +76,9 @@ public class PayActivity extends AppCompatActivity {
         return element;
     }
 
-    Element getWechat() {
+    private Element getWechat() {
         Element element = new Element();
-        element.setTitle("微信支付");
+        element.setTitle(getString(R.string.wechat_pay));
         element.setIcon(R.drawable.ic_wechat_24dp);
         element.setColor(ContextCompat.getColor(this, mehdi.sakout.aboutpage.R.color.about_item_icon_color));
         element.setGravity(Gravity.START);
@@ -108,13 +108,11 @@ public class PayActivity extends AppCompatActivity {
      */
     private void payTicket() {
         NetworkUtils.ticketOrderPay(
-                new PayOrderRequest(order.getTicketOrderId()),
+                new PayOrderRequest(orderId),
                 Info.getInstance().getToken(),
                 new Response.Listener<PayOrderResult>() {
                     @Override
                     public void onResponse(PayOrderResult response) {
-                        order.setExtractCode(response.getExtractCode());
-                        order.setStatus(TicketOrder.ORDER_STATUS_NOT_EXTRACT_TICKET);
                         Toast.makeText(getBaseContext(), response.getResultDescription(), Toast.LENGTH_SHORT).show();
 
                         // Delay 1s to launch new activity
@@ -122,9 +120,10 @@ public class PayActivity extends AppCompatActivity {
                             @Override
                             public void run() {
                                 Bundle b = new Bundle();
-                                b.putString(KEY_WORD, new Gson().toJson(order));
+                                b.putString(DisplayActivity.BUNDLE_KEY_ORDER_ID, orderId);
                                 Intent intent = new Intent(PayActivity.this, DisplayActivity.class);
                                 intent.putExtras(b);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 finish();
                                 overridePendingTransition(R.anim.slide_in_top, R.anim.slide_out_bottom);
@@ -138,12 +137,12 @@ public class PayActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         try {
                             GsonUtils.Response r = GsonUtils.resolveErrorResponse(error);
-                            Snackbar.make(findViewById(R.id.pay_layout), "ERROR!" + r.result_description, Snackbar.LENGTH_LONG);
+                            Snackbar.make(findViewById(R.id.pay_layout), r.result_description, Snackbar.LENGTH_LONG);
                         } catch (NullPointerException e) {
                             if (error != null)
                                 Snackbar.make(findViewById(R.id.view), error.getMessage(), Snackbar.LENGTH_LONG).show();
                             else
-                                Snackbar.make(findViewById(R.id.view), "网络访问超时", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(findViewById(R.id.view), getString(R.string.network_error), Snackbar.LENGTH_LONG).show();
                         }
                     }
                 });

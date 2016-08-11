@@ -36,18 +36,13 @@
             android:label="@string/my_orders"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activity.TicketDialogActivity"
-            android:theme="@style/AppTheme.Dialog" />
-        <activity
             android:name=".ui.activity.SearchActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
         <activity
             android:name=".ui.activity.SubmitActivity"
-            android:label="@string/post_bill"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:label="@string/post_bill" />
         <activity
             android:name=".ui.activity.settings.ApplicationSettings"
             android:label="@string/about_me"
@@ -71,10 +66,12 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.PayActivity"
+            android:label="@string/pay_bill"
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.DisplayActivity"
-            android:launchMode="singleTask" />
+            android:label="@string/order_detail"
+            android:launchMode="standard" />
     </application>
 
 </manifest>

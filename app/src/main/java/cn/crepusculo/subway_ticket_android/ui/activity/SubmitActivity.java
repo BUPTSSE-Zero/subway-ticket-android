@@ -1,5 +1,6 @@
 package cn.crepusculo.subway_ticket_android.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -29,7 +30,7 @@ import java.util.Calendar;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
-import cn.crepusculo.subway_ticket_android.util.CalendarUtils;
+import cn.crepusculo.subway_ticket_android.ui.activity.login.LoginActivity;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
@@ -45,12 +46,8 @@ public class SubmitActivity extends BaseActivity {
      */
     private ImageButton startPic;
     private ImageButton endPic;
-    private TextView startTitle;
-    private TextView startText;
-    private TextView endTitle;
-    private TextView endText;
-    private TextView date;
-    private TextView dateLimit;
+    private TextView startStationText;
+    private TextView endStationText;
     private TextView textCount;
     private TextView textAmount;
     private TextView textPrice;
@@ -72,8 +69,6 @@ public class SubmitActivity extends BaseActivity {
     @Override
     protected void initView() {
         // init toolbar with homeAsUp button
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -90,16 +85,11 @@ public class SubmitActivity extends BaseActivity {
 
     private void loadCompacts() {
         // start part
+        startStationText = (TextView) findViewById(R.id.start);
         startPic = (ImageButton) findViewById(R.id.start_pic);
-        startTitle = (TextView) findViewById(R.id.start_title);
-        startText = (TextView) findViewById(R.id.start);
         // end part
-        endTitle = (TextView) findViewById(R.id.destination_title);
-        endText = (TextView) findViewById(R.id.destination);
+        endStationText = (TextView) findViewById(R.id.destination);
         endPic = (ImageButton) findViewById(R.id.destination_pic);
-        // date part
-        date = (TextView) findViewById(R.id.date);
-        dateLimit = (TextView) findViewById(R.id.date_limit);
         // text
         textCount = (TextView) findViewById(R.id.count);
         textPrice = (TextView) findViewById(R.id.price);
@@ -151,6 +141,13 @@ public class SubmitActivity extends BaseActivity {
                     final int count = TextUtils.isEmpty(textCount.getText()) ?
                             0 : Integer.parseInt(textCount.getText().toString().trim());
 
+                    if(Info.getInstance().getToken() == null){
+                        checkButton.setProgress(0);
+                        Intent intent = new Intent(SubmitActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        return;
+                    }
+
                     NetworkUtils.ticketOrderSubmit(
                             new SubmitOrderRequest(
                                     startStation.getSubwayStationId(),
@@ -200,7 +197,7 @@ public class SubmitActivity extends BaseActivity {
                 else {
                     if (payRequest != null) {
                         Bundle b = new Bundle();
-                        b.putString(PayActivity.KEY_WORD, new Gson().toJson(payRequest));
+                        b.putString(PayActivity.BUNDLE_KEY_ORDER_ID, payRequest.getTicketOrderId());
                         jumpToActivity(PayActivity.class, b);
                         finish();
                     }
@@ -267,10 +264,8 @@ public class SubmitActivity extends BaseActivity {
 
     private void setCardInfo() {
         Calendar c = Calendar.getInstance();
-        startText.setText(startStation.getDisplayName());
-        endText.setText(endStation.getDisplayName());
-        date.setText(CalendarUtils.format(c));
-        dateLimit.setText(CalendarUtils.format_limit(c));
+        startStationText.setText(startStation.getDisplayName());
+        endStationText.setText(endStation.getDisplayName());
         SubwayLineUtil.setColor(
                 this,
                 startPic,

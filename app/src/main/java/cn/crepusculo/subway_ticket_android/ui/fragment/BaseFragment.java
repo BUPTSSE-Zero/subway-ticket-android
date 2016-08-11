@@ -38,12 +38,13 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mRootView = inflater.inflate(getFragmentLayout(), container, false);
-        mActivity = getActivity();
-        mContext = getContext();
-        mContainer = container;
-
-        initView();
+        if(mRootView == null) {
+            mRootView = inflater.inflate(getFragmentLayout(), container, false);
+            mActivity = getActivity();
+            mContext = getContext();
+            mContainer = container;
+            initView();
+        }
         return mRootView;
     }
 

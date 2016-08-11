@@ -1,5 +1,6 @@
 <resources>
     <string name="agree">同意</string>
+    <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="error">错误</string>
     <string name="warning">警告</string>
@@ -52,16 +53,13 @@
     <string name="ticket_mode_not_pay">未支付</string>
     <string name="ticket_mode_not_extract_ticket">未取票</string>
     <string name="ticket_mode_finished">已完成</string>
-    <string name="ticket_mode_refunded">已退订</string>
+    <string name="ticket_mode_refunded">已退票</string>
 
     <!-- card view -->
     <string name="cardview_time">time</string>
     <string name="cardview_status">status</string>
 
     <!-- dialog -->
-    <string name="dialog_btn_1">提票</string>
-    <string name="dialog_btn_2">查看详情</string>
-    <string name="dialog_btn_3">取消</string>
     <string name="cardview_dialog_transition">cardview_dialog_transition</string>
     <string name="choose">确认</string>
     <string name="choice_city">选择城市</string>
@@ -73,14 +71,19 @@
     <string name="error_failure_to_get_subway_list">获取站点列表失败</string>
 
     <string name="post_bill">提交订单</string>
-    <string name="cancel_bill">撤销订单</string>
+    <string name="cancel_bill">取消订单</string>
+    <string name="pay_bill">支付订单</string>
+    <string name="refund">退票</string>
     <string name="pay_bill_now">现在支付</string>
     <string name="pay_bill_not_now">暂不支付</string>
 
     <string name="ticket_count">购票张数</string>
-    <!-- the space is necessary -->
-    <string name="ticket_all_pay">总金额　</string>
-    <string name="ticket_pay">单价　　</string>
+    <string name="ticket_all_pay">总金额</string>
+    <string name="ticket_pay">单价</string>
+    <string name="order_id">订单号</string>
+    <string name="order_detail">订单详情</string>
+    <string name="order_status">订单状态</string>
+    <string name="view_detail">查看详情</string>
 
     <string name="search_hint">搜索您的目的地</string>
 
@@ -91,6 +94,8 @@
 
     <string name="BEIJING_ID">1</string>
 
+    <string name="alipay">支付宝</string>
+    <string name="wechat_pay">微信支付</string>
     <string name="qr">二维码</string>
 
     <string name="my_orders">我的订单</string>
@@ -101,6 +106,15 @@
     <string name="other">其它</string>
     <string name="action_logout">注销账号</string>
 
+    <string name="start_date">开始日期</string>
+    <string name="end_date">结束日期</string>
+    <string name="search_order">搜索订单</string>
+
+    <string name="query_cancel_bill">确定取消该订单吗？</string>
+    <string name="query_refund">确定要退掉该订单中所有未取出的票吗？</string>
+
+    <string name="tip_pay_within_anhour">提交订单后请于60分钟内（并不超过次日0:00）完成支付，否则订单将自动取消。</string>
+    <string name="tip_auto_refund">乘客只能当日购票与取票，当日未取出的票将于次日0:00统一作自动退票处理。</string>
     <string name="network_error">网络错误或访问超时</string>
     <string name="token_invalid">登录状态失效，请重新登录</string>
 </resources>
