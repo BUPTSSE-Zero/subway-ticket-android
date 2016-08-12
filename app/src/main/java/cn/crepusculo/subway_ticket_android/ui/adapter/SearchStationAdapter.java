@@ -1,8 +1,10 @@
 package cn.crepusculo.subway_ticket_android.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,16 +55,6 @@ public class SearchStationAdapter extends RecyclerView.Adapter<SearchStationAdap
         return list.size();
     }
 
-
-    @Override
-    public void onViewAttachedToWindow(ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if(Info.getInstance().getToken() == null || isStationPrefer(list.get(holder.getAdapterPosition()))){
-            holder.preferButton.setVisibility(View.GONE);
-        }else{
-            holder.preferButton.setVisibility(View.VISIBLE);
-        }
-    }
 
     /**
      * Register animation
@@ -159,13 +151,38 @@ public class SearchStationAdapter extends RecyclerView.Adapter<SearchStationAdap
          * Call in `onBindViewHolder`
          */
         public void bind(final SubwayStation station) {
+            Log.e("Bind station", "bind " + station.getDisplayName());
             String name = station.getSubwayStationName();
             String line = station.getSubwayLine().getSubwayLineName();
             txtName.setText(name);
             txtLine.setText(line);
+            imageView.getDrawable().setColorFilter(
+                    mContext.getResources().getColor(SubwayLineUtil.getColor(Station.SubwayStationAdapter(station).getLine())),
+                    PorterDuff.Mode.SRC_ATOP);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mListener.onItemClick(station, view);
+                }
+            });
+
+            if(Info.getInstance().getToken() == null || isStationPrefer(station)){
+                preferButton.setVisibility(View.GONE);
+            }else{
+                preferButton.setVisibility(View.VISIBLE);
+                preferButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mListener.onItemClick(station, view);
+                    }
+                });
+            }
             if(!station.isAvailable()){
                 txtName.setTextColor(mContext.getResources().getColor(R.color.grey_400));
                 txtLine.setTextColor(mContext.getResources().getColor(R.color.grey_400));
+            }else{
+                txtName.setTextColor(Color.BLACK);
+                txtLine.setTextColor(mContext.getResources().getColor(R.color.light_secondary_text));
             }
             if(station.getStationMessage() != null){
                 stationInfoButton.setVisibility(View.VISIBLE);
@@ -176,22 +193,9 @@ public class SearchStationAdapter extends RecyclerView.Adapter<SearchStationAdap
                                 .show();
                     }
                 });
+            }else{
+                stationInfoButton.setVisibility(View.GONE);
             }
-            imageView.getDrawable().setColorFilter(
-                    mContext.getResources().getColor(SubwayLineUtil.getColor(Station.SubwayStationAdapter(station).getLine())),
-                    PorterDuff.Mode.SRC_ATOP);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onItemClick(station, view);
-                }
-            });
-            preferButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onItemClick(station, view);
-                }
-            });
         }
     }
 }
