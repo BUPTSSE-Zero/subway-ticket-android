@@ -23,10 +23,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.subwayticket.database.model.TicketOrder;
-import com.subwayticket.model.request.PayOrderRequest;
 import com.subwayticket.model.request.RefundOrderRequest;
 import com.subwayticket.model.result.OrderInfoResult;
-import com.subwayticket.model.result.PayOrderResult;
 import com.subwayticket.model.result.RefundOrderResult;
 import com.subwayticket.model.result.Result;
 
@@ -122,7 +120,7 @@ public class DisplayActivity extends AppCompatActivity {
         aboutPage.addGroup(getString(R.string.order_id))
                 .addItem(getCustom(ticketOrder.getTicketOrderId()))
                 .addGroup(getString(R.string.time_pay))
-                .addItem(getCustomWithIcon(CalendarUtils.formatCurrentTimeMills(
+                .addItem(getCustomWithIcon(CalendarUtils.formatTimeMills(
                         ticketOrder.getTicketOrderTime().getTime()
                         ), R.drawable.ic_time_black_24dp)
                 )

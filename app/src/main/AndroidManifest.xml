@@ -37,8 +37,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.SearchActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/choose_station_route">
         </activity>
         <activity
             android:name=".ui.activity.SubmitActivity"
@@ -52,18 +52,13 @@
             android:label="@string/account_settings"
             android:launchMode="singleTask" />
         <activity
-            android:name=".ui.activity.StationDisplayActivity"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".ui.activity.settings.ModifyPassword"
             android:launchMode="singleTask" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-        <activity
-            android:name=".ui.activity.RefundActivity"
-            android:launchMode="singleTask" />
+
         <activity
             android:name=".ui.activity.PayActivity"
             android:label="@string/pay_bill"

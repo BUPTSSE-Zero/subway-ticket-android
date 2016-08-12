@@ -7,42 +7,67 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:paddingEnd="16dp"
-    android:paddingStart="16dp">
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <LinearLayout
-        android:id="@+id/item_station_line"
-        android:paddingTop="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_arrow_expand" />
-
-        <TextView
-            android:layout_gravity="center_vertical"
-            android:id="@+id/txtName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawablePadding="8dp"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/normal_text_size" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/txtLine"
+        android:id="@+id/station"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingBottom="8dp"
-        android:layout_below="@+id/item_station_line"
-        android:textSize="@dimen/small_text_size"
-        android:textColor="@color/light_secondary_text" />
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/item_station_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:src="@drawable/ic_arrow_expand" />
+
+            <TextView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2323"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/normal_text_size" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="sdfd"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/light_secondary_text" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_station_info"
+        style="@style/Base.Widget.AppCompat.Button.Borderless"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_black_24dp"
+        android:tint="@color/red"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/station"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:visibility="gone"/>
 
     <ImageButton
         android:id="@+id/btn_add_prefer_station"
@@ -52,7 +77,10 @@
         android:src="@drawable/ic_star_border_black_24dp"
         android:tint="@color/orange"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:gravity="center_horizontal|center_vertical" />
 
 </RelativeLayout>

@@ -4,21 +4,18 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -42,7 +39,7 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
 import cn.crepusculo.subway_ticket_android.ui.adapter.RecycleViewDivider;
-import cn.crepusculo.subway_ticket_android.ui.adapter.SearchAdapter;
+import cn.crepusculo.subway_ticket_android.ui.adapter.SearchStationAdapter;
 import cn.crepusculo.subway_ticket_android.ui.adapter.SearchPreferAdapter;
 import cn.crepusculo.subway_ticket_android.util.GsonUtils;
 import cn.crepusculo.subway_ticket_android.util.NetworkUtils;
@@ -63,7 +60,7 @@ public class SearchActivity extends BaseActivity implements
     private int SEARCH_STATUS;
     private Bundle result;
     private ArrayList<SubwayStation> stationArrayList;
-    private SearchAdapter searchAdapter;
+    private SearchStationAdapter searchStationAdapter;
 
 
     /* compats */
@@ -80,16 +77,17 @@ public class SearchActivity extends BaseActivity implements
         getMenuInflater().inflate(R.menu.menu_search, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
+                preferListView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 onBackPressed();
-                return false;
+                return true;
             }
         });
         SearchManager searchManager =
@@ -98,25 +96,35 @@ public class SearchActivity extends BaseActivity implements
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-        searchItem.expandActionView();
-
         searchView.setOnQueryTextListener(this);
         searchView.setIconifiedByDefault(false);
         return true;
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void initView() {
         initString();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listView = (RecyclerView) findViewById(R.id.list);
         listView.setLayoutManager(new LinearLayoutManager(this));
 
         initData();
-        searchAdapter = new SearchAdapter(
+        searchStationAdapter = new SearchStationAdapter(
                 SearchActivity.this,
                 stationArrayList,
-                new SearchAdapter.OnItemClickListener() {
+                new SearchStationAdapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(SubwayStation data, final View v) {
                         if(v.getId() == R.id.btn_add_prefer_station){
@@ -142,10 +150,10 @@ public class SearchActivity extends BaseActivity implements
                         }
                     }
                 });
-        listView.setAdapter(searchAdapter);
+        listView.setAdapter(searchStationAdapter);
         listView.setVisibility(View.GONE);
-        searchAdapter.animateTo(stationArrayList);
-        searchAdapter.animateTo(stationArrayList);
+        searchStationAdapter.animateTo(stationArrayList);
+        searchStationAdapter.animateTo(stationArrayList);
 
         preferListView = (RecyclerView) findViewById(R.id.prefer_list);
         preferListView.setLayoutManager(new LinearLayoutManager(this));
@@ -324,7 +332,7 @@ public class SearchActivity extends BaseActivity implements
                 });
 
         preferListView.setAdapter(searchPreferAdapter);
-        listView.setAdapter(searchAdapter);
+        listView.setAdapter(searchStationAdapter);
     }
 
     @Override
@@ -428,7 +436,7 @@ public class SearchActivity extends BaseActivity implements
         // User changed the text
         listView.setVisibility(View.VISIBLE);
         preferListView.setVisibility(View.GONE);
-        searchAdapter.animateTo(filter(stationArrayList, newText));
+        searchStationAdapter.animateTo(filter(stationArrayList, newText));
         listView.scrollToPosition(0);
         return false;
     }

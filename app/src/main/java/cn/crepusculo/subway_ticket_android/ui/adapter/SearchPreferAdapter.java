@@ -17,6 +17,7 @@ import com.subwayticket.database.model.SubwayStation;
 import java.util.List;
 
 import cn.crepusculo.subway_ticket_android.R;
+import cn.crepusculo.subway_ticket_android.ui.dialog.StationMessageDialog;
 
 
 public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapter.ViewHolder> {
@@ -114,6 +115,19 @@ public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapte
                     mListener.onItemClick(position, list.get(position), STATUS_REMOVE_PREFER_STATION);
                 }
             });
+            if(!station.isAvailable()){
+                holder.txtName.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+            }
+            if(station.getStationMessage() != null){
+                holder.stationInfoButton.setVisibility(View.VISIBLE);
+                holder.stationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), station.getStationMessage())
+                                .show();
+                    }
+                });
+            }
         } else if (list.get(position) instanceof PreferRoute) {
             Log.e("onBindViewHolder", "Status prefer route");
             final PreferRoute route = (PreferRoute) list.get(position);
@@ -133,6 +147,34 @@ public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapte
                     mListener.onItemClick(position, list.get(position), STATUS_REMOVE_PREFER_ROUTE);
                 }
             });
+            if(!route.getStartStation().isAvailable()){
+                holder.txtStartLine.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+                holder.txtStart.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+            }
+            if(route.getStartStation().getStationMessage() != null){
+                holder.startStationInfoButton.setVisibility(View.VISIBLE);
+                holder.startStationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), route.getStartStation().getStationMessage())
+                                .show();
+                    }
+                });
+            }
+            if(!route.getEndStation().isAvailable()){
+                holder.txtEndLine.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+                holder.txtEnd.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+            }
+            if(route.getEndStation().getStationMessage() != null){
+                holder.endStationInfoButton.setVisibility(View.VISIBLE);
+                holder.endStationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), route.getEndStation().getStationMessage())
+                                .show();
+                    }
+                });
+            }
         } else if(list.get(position) instanceof HistoryRoute){
             Log.e("onBindViewHolder", "Status history route");
             final HistoryRoute route = (HistoryRoute) list.get(position);
@@ -152,6 +194,34 @@ public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapte
                     mListener.onItemClick(position, list.get(position), STATUS_ADD_PREFER_ROUTE);
                 }
             });
+            if(!route.getStartStation().isAvailable()){
+                holder.txtStartLine.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+                holder.txtStart.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+            }
+            if(route.getStartStation().getStationMessage() != null){
+                holder.startStationInfoButton.setVisibility(View.VISIBLE);
+                holder.startStationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), route.getStartStation().getStationMessage())
+                                .show();
+                    }
+                });
+            }
+            if(!route.getEndStation().isAvailable()){
+                holder.txtEndLine.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+                holder.txtEnd.setTextColor(holder.itemView.getResources().getColor(R.color.grey_400));
+            }
+            if(route.getEndStation().getStationMessage() != null){
+                holder.endStationInfoButton.setVisibility(View.VISIBLE);
+                holder.endStationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), route.getEndStation().getStationMessage())
+                                .show();
+                    }
+                });
+            }
         }
     }
 
@@ -171,11 +241,14 @@ public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapte
         private TextView txtStartLine;
         private TextView txtEnd;
         private TextView txtEndLine;
+        private ImageButton startStationInfoButton;
+        private ImageButton endStationInfoButton;
 
         private TextView txtName;
         private Button goToThere;
         private Button comeFromThere;
         private ImageButton preferButton;
+        private ImageButton stationInfoButton;
 
         public ViewHolder(View itemView, int type) {
             super(itemView);
@@ -187,12 +260,15 @@ public class SearchPreferAdapter extends RecyclerView.Adapter<SearchPreferAdapte
                     txtEnd = (TextView) itemView.findViewById(R.id.txtNameEnd);
                     txtStartLine = (TextView) itemView.findViewById(R.id.txtNameStartLine);
                     txtEndLine = (TextView) itemView.findViewById(R.id.txtNameEndLine);
+                    startStationInfoButton = (ImageButton) itemView.findViewById(R.id.btn_start_station_info);
+                    endStationInfoButton = (ImageButton) itemView.findViewById(R.id.btn_end_station_info);
                     break;
                 case VIEW_TYPE_STATIONS:
                     txtName = (TextView) itemView.findViewById(R.id.txtName);
                     goToThere = (Button) itemView.findViewById(R.id.goToThere);
                     comeFromThere = (Button) itemView.findViewById(R.id.comeFromThere);
                     preferButton = (ImageButton) itemView.findViewById(R.id.btn_remove_prefer_station);
+                    stationInfoButton = (ImageButton) itemView.findViewById(R.id.btn_station_info);
             }
             if (type == VIEW_TYPE_PREFER_ROUTE) {
                 preferButton = (ImageButton) itemView.findViewById(R.id.btn_remove_prefer_route);

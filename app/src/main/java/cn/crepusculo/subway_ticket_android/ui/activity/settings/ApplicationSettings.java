@@ -25,9 +25,9 @@ public class ApplicationSettings extends AppCompatActivity {
 
         View settingsView = new AboutPage(this)
                 .isRTL(false)
-                .setDescription("地铁自助购票软件 \n Android 客户端")
+                .setDescription(getString(R.string.app_name) + "\n AlohaWorld Team")
                 .setImage(R.drawable.ic_subway_white_24dp)
-                .addGroup("Pc version")
+                .addGroup("PC version")
                 .addWebsite("http://101.200.144.204:16080/subway-ticket-web")
                 .addGroup("Connect with us")
                 .addGitHub("Crepusculo")

@@ -77,7 +77,7 @@ public class TicketRecyclerAdapter extends RecyclerView.Adapter<TicketRecyclerAd
         holder.destination.setText(dataset.get(p).getEndStation().getSubwayStationName());
         holder.destinationLine.setText(dataset.get(p).getEndStation().getSubwayLine().getSubwayLineName());
         // FIXME:: Need to Decode
-        holder.date.setText(CalendarUtils.formatCurrentTimeMills(
+        holder.date.setText(CalendarUtils.formatTimeMills(
                 dataset.get(p).getTicketOrderTime().getTime()
         ));
         holder.status.setText(cn.crepusculo.subway_ticket_android.content.TicketOrder.translationCode(context, dataset.get(p).getStatus()));

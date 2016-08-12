@@ -16,6 +16,7 @@
     <color name="orange">#FF9800</color>
     <color name="red">#F44336</color>
     <color name="green">#4CAF50</color>
+    <color name="grey_400">#BDBDBD</color>
 
     <!-- beijing subway line spec color -->
     <color name="line_1">#A8353A</color>
@@ -40,7 +41,6 @@
     <color name="line_yi">#D6006E</color>
     <color name="line_xi">#E1261C</color>
     <color name="line_airport">#A292B3</color>
-
 
     <color name="undefine">#808080</color>
 </resources>

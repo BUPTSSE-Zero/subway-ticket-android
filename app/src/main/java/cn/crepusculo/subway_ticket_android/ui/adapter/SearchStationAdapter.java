@@ -3,7 +3,6 @@ package cn.crepusculo.subway_ticket_android.ui.adapter;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.subwayticket.database.model.PreferRoute;
 import com.subwayticket.database.model.PreferSubwayStation;
 import com.subwayticket.database.model.SubwayStation;
 
@@ -21,16 +19,17 @@ import java.util.List;
 import cn.crepusculo.subway_ticket_android.R;
 import cn.crepusculo.subway_ticket_android.content.Station;
 import cn.crepusculo.subway_ticket_android.preferences.Info;
+import cn.crepusculo.subway_ticket_android.ui.dialog.StationMessageDialog;
 import cn.crepusculo.subway_ticket_android.util.SubwayLineUtil;
 
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
+public class SearchStationAdapter extends RecyclerView.Adapter<SearchStationAdapter.ViewHolder> {
     private final LayoutInflater mInflater;
     private List<SubwayStation> list;
     private Context mContext;
     private OnItemClickListener mListener;
 
-    public SearchAdapter(Context context, List<SubwayStation> list, OnItemClickListener listener) {
+    public SearchStationAdapter(Context context, List<SubwayStation> list, OnItemClickListener listener) {
         mInflater = LayoutInflater.from(context);
         mContext = context;
         mListener = listener;
@@ -144,6 +143,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         private final TextView txtLine;
         private final ImageView imageView;
         private final ImageButton preferButton;
+        private final ImageButton stationInfoButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -152,6 +152,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             txtLine = (TextView) itemView.findViewById(R.id.txtLine);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
             preferButton = (ImageButton) itemView.findViewById(R.id.btn_add_prefer_station);
+            stationInfoButton = (ImageButton) itemView.findViewById(R.id.btn_station_info);
         }
 
         /**
@@ -162,6 +163,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             String line = station.getSubwayLine().getSubwayLineName();
             txtName.setText(name);
             txtLine.setText(line);
+            if(!station.isAvailable()){
+                txtName.setTextColor(mContext.getResources().getColor(R.color.grey_400));
+                txtLine.setTextColor(mContext.getResources().getColor(R.color.grey_400));
+            }
+            if(station.getStationMessage() != null){
+                stationInfoButton.setVisibility(View.VISIBLE);
+                stationInfoButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new StationMessageDialog(view.getContext(), station.getStationMessage())
+                                .show();
+                    }
+                });
+            }
             imageView.getDrawable().setColorFilter(
                     mContext.getResources().getColor(SubwayLineUtil.getColor(Station.SubwayStationAdapter(station).getLine())),
                     PorterDuff.Mode.SRC_ATOP);

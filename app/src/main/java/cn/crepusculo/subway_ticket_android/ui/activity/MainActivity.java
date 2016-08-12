@@ -158,7 +158,7 @@ public class MainActivity extends cn.crepusculo.subway_ticket_android.ui.activit
          **/
         String[] drawerItemsNames = getResources().getStringArray(R.array.drawer_items);
         int[] drawerItemIcons = {
-                R.drawable.ic_ticket_light_24dp,
+                R.drawable.ic_ticket_black_24dp,
                 R.drawable.ic_find_in_page_light_24dp,
                 R.drawable.ic_settings_light_24dp,
                 R.drawable.ic_information_outline,
